@@ -21,6 +21,6 @@ PerformanceEnvironment : Object {
     this.granularChaosEnvironment = GranularChaosEnvironment.new();
     this.runningWaterEnvironment = RunningWaterEnvironment.new();
     this.clockEnvironment = ClockEnvironment.new();
-    this.sequencedGranularEnvironment = SequencedGranularEnvironment.new();
+    /*this.sequencedGranularEnvironment = SequencedGranularEnvironment.new();*/
   }
 }
