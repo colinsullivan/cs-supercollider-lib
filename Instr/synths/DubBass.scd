@@ -3,18 +3,24 @@
  **/
 Instr("synths.DubBass", {
   arg freq = 440,
+    freqlag,
     gate = 1,
-    rateMultiplier = 0.25;
+    rateMultiplier = 0.25,
+    tempo;
   
   var out, wobble, rate,
     // It's not dubstep if it's not at an integer multiple of 140bpm.
-    tempo = (140/60)/4;
+    /*tempo = (140/60)/4;*/
+    wobbleTempo = (tempo * rateMultiplier).round();
+
+  //portamento
+  freq = Lag.kr(freq, freqlag);
   
   // Pitch changes are slewed, faster up than down
   /*freq = Slew.kr(freq, 300, 20);*/
   
   // Choose "wobble" tempo
-  wobble = SinOsc.kr(freq: tempo * rateMultiplier, phase: 3 * pi / 2);
+  wobble = SinOsc.kr(freq: 60, phase: 3 * pi / 2);
   
   // Tone to be filtered. Notice modulation of width param.
   out = VarSaw.ar(freq, width: wobble.range(0.2,0.8))
@@ -46,7 +52,9 @@ Instr("synths.DubBass", {
   ];
 
 }, [
-  \freq.asSpec(),
+  \freq,
+  [0, 2],
   \nil,
-  ControlSpec((1/64), 4.0)
+  [(1/64), 4.0],
+  \nil
 ]);

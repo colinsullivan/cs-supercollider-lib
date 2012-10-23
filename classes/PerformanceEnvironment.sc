@@ -19,10 +19,12 @@ PerformanceEnvironment : Object {
   }
 
   load_modules {
+    var me = this;
+
+    this.clockEnvironment = ClockEnvironment.new();
     this.granularChaosEnvironment = GranularChaosEnvironment.new();
     this.runningWaterEnvironment = RunningWaterEnvironment.new();
-    this.clockEnvironment = ClockEnvironment.new();
-    /*this.sequencedGranularEnvironment = SequencedGranularEnvironment.new();*/
+    this.sequencedGranularEnvironment = SequencedGranularEnvironment.new();
     this.dubBassEnvironment = DubBassEnvironment.new();
   }
 }

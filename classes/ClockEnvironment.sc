@@ -23,8 +23,8 @@ ClockEnvironment : Object {
       me = this;
 
     MIDIClient.init;
-    MIDIIn.connect(0, MIDIClient.sources[1]);
-    MIDISyncClock.init(0, 0);
+    /*MIDIIn.connect(0, MIDIClient.sources[1]);*/
+    MIDISyncClock.init();
     /*this.midiClockOut = MIDIClockOut.new("(in) To Ableton Tempo", "(in) To Ableton Tempo");*/
 
     clockFace = ClockFace.new();
