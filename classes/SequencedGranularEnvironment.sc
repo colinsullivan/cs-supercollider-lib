@@ -1,4 +1,4 @@
-SequencedGranularEnvironment : PatchPerformanceEnvironment {
+SequencedGranularEnvironment : PatchEnvironment {
 
   var <>grainEnvBuf;
   

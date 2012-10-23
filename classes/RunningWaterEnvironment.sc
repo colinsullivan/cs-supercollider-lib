@@ -1,4 +1,4 @@
-RunningWaterEnvironment : PatchPerformanceEnvironment {
+RunningWaterEnvironment : PatchEnvironment {
 
   var <>hellSlider;
 

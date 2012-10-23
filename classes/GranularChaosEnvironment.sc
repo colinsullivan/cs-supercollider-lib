@@ -1,4 +1,4 @@
-GranularChaosEnvironment : PatchPerformanceEnvironment {
+GranularChaosEnvironment : PatchEnvironment {
 
   var <>grainEnvBuf;
 

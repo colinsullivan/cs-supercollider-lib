@@ -3,7 +3,8 @@ PerformanceEnvironment : Object {
   var <>granularChaosEnvironment,
     <>runningWaterEnvironment,
     <>clockEnvironment,
-    <>sequencedGranularEnvironment;
+    <>sequencedGranularEnvironment,
+    <>dubBassEnvironment;
 
   *new {
     arg modules = [];
@@ -22,5 +23,6 @@ PerformanceEnvironment : Object {
     this.runningWaterEnvironment = RunningWaterEnvironment.new();
     this.clockEnvironment = ClockEnvironment.new();
     /*this.sequencedGranularEnvironment = SequencedGranularEnvironment.new();*/
+    this.dubBassEnvironment = DubBassEnvironment.new();
   }
 }

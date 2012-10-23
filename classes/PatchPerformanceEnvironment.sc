@@ -1,18 +1,17 @@
-PatchPerformanceEnvironment : Object {
+PatchEnvironment : ControllerEnvironment {
 
   var <>buf,
     <>patch,
     <>interface,
     <>uc33Controller;
 
-  *new {
-    ^super.new.init();
-  }
 
   init {
     var me = this;
 
-    "PatchPerformanceEnvironment.init".postln;
+    super.init();
+
+    "PatchEnvironment.init".postln;
 
     this.load_samples({
 
@@ -50,7 +49,7 @@ PatchPerformanceEnvironment : Object {
   }
 
   load_patch {
-    "PatchPerformanceEnvironment.load_samples".postln;
+    "PatchEnvironment.load_samples".postln;
     // subclasses should instantiate Patch objects here and call prepareForPlay
   }
 
@@ -66,7 +65,7 @@ PatchPerformanceEnvironment : Object {
     arg controllerComponent, patchPropertyKey;
     var patchProperty;
 
-    "PatchPerformanceEnvironment.map_uc33_to_patch".postln;
+    "PatchEnvironment.map_uc33_to_patch".postln;
     
     patchProperty = this.patch.performMsg([patchPropertyKey]);
 
@@ -81,13 +80,13 @@ PatchPerformanceEnvironment : Object {
     this.uc33Controller = UC33Ktl.new();
     // sub-classes should use this UC33Ktl instance to assign knobs and such.
 
-    "PatchPerformanceEnvironment.load_external_controller_mappings".postln;
+    "PatchEnvironment.load_external_controller_mappings".postln;
   }
 
   load_gui {
     arg layout, metaPatch;
 
-    "PatchPerformanceEnvironment.load_gui".postln;
+    "PatchEnvironment.load_gui".postln;
 
     // subclasses should generate GUI here
   }
