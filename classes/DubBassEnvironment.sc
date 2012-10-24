@@ -2,21 +2,24 @@ DubBassEnvironment : ControllerEnvironment {
   var <>pat;
 
   init {
-    /*var voicer, sock;*/
+    var voicer, sock;
 
     /*var api = API.new("DubBass"),
       me = this;*/
 
-    var triggered_responder,
-      me = this;
+    /*var triggered_responder,
+      me = this;*/
 
     super.init();
 
-    /*voicer = MonoPortaVoicer(
+    voicer = MonoPortaVoicer(
       1,
       Instr("synths.DubBass"),
-      [\tempo, VarLag.kr(MIDISyncClock.tempo(), warp: \linear, mul: 60)]
+      [
+        \amp, 0.5
+      ]
     );
+    voicer.mapGlobal(\amp);
 
     MIDISyncClock.play({
       var tempo = MIDISyncClock.tempo();
@@ -34,7 +37,7 @@ DubBassEnvironment : ControllerEnvironment {
       voicer
     );
 
-    voicer.gui();*/
+    voicer.gui();
 
     /*"debug".postln;
 
@@ -77,32 +80,28 @@ DubBassEnvironment : ControllerEnvironment {
     [>api.mountOSC(addr: NetAddr("127.0.0.1", 6666));<]
     api.mountOSC();*/
 
-    this.pat = Pmono(Instr("synths.DubBass").add.asDefName,
+    /*this.pat = Pmono(Instr("synths.DubBass").add.asDefName,
       \note,            Pseq([  0,    3,    7,    7,    0,    9,      3,    0     ], 1),
-      \root,            4,
+      \root,            4 + 12,
       \octave,          Pseq([  3,    3,    3,    3,    3,    2,      3,    2     ], 1),
       \rateMultiplier,  Pseq([  1/2,  6,    6,    6*2,  2,    8,      6,    6*2   ], 1),
+      \tempo,           {MIDISyncClock.tempo();}
     );
     triggered_responder = OSCdef.new('DubBass/trigger_loop', {
       arg msg;
 
       var loopName = msg[1];
 
-      "loopName:".postln;
-      loopName.postln;
-
       if((loopName != '-none-'), {
 
-        "loop started".postln;
-
-        MIDISyncClock.sched(1, {
+        MIDISyncClock.sched(5, {
           
-          Pn(me.pat).play(MIDISyncClock);
+          me.pat.play(MIDISyncClock);
 
         });
       
       });
 
-    }, '/DubBass/trigger_loop', recvPort: 6666);
+    }, '/DubBass/trigger_loop', recvPort: 6666);*/
   }
 }
