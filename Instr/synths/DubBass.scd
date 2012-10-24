@@ -7,7 +7,7 @@ Instr("synths.DubBass", {
     gate = 1,
     amp = 0.7,
     tempo = 2.5,
-    rateMultiplier = 0.5;
+    rateMultiplier = 16;
   
   var out, wobble, rate,
     // It's not dubstep if it's not at an integer multiple of 140bpm.

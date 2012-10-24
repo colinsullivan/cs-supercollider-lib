@@ -25,6 +25,7 @@ DubBassEnvironment : ControllerEnvironment {
     voicer.mapGlobal(\amp);
     voicer.mapGlobal(
       \rateMultiplier,
+      value: 16.0,
       spec: dubBassSpecs.at(dubBass.argsAndIndices().at(\rateMultiplier))
     );
 
