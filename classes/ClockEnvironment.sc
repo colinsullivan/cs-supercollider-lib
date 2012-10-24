@@ -20,12 +20,28 @@ ClockEnvironment : Object {
     var window,
       toggleButton,
       clockFace,
-      me = this;
+      me = this,
+      tempoResponder;
 
     /*MIDIClient.init;*/
     /*MIDIIn.connect(0, MIDIClient.sources[1]);*/
     MIDISyncClock.init();
+
+    /*MIDISyncClock.sched(10, {
+      Tempo.tempo = MIDISyncClock.tempo.round();
+      10;
+    });*/
     /*this.midiClockOut = MIDIClockOut.new("(in) To Ableton Tempo", "(in) To Ableton Tempo");*/
+
+    tempoResponder = OSCdef.new('clockTempoResponder', {
+      arg msg;
+
+      var bpm = msg[1];
+
+      Tempo.bpm = bpm;
+
+    }, '/cs/ableton_tempo', recvPort: 6666);
+
 
     clockFace = ClockFace.new();
     this.clockFace = clockFace;

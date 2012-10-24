@@ -2,7 +2,10 @@ DubBassEnvironment : ControllerEnvironment {
   var <>pat;
 
   init {
-    var voicer, sock;
+    var voicer,
+      sock,
+      dubBass = Instr("synths.DubBass"),
+      dubBassSpecs = dubBass.specs;
 
     /*var api = API.new("DubBass"),
       me = this;*/
@@ -14,21 +17,25 @@ DubBassEnvironment : ControllerEnvironment {
 
     voicer = MonoPortaVoicer(
       1,
-      Instr("synths.DubBass"),
+      dubBass,
       [
         \amp, 0.5
       ]
     );
     voicer.mapGlobal(\amp);
+    voicer.mapGlobal(
+      \rateMultiplier,
+      spec: dubBassSpecs.at(dubBass.argsAndIndices().at(\rateMultiplier))
+    );
 
-    MIDISyncClock.play({
+    /*MIDISyncClock.play({
       var tempo = MIDISyncClock.tempo();
 
       "tempo:".postln;
       tempo.postln;
 
       1;
-    }, 1);
+    }, 1);*/
 
     voicer.portaTime = 0;
 
@@ -36,6 +43,8 @@ DubBassEnvironment : ControllerEnvironment {
       [1, 0],
       voicer
     );
+
+    sock.addControl(15, \rateMultiplier);
 
     voicer.gui();
 

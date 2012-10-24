@@ -6,11 +6,12 @@ Instr("synths.DubBass", {
     freqlag,
     gate = 1,
     amp = 0.7,
+    tempo = 2.5,
     rateMultiplier = 0.5;
   
   var out, wobble, rate,
     // It's not dubstep if it's not at an integer multiple of 140bpm.
-    tempo = (140/60)/4,
+    /*tempo = (140/60)/4,*/
     wobbleTempo = tempo * rateMultiplier;
 
   //portamento
@@ -56,5 +57,11 @@ Instr("synths.DubBass", {
   [0, 2],
   \gate,
   \amp,
-  [(1/64), 12.0]
+  \tempo,
+  ControlSpec(
+    (1/64),
+    16.0,
+    \lin,
+    (1/64)
+  )
 ]);
