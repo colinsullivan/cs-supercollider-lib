@@ -16,6 +16,12 @@ ClockEnvironment : Object {
     /*this.midiClockOut.stop();*/
   }
 
+  request_tempo_update {
+    var tempoRequest;
+    tempoRequest = NetAddr.new("127.0.0.1", 6667);
+    tempoRequest.sendMsg("/cs/to_ableton/request_tempo_update");
+  }
+
   init {
     var window,
       toggleButton,
@@ -40,7 +46,8 @@ ClockEnvironment : Object {
 
       Tempo.bpm = bpm;
 
-    }, '/cs/ableton_tempo', recvPort: 6666);
+    }, '/cs/from_ableton/tempo_update', recvPort: 6666);
+
 
 
     clockFace = ClockFace.new();

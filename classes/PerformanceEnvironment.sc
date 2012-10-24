@@ -26,5 +26,7 @@ PerformanceEnvironment : Object {
     this.runningWaterEnvironment = RunningWaterEnvironment.new();
     this.sequencedGranularEnvironment = SequencedGranularEnvironment.new();
     this.dubBassEnvironment = DubBassEnvironment.new();
+
+    {me.clockEnvironment.request_tempo_update();}.defer(2);
   }
 }

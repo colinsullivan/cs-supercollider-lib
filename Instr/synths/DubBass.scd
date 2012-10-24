@@ -58,10 +58,5 @@ Instr("synths.DubBass", {
   \gate,
   \amp,
   \tempo,
-  ControlSpec(
-    (1/64),
-    16.0,
-    \lin,
-    (1/64)
-  )
+  [(1/64), 16.0, \lin]
 ]);
