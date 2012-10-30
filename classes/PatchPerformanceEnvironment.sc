@@ -88,7 +88,13 @@ PatchEnvironment : ControllerEnvironment {
 
     "PatchEnvironment.load_gui".postln;
 
+    layout.parent.parent.name = this.gui_window_title();
+
     // subclasses should generate GUI here
+  }
+
+  gui_window_title {
+    ^this.class.asString();
   }
 
 }

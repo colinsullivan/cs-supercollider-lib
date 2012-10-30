@@ -69,7 +69,9 @@ GranularChaosEnvironment : PatchEnvironment {
       window,
       patch = this.patch,
       me = this;
-   
+  
+    super.load_gui(layout, metaPatch);
+
     "GranularChaosEnvironment.load_gui".postln;
 
     patch.pointer.gui(layout);
@@ -96,5 +98,4 @@ GranularChaosEnvironment : PatchEnvironment {
 
     });
   }
-
 }

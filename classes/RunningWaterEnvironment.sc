@@ -35,6 +35,8 @@ RunningWaterEnvironment : PatchEnvironment {
       patch = this.patch,
       interface = this.interface;
 
+    super.load_gui(layout, metaPatch);
+
     patch.amp.gui(layout);
 
     toggleButton = Button(layout, Rect(10, 10, 100, 30))
