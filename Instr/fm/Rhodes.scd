@@ -68,6 +68,8 @@ Instr("fm.Rhodes", {
   /*out = MoogFF.ar(out, MouseX.kr(100, 15000).poll, MouseY.kr(0.1, 5.0).poll);*/
   /*out = LPF.ar(out, MouseX.kr(100, 1500).poll);*/
   out = LPF.ar(out, 1200);
+
+  [out, out];
 }, [
   \freq.asSpec(),
   \amp.asSpec(),

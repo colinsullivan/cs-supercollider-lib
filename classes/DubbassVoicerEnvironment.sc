@@ -1,4 +1,4 @@
-DubBassEnvironment : ControllerEnvironment {
+DubbassVoicerEnvironment : ControllerEnvironment {
   var <>pat;
 
   init {
@@ -6,12 +6,6 @@ DubBassEnvironment : ControllerEnvironment {
       sock,
       dubBass = Instr("synths.DubBass"),
       dubBassSpecs = dubBass.specs;
-
-    /*var api = API.new("DubBass"),
-      me = this;*/
-
-    /*var triggered_responder,
-      me = this;*/
 
     super.init();
 
@@ -28,19 +22,11 @@ DubBassEnvironment : ControllerEnvironment {
       spec: dubBassSpecs.at(dubBass.argsAndIndices().at(\rateMultiplier))
     );
 
-    /*MIDISyncClock.play({
-      var tempo = MIDISyncClock.tempo();
-
-      "tempo:".postln;
-      tempo.postln;
-
-      1;
-    }, 1);*/
-
     voicer.portaTime = 0;
 
+
     sock = VoicerMIDISocket(
-      [1, 0],
+      [MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To SuperCollider")), 0],
       voicer
     );
 

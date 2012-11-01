@@ -4,7 +4,8 @@ PerformanceEnvironment : Object {
     <>runningWaterEnvironment,
     <>clockEnvironment,
     <>sequencedGranularEnvironment,
-    <>dubBassEnvironment;
+    <>dubBassEnvironment,
+    <>rhodesVoicerEnvironment;
 
   *new {
     arg modules = [];
@@ -25,7 +26,8 @@ PerformanceEnvironment : Object {
     this.granularChaosEnvironment = GranularChaosEnvironment.new();
     this.runningWaterEnvironment = RunningWaterEnvironment.new();
     /*this.sequencedGranularEnvironment = SequencedGranularEnvironment.new();*/
-    this.dubBassEnvironment = DubBassEnvironment.new();
+    this.dubBassEnvironment = DubbassVoicerEnvironment.new();
+    this.rhodesVoicerEnvironment = RhodesVoicerEnvironment.new();
 
     {me.clockEnvironment.request_tempo_update();}.defer(2);
   }
