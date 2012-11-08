@@ -78,6 +78,7 @@ PatchEnvironment : ControllerEnvironment {
 
   load_external_controller_mappings {
     this.uc33Controller = UC33Ktl.new();
+    /*this.uc33Controller = UC33Ktl.new(MIDIIn.findPort("", "").uid);*/
     // sub-classes should use this UC33Ktl instance to assign knobs and such.
 
     "PatchEnvironment.load_external_controller_mappings".postln;

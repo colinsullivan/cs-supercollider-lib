@@ -43,7 +43,9 @@ Instr("fm.BasicFM", {
     gate: gate
   );
 
-  carrier = carrierEnv * SinOsc.ar((freq * carrierFreqRatio) + (modulator * freq));
+  carrier = carrierEnv * SinOsc.ar(
+    (freq * carrierFreqRatio) + (modulator * freq)
+  );
 
   // free synth when both carrier and modulator envelopes are done
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) - 1);

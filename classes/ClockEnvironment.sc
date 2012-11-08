@@ -29,9 +29,10 @@ ClockEnvironment : Object {
       me = this,
       tempoResponder;
 
-    /*MIDIClient.init;*/
+    MIDIClient.init;
     /*MIDIIn.connect(0, MIDIClient.sources[1]);*/
-    MIDISyncClock.init();
+    // TODO: Figure out how to explicitly declare which MIDI port sync clock is using
+    /*MIDISyncClock.init();*/
 
     /*MIDISyncClock.sched(10, {
       Tempo.tempo = MIDISyncClock.tempo.round();
