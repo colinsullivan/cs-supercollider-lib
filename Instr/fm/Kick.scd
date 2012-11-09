@@ -1,7 +1,7 @@
 Instr("fm.Kick", {
   arg freq = 55,
     amp = 1.0,
-    gate = 1;
+    gate = 0;
 
   var carrierEnvShape,
     carrierEnv,
@@ -9,7 +9,8 @@ Instr("fm.Kick", {
     modEnvShape,
     modEnv,
     mod,
-    out;
+    out,
+    trigGate = Trig1.ar(gate, 0.01);
 
   carrierEnvShape = Env.adsr(
     attackTime: 0.05,
@@ -18,18 +19,31 @@ Instr("fm.Kick", {
     releaseTime: 1.3,
     curve: -4
   );
+  /*carrierEnvShape.releaseNode = nil;*/
+  /*carrierEnvShape = Env.new(
+    levels: [0,   1,  0.9,  0],
+    times:  [0.05,    0.8,  1.3],
+    curve:  -4
+  );*/
 
   modEnvShape = Env.adsr(
     attackTime: 0.05,
     decayTime: 0.5,
-    sustainLevel: 0.7,
+    sustainLevel: 0.6,
     releaseTime: 0.2,
     curve: -10
   );
+  /*modEnvShape.releaseNode = nil;*/
+
+  /*modEnvShape = Env.new(
+    levels: [0,   1,  0.7,  0],
+    times:  [0.05,    0.5,  0.2],
+    curve:  -10
+  );*/
 
   modEnv = EnvGen.kr(
     envelope: modEnvShape,
-    gate: gate
+    gate: trigGate
   );
 
   mod = modEnv * LFPar.ar(0.5 * freq);
@@ -40,7 +54,7 @@ Instr("fm.Kick", {
 
   carrierEnv = EnvGen.kr(
     envelope: carrierEnvShape,
-    gate: gate
+    gate: trigGate
   );
 
   carrier = carrierEnv * SinOsc.ar(freq + (mod * freq * 20));

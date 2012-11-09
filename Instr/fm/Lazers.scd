@@ -1,59 +1,10 @@
 Instr("fm.Lazers", {
   arg freq = 440,
     amp = 1.0,
-    gate = 1;
-
-  var carrierEnvShape,
-    carrierEnv,
-    carrier,
-    modEnvShape,
-    modEnv,
-    mod2EnvShape,
-    mod2Env,
-    mod,
-    mod2,
-    modIndex,
-    mod2Index,
-    modFeedbackBus,
-    modWithFeedback,
-    out;
-
-  carrierEnvShape = Env.adsr(
-    attackTime: 0.1,
-    decayTime: 0.1,
-    sustainLevel: 0.9,
-    releaseTime: 0.2,
-    curve: -4
-  );
-
-  modEnvShape = Env.adsr(
-    attackTime: 0.05,
-    decayTime: 0.5,
-    sustainLevel: 0.7,
-    releaseTime: 1.5,
-    curve: -10
-  );
-
-  modEnv = EnvGen.kr(
-    envelope: modEnvShape,
-    gate: gate
-  );
+    gate = 1,
+    modIndex = 2.5,
+    mod2Index = 0.2;
   
-  mod2EnvShape = Env.adsr(
-    attackTime: 0.05,
-    decayTime: 0.5,
-    sustainLevel: 0.7,
-    releaseTime: 1.5,
-    curve: -10
-  );
-
-  mod2Env = EnvGen.kr(
-    envelope: mod2EnvShape,
-    gate: gate
-  );
-
-  modFeedbackBus = Bus.audio();
-
   // cool downward twang
   /*modIndex = 2.5;
   mod2Index = 0.2;*/
@@ -91,13 +42,56 @@ Instr("fm.Lazers", {
   mod2Index = 0.0229534;*/
 
   // random
-  modIndex = ExpRand.new(0.01, 6);
-  mod2Index = ExpRand.new(0.02, 6);
+  /*modIndex = ExpRand.new(0.01, 6);
+  mod2Index = ExpRand.new(0.02, 6);*/
 
-  /*modIndex.poll(0, "modIndex");
-  mod2Index.poll(0, "mod2Index");
-*/
+  var carrierEnvShape,
+    carrierEnv,
+    carrier,
+    modEnvShape,
+    modEnv,
+    mod2EnvShape,
+    mod2Env,
+    mod,
+    mod2,
+    out,
+    trigGate = Trig1.ar(gate, 0.01);
+
+  carrierEnvShape = Env.adsr(
+    attackTime: 0.1,
+    decayTime: 0.1,
+    sustainLevel: 0.9,
+    releaseTime: 0.2,
+    curve: -4
+  );
+
+  modEnvShape = Env.adsr(
+    attackTime: 0.05,
+    decayTime: 0.5,
+    sustainLevel: 0.7,
+    releaseTime: 1.5,
+    curve: -10
+  );
+
+  modEnv = EnvGen.kr(
+    envelope: modEnvShape,
+    gate: trigGate
+  );
   
+  mod2EnvShape = Env.adsr(
+    attackTime: 0.05,
+    decayTime: 0.5,
+    sustainLevel: 0.7,
+    releaseTime: 1.5,
+    curve: -10
+  );
+
+  mod2Env = EnvGen.kr(
+    envelope: mod2EnvShape,
+    gate: trigGate
+  );
+
+
   mod = modEnv * LFPar.ar(modIndex * freq * LocalIn.ar(1));
   LocalOut.ar(mod);
 
@@ -109,7 +103,7 @@ Instr("fm.Lazers", {
 
   carrierEnv = EnvGen.kr(
     envelope: carrierEnvShape,
-    gate: gate
+    gate: trigGate
   );
 
   carrier = carrierEnv * SinOsc.ar(freq + (mod2 * freq * 100));
@@ -118,7 +112,7 @@ Instr("fm.Lazers", {
 
   /*out = LPF.ar(out, 3000);*/
 
-  FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) - 1);
+  FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) + Done.kr(mod2Env) - 2);
 
   [out, out];
 
