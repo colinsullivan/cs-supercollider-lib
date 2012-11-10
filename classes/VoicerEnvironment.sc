@@ -1,4 +1,4 @@
-VoicerEnvironment : ControllerEnvironment {
+VoicerEnvironment : PerformanceEnvironmentComponent {
 
   init {
     var voicer,

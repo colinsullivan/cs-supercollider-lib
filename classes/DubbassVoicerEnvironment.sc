@@ -1,13 +1,16 @@
-DubbassVoicerEnvironment : ControllerEnvironment {
+DubbassVoicerEnvironment : PerformanceEnvironmentComponent {
   var <>pat;
 
   init {
+    arg params;
+
     var voicer,
       sock,
       dubBass = Instr("synths.DubBass"),
-      dubBassSpecs = dubBass.specs;
+      dubBassSpecs = dubBass.specs,
+      gui;
 
-    super.init();
+    super.init(params);
 
     voicer = MonoPortaVoicer(
       1,
@@ -33,7 +36,7 @@ DubbassVoicerEnvironment : ControllerEnvironment {
     sock.addControl(7, \amp);
     sock.addControl(15, \rateMultiplier);
 
-    voicer.gui();
+    gui = voicer.gui();
 
     /*"debug".postln;
 
@@ -99,5 +102,9 @@ DubbassVoicerEnvironment : ControllerEnvironment {
       });
 
     }, '/DubBass/trigger_loop', recvPort: 6666);*/
+    
+    this.init_gui((
+      window: gui.masterLayout
+    ));
   }
 }

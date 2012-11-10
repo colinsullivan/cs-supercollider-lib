@@ -1,10 +1,6 @@
-ClockEnvironment : Object {
+ClockEnvironment : PerformanceEnvironmentComponent {
 
   var <>interface, <>clockFace, <>midiClockOut;
-
-  *new {
-    ^super.new.init();
-  }
 
   start {
     clockFace.play();
@@ -16,6 +12,10 @@ ClockEnvironment : Object {
     /*this.midiClockOut.stop();*/
   }
 
+  handle_reset_button_pressed {
+    clockFace.cursecs = 0.0;
+  }
+
   request_tempo_update {
     var tempoRequest;
     tempoRequest = NetAddr.new("127.0.0.1", 6667);
@@ -23,11 +23,16 @@ ClockEnvironment : Object {
   }
 
   init {
+    arg params;
+
     var window,
-      toggleButton,
+      startPauseButton,
+      resetButton,
       clockFace,
       me = this,
       tempoResponder;
+
+    super.init(params);
 
     MIDIClient.init;
     /*MIDIIn.connect(0, MIDIClient.sources[1]);*/
@@ -56,21 +61,37 @@ ClockEnvironment : Object {
     window = clockFace.window();
     window.bounds.height = window.bounds.height + 50;
 
-    toggleButton = Button(window, Rect(10, 80, 100, 30))
+    startPauseButton = Button(window, Rect(10, 80, 100, 30))
       .states_([
         ["start"],
         ["stop"]
       ])
       .action_({
-        arg toggleButton;
+        arg startPauseButton;
 
-        if (toggleButton.value == 1, {
+        if (startPauseButton.value == 1, {
           me.start();
         }, {
           me.stop();
         });
 
       });
+
+    resetButton = Button(window, Rect(120, 80, 100, 30))
+      .states_([
+        ["reset"]
+      ])
+      .action_({
+        arg resetButton;
+
+        me.handle_reset_button_pressed(resetButton);
+      });
+
+    this.init_gui((
+      window: window
+    ));
+
+    {this.init_done_callback.value()}.defer(1);
   }
 
 }

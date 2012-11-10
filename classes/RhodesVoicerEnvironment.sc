@@ -1,15 +1,21 @@
-RhodesVoicerEnvironment : ControllerEnvironment {
+RhodesVoicerEnvironment : PerformanceEnvironmentComponent {
   init {
+    arg params;
     var voicer,
-      sock;
+      sock,
+      gui;
 
-    super.init();
+    super.init(params);
 
     voicer = Voicer.new(8, Instr.at("fm.Rhodes"));
     sock = VoicerMIDISocket([MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To SuperCollider")), 1], voicer);
 
     sock.addControl(7, \amp);
-    voicer.gui();
+    gui = voicer.gui();
+
+    this.init_gui((
+      window: gui.masterLayout
+    ));
 
   }
 }

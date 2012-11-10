@@ -1,4 +1,4 @@
-PatchEnvironment : ControllerEnvironment {
+PatchEnvironment : PerformanceEnvironmentComponent {
 
   var <>buf,
     <>patch,
@@ -7,9 +7,10 @@ PatchEnvironment : ControllerEnvironment {
 
 
   init {
+    arg params;
     var me = this;
 
-    super.init();
+    super.init(params);
 
     "PatchEnvironment.init".postln;
 
@@ -25,11 +26,18 @@ PatchEnvironment : ControllerEnvironment {
 
       me.interface.gui = {
         arg layout, metaPatch;
-        me.load_gui(layout, metaPatch);
+        me.init_gui((
+          window: layout.parent.parent,
+          layout: layout,
+          metaPatch: metaPatch
+        ));
         me.load_external_controller_mappings();
       };
 
-      {me.interface.gui();}.defer();
+      {
+        me.interface.gui();
+        me.init_done_callback.value();
+      }.defer(1);
     
     });
   }
@@ -82,20 +90,6 @@ PatchEnvironment : ControllerEnvironment {
     // sub-classes should use this UC33Ktl instance to assign knobs and such.
 
     "PatchEnvironment.load_external_controller_mappings".postln;
-  }
-
-  load_gui {
-    arg layout, metaPatch;
-
-    "PatchEnvironment.load_gui".postln;
-
-    layout.parent.parent.name = this.gui_window_title();
-
-    // subclasses should generate GUI here
-  }
-
-  gui_window_title {
-    ^this.class.asString();
   }
 
 }

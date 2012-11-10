@@ -60,19 +60,15 @@ GranularChaosEnvironment : PatchEnvironment {
     this.map_uc33_to_patch('knm1', \pitch);
   }
 
-  load_gui {
-    arg layout, metaPatch;
-    var screenBounds = Window.screenBounds(),
-      windowWidth = 480,
-      windowHeight = 256,
-      granularButton,
-      window,
+  init_gui {
+    arg params;
+    var granularButton,
       patch = this.patch,
-      me = this;
+      layout = params['layout'];
   
-    super.load_gui(layout, metaPatch);
+    super.init_gui(params);
 
-    "GranularChaosEnvironment.load_gui".postln;
+    "GranularChaosEnvironment.init_gui".postln;
 
     patch.pointer.gui(layout);
     patch.pitch.gui(layout);
