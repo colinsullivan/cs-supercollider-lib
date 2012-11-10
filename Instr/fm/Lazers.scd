@@ -110,7 +110,12 @@ Instr("fm.Lazers", {
 
   out = amp * carrier;
 
-  /*out = LPF.ar(out, 3000);*/
+  // take out some of that piercing.
+  out = BPeakEQ.ar(out,
+    freq: 22000,
+    rq: 5,
+    db: -16
+  );
 
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) + Done.kr(mod2Env) - 2);
 
