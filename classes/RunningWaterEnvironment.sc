@@ -28,14 +28,15 @@ RunningWaterEnvironment : PatchEnvironment {
     this.patch.prepareForPlay();
   }
 
-  load_gui {
-    arg layout, metaPatch;
+  init_gui {
+    arg params;
 
     var toggleButton,
       patch = this.patch,
+      layout = params['layout'],
       interface = this.interface;
 
-    super.load_gui(layout, metaPatch);
+    super.init_gui(params);
 
     patch.amp.gui(layout);
 
