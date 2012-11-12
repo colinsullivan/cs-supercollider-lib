@@ -34,7 +34,8 @@ ClockEnvironment : PerformanceEnvironmentComponent {
 
     super.init(params);
 
-    MIDIClient.init;
+    MIDIClient.init();
+    MIDIIn.connectAll();
     /*MIDIIn.connect(0, MIDIClient.sources[1]);*/
     // TODO: Figure out how to explicitly declare which MIDI port sync clock is using
     /*MIDISyncClock.init();*/
