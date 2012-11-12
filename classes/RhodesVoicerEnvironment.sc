@@ -1,21 +1,13 @@
-RhodesVoicerEnvironment : PerformanceEnvironmentComponent {
+RhodesVoicerEnvironment : VoicerEnvironmentComponent {
   init {
     arg params;
-    var voicer,
-      sock,
-      gui;
+
+    params['numVoices'] = 8;
+    params['instr'] = Instr("fm.Rhodes");
+    params['inChannel'] = 1;
 
     super.init(params);
 
-    voicer = Voicer.new(8, Instr.at("fm.Rhodes"));
-    sock = VoicerMIDISocket([MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To SuperCollider")), 1], voicer);
-
-    sock.addControl(7, \amp);
-    gui = voicer.gui();
-
-    this.init_gui((
-      window: gui.masterLayout
-    ));
-
+    this.sock.addControl(7, \amp);
   }
 }

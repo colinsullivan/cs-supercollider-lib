@@ -5,7 +5,8 @@ PerformanceEnvironment : Object {
     <>clockEnvironment,
     <>sequencedGranularEnvironment,
     <>dubBassEnvironment,
-    <>rhodesVoicerEnvironment;
+    <>rhodesVoicerEnvironment,
+    <>randomizedLazersEnvironment;
 
   *new {
     arg modules = [];
@@ -53,6 +54,12 @@ PerformanceEnvironment : Object {
                 instrY = instrY - 25 - me.dubBassEnvironment.window.bounds.height;
 
                 me.rhodesVoicerEnvironment = RhodesVoicerEnvironment.new((
+                  origin: instrX@instrY
+                ));
+
+                instrY = instrY - me.rhodesVoicerEnvironment.window.bounds.height;
+
+                me.randomizedLazersEnvironment = RandomizedLazersEnvironment.new((
                   origin: instrX@instrY
                 ));
               
