@@ -12,7 +12,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
 
     super.init(params);
 
-    "PatchEnvironment.init".postln;
+    /*"PatchEnvironment.init".postln;*/
 
     this.load_samples({
 
@@ -57,7 +57,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
   }
 
   load_patch {
-    "PatchEnvironment.load_samples".postln;
+    /*"PatchEnvironment.load_samples".postln;*/
     // subclasses should instantiate Patch objects here and call prepareForPlay
   }
 
@@ -73,7 +73,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     arg controllerComponent, patchPropertyKey;
     var patchProperty;
 
-    "PatchEnvironment.map_uc33_to_patch".postln;
+    /*"PatchEnvironment.map_uc33_to_patch".postln;*/
     
     patchProperty = this.patch.performMsg([patchPropertyKey]);
 
@@ -89,7 +89,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     /*this.uc33Controller = UC33Ktl.new(MIDIIn.findPort("", "").uid);*/
     // sub-classes should use this UC33Ktl instance to assign knobs and such.
 
-    "PatchEnvironment.load_external_controller_mappings".postln;
+    /*"PatchEnvironment.load_external_controller_mappings".postln;*/
   }
 
 }

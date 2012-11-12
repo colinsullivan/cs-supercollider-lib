@@ -8,7 +8,7 @@ GranularChaosEnvironment : PatchEnvironment {
       winenv = Env.sine(4.0),
       me = this;
 
-    "GranularChaosEnvironment.load_samples".postln;
+    /*"GranularChaosEnvironment.load_samples".postln;*/
 
     Buffer.read(Server.default, sfxRoot ++ "bong-1.aif", action: {
       arg buf;
@@ -28,7 +28,7 @@ GranularChaosEnvironment : PatchEnvironment {
   load_patch {
     super.load_patch();
 
-    "GranularChaosEnvironment.load_patch".postln;
+    /*"GranularChaosEnvironment.load_patch".postln;*/
 
     this.patch = Patch(Instr.at("sfx.GranularChaos"), (
       buffer: this.buf,
@@ -45,7 +45,7 @@ GranularChaosEnvironment : PatchEnvironment {
   load_external_controller_mappings {
     super.load_external_controller_mappings();
 
-    "GranularChaosEnvironment.load_external_controller_mappings".postln;
+    /*"GranularChaosEnvironment.load_external_controller_mappings".postln;*/
     
     /**
      *  UC-33 Mappings
@@ -63,13 +63,16 @@ GranularChaosEnvironment : PatchEnvironment {
   init_gui {
     arg params;
     var granularButton,
+      label,
       patch = this.patch,
       layout = params['layout'];
   
     super.init_gui(params);
 
-    "GranularChaosEnvironment.init_gui".postln;
+    /*"GranularChaosEnvironment.init_gui".postln;*/
 
+    label = StaticText(layout, Rect(0, 0, 125, 25));
+    label.string = "pos";
     patch.pointer.gui(layout);
     patch.pitch.gui(layout);
     patch.amp.gui(layout);
@@ -80,9 +83,10 @@ GranularChaosEnvironment : PatchEnvironment {
       /*windowWidth,*/
       /*windowHeight*/
     /*));*/
+
     granularButton = Button(layout, Rect(10, 10, 100, 30)).states_([
-      ["On"],
-      ["Off"]
+      ["on"],
+      ["off"]
     ])
     .action_({ arg granularButton;
 
