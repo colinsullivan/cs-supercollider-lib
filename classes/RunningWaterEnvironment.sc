@@ -3,13 +3,17 @@ RunningWaterEnvironment : PatchEnvironment {
   var <>hellValueBus,
     <>hellValueLabel,
     <>hellValueUpdater,
-    <>hellFreqLabel;
+    <>hellFreqLabel,
+    <>hellSyncButton,
+    <>hellSyncOn;
 
   init {
     arg params;
     super.init(params);
     
     this.hellValueBus = Bus.control(numChannels: 1);
+
+    this.hellSyncOn = false;
   }
 
   load_samples {
@@ -67,6 +71,17 @@ RunningWaterEnvironment : PatchEnvironment {
       patch.hellMax.gui(layout);
       layout.startRow();
 
+      "patch.hellFreq.class:".postln;
+      patch.hellFreq.class.postln;
+
+      patch.hellFreq.activeValue_({ arg val;
+        patch.hellFreq.value_(val);
+        patch.hellFreq.action.value(patch.hellFreq.value);
+
+        "val:".postln;
+        val.postln;
+      });
+
       ArgNameLabel("hellFreq", layout, labelWidth);
       Knob.new(layout, Rect(0, 0, 25, 25))
         .action_({
@@ -78,14 +93,37 @@ RunningWaterEnvironment : PatchEnvironment {
           }, {
             patch.set(\useOscillator, 1);
             newFreqVal = patch.hellFreq.spec.map(knob.value());
+
             patch.set(\hellFreq, newFreqVal);
             me.hellFreqLabel.string = newFreqVal.round(0.01);
           });
 
         });
+      
       this.hellFreqLabel = ArgNameLabel("", layout, labelWidth);
       this.hellFreqLabel.background = Color.black();
       this.hellFreqLabel.stringColor = Color.green();
+
+      this.hellSyncButton = Button(layout, Rect(0, 0, 50, 50))
+        .states_([
+          ["T"],
+          ["T", Color.green, Color.black]
+        ])
+        .action_({
+          arg syncButton;
+
+          if (syncButton.value(), {
+
+            this.hellSyncOn = false;
+          
+          }, {
+
+            this.hellSyncOn = true;
+          
+          });
+
+        });
+
       layout.startRow();
 
     });
