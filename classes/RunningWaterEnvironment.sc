@@ -1,6 +1,9 @@
 RunningWaterEnvironment : PatchEnvironment {
 
-  var <>hellValueBus, <>hellValueLabel, <>hellValueUpdater;
+  var <>hellValueBus,
+    <>hellValueLabel,
+    <>hellValueUpdater,
+    <>hellFreqLabel;
 
   init {
     arg params;
@@ -68,15 +71,21 @@ RunningWaterEnvironment : PatchEnvironment {
       Knob.new(layout, Rect(0, 0, 25, 25))
         .action_({
           arg knob;
+          var newFreqVal;
 
           if (knob.value() == 0, {
             patch.set(\useOscillator, 0);
           }, {
             patch.set(\useOscillator, 1);
-            patch.set(\hellFreq, patch.hellFreq.spec.map(knob.value()));
+            newFreqVal = patch.hellFreq.spec.map(knob.value());
+            patch.set(\hellFreq, newFreqVal);
+            me.hellFreqLabel.string = newFreqVal.round(0.01);
           });
 
         });
+      this.hellFreqLabel = ArgNameLabel("", layout, labelWidth);
+      this.hellFreqLabel.background = Color.black();
+      this.hellFreqLabel.stringColor = Color.green();
       layout.startRow();
 
     });
