@@ -1,7 +1,5 @@
 RunningWaterEnvironment : PatchEnvironment {
 
-  var <>hellSlider;
-
   load_samples {
     arg callback;
 
@@ -54,26 +52,11 @@ RunningWaterEnvironment : PatchEnvironment {
         patch.set(\gate, toggleButton.value);
       });
 
-    /* slider mapped to both cutoff freq and bit crusher */
-    /*this.hellSlider = Slider(layout, Rect(10, 10, 100, 20))
-      .action_({
-        arg hellSlider;
-        var inverseHell = 1.0 - hellSlider.value;
-        patch.lowPassFreq.value = patch.lowPassFreq.spec.map(inverseHell);
-        patch.decimatorRate.value = patch.decimatorRate.spec.map(inverseHell);
-      });*/
   }
 
   load_external_controller_mappings {
-    var hellSlider = this.hellSlider;
     
     super.load_external_controller_mappings();
-
-    this.uc33Controller.mapCCS(1, 'knu2', {
-      arg ccval;
-
-      {hellSlider.valueAction = ccval / 127;}.defer();
-    });
 
     this.map_uc33_to_patch('sl2', \amp);
   }
