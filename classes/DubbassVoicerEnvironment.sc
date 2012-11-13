@@ -38,18 +38,16 @@ DubbassVoicerEnvironment : PerformanceEnvironmentComponent {
 
     gui = voicer.gui();
 
-    /*"debug".postln;
 
-    this.pat = Pmono(Instr("synths.DubBass").add.asDefName,
+    /*this.pat = Pmono(Instr("synths.DubBass").add.asDefName,
       \note,            Pseq([  0,    3,    7,    7,    0,    9,      3,    0     ], 1),
       \root,            4,
       \octave,          Pseq([  3,    3,    3,    3,    3,    2,      3,    2     ], 1),
       \rateMultiplier,  Pseq([  1/2,  6,    6,    6*2,  2,    8,      6,    6*2   ], 1),
-    );
+    );*/
 
-    "debug2".postln;
     
-    api.add("trigger_loop", {
+    /*api.add("trigger_loop", {
       arg loopName;
 
       "loopName1:".postln;
@@ -74,10 +72,10 @@ DubbassVoicerEnvironment : PerformanceEnvironmentComponent {
 
       true;
 
-    });
+    });*/
 
-    [>api.mountOSC(addr: NetAddr("127.0.0.1", 6666));<]
-    api.mountOSC();*/
+    /*api.mountOSC(addr: NetAddr("127.0.0.1", 6666));*/
+    /*api.mountOSC();*/
 
     /*this.pat = Pmono(Instr("synths.DubBass").add.asDefName,
       \note,            Pseq([  0,    3,    7,    7,    0,    9,      3,    0     ], 1),
@@ -106,5 +104,6 @@ DubbassVoicerEnvironment : PerformanceEnvironmentComponent {
     this.init_gui((
       window: gui.masterLayout
     ));
+    {this.init_done_callback.value();}.defer(1);
   }
 }

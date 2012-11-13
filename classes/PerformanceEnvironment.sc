@@ -45,22 +45,25 @@ PerformanceEnvironment : Object {
               origin: instrX@instrY,
               init_done_callback: {
 
-                instrY = instrY + 400 - me.runningWaterEnvironment.window.bounds.height;
+                instrY = instrY + 800 - me.runningWaterEnvironment.window.bounds.height;
                 
                 me.dubBassEnvironment = DubbassVoicerEnvironment.new((
                   origin: instrX@instrY,
-                ));
+                  init_done_callback: {
+                    instrY = instrY - me.dubBassEnvironment.window.bounds.height;
 
-                instrY = instrY - 25 - me.dubBassEnvironment.window.bounds.height;
+                    me.rhodesVoicerEnvironment = RhodesVoicerEnvironment.new((
+                      origin: instrX@instrY,
+                      init_done_callback: {
+                        instrY = instrY - me.rhodesVoicerEnvironment.window.bounds.height;
 
-                me.rhodesVoicerEnvironment = RhodesVoicerEnvironment.new((
-                  origin: instrX@instrY
-                ));
-
-                instrY = instrY - me.rhodesVoicerEnvironment.window.bounds.height;
-
-                me.randomizedLazersEnvironment = RandomizedLazersEnvironment.new((
-                  origin: instrX@instrY
+                        me.randomizedLazersEnvironment = RandomizedLazersEnvironment.new((
+                          origin: instrX@instrY
+                        ));
+                      }
+                    ));
+                  
+                  }
                 ));
               
               }

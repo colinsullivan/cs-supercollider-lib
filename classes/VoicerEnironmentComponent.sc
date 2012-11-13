@@ -24,5 +24,6 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
       window: gui.masterLayout
     ));
 
+    {this.init_done_callback.value();}.defer(1);
   }
 }
