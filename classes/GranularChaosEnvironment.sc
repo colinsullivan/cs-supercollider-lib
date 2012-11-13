@@ -65,17 +65,27 @@ GranularChaosEnvironment : PatchEnvironment {
     var granularButton,
       label,
       patch = this.patch,
-      layout = params['layout'];
+      layout = params['layout'],
+      labelWidth = 75;
   
     super.init_gui(params);
 
     /*"GranularChaosEnvironment.init_gui".postln;*/
 
-    label = StaticText(layout, Rect(0, 0, 125, 25));
-    label.string = "pos";
-    patch.pointer.gui(layout);
-    patch.pitch.gui(layout);
-    patch.amp.gui(layout);
+    layout.flow({
+      arg layout;
+      ArgNameLabel("pos", layout, labelWidth);
+      patch.pointer.gui(layout);
+      layout.startRow();
+      
+      ArgNameLabel("pitch", layout, labelWidth);
+      patch.pitch.gui(layout);
+      layout.startRow();
+      
+      ArgNameLabel("amp", layout, labelWidth);
+      patch.amp.gui(layout);
+
+    });
 
     /*window = Window.new("Granular", Rect(*/
       /*(screenBounds.width() / 2.0) - (windowWidth / 2.0),*/
@@ -84,16 +94,20 @@ GranularChaosEnvironment : PatchEnvironment {
       /*windowHeight*/
     /*));*/
 
-    granularButton = Button(layout, Rect(10, 10, 100, 30)).states_([
-      ["on"],
-      ["off"]
-    ])
-    .action_({ arg granularButton;
+    layout.flow({
+      arg layout;
+      granularButton = Button(layout, Rect(10, 10, 100, 30)).states_([
+        ["on"],
+        ["off"]
+      ])
+      .action_({ arg granularButton;
 
-      if (granularButton.value == 1, {
-        patch.set(\gate, 1);
-      }, {
-        patch.set(\gate, 0);
+        if (granularButton.value == 1, {
+          patch.set(\gate, 1);
+        }, {
+          patch.set(\gate, 0);
+        });
+
       });
 
     });

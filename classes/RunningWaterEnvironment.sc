@@ -32,25 +32,47 @@ RunningWaterEnvironment : PatchEnvironment {
     var toggleButton,
       patch = this.patch,
       layout = params['layout'],
-      interface = this.interface;
+      interface = this.interface,
+      labelWidth = 50;
 
     super.init_gui(params);
 
-    patch.amp.gui(layout);
-    patch.hellMin.gui(layout);
-    patch.hellMax.gui(layout);
-    patch.hellFreq.gui(layout);
+    layout.flow({
+      arg layout;
 
-    toggleButton = Button(layout, Rect(10, 10, 100, 30))
-      .states_([
-        ["on"],
-        ["off"]
-      ])
-      .action_({
-        arg toggleButton;
+      ArgNameLabel("amp", layout, labelWidth);
+      patch.amp.gui(layout);
+      layout.startRow();
 
-        patch.set(\gate, toggleButton.value);
-      });
+      ArgNameLabel("hellMin", layout, labelWidth);
+      patch.hellMin.gui(layout);
+      layout.startRow();
+
+      ArgNameLabel("hellMax", layout, labelWidth);
+      patch.hellMax.gui(layout);
+      layout.startRow();
+
+      ArgNameLabel("hellFreq", layout, labelWidth);
+      patch.hellFreq.gui(layout);
+      layout.startRow();
+
+    });
+
+    layout.flow({
+      arg layout;
+
+      toggleButton = Button(layout, Rect(10, 10, 100, 30))
+        .states_([
+          ["on"],
+          ["off"]
+        ])
+        .action_({
+          arg toggleButton;
+
+          patch.set(\gate, toggleButton.value);
+        });
+
+    });
 
   }
 
