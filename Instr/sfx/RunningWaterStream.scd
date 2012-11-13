@@ -6,7 +6,9 @@ Instr("sfx.RunningWaterStream", {
     decimatorRate = 48000,
     lowPassFreq = 10000;
 
-  var out, outEnvShape, outEnv;
+  var out,
+    outEnvShape,
+    outEnv;
 
   outEnvShape = Env.adsr(
     attackTime: 0.1,
@@ -51,4 +53,54 @@ Instr("sfx.RunningWaterStream", {
   \amp.asSpec(),
   ControlSpec(1000, 48000, \exponential),
   ControlSpec(1000, 10000, \exponential)
+]);
+
+Instr("sfx.RunningWaterStreamAutomated", {
+
+  arg buffer,
+    gate = 0,
+    amp = 1.0,
+    /**
+     *  hell is a mapping of both the decimator and the lowpass freq, nice
+     *  effect on the running water sound.  These are the min and max
+     *  values between which the `hell` value is oscillating.
+     **/
+    hellMin = 0.0,
+    hellMax = 0.0,
+    /**
+     *  Frequency at which hell is changing
+     **/
+    hellFreq = 0;
+
+  /**
+   *  Actual hell value after oscillation
+   **/
+  var hell = SinOsc.ar(hellFreq).range(hellMin, hellMax),
+    runningWater = Instr("sfx.RunningWaterStream"),
+    decimatorRateSpec = runningWater.specs.at(
+      runningWater.argsAndIndices().at('decimatorRate')
+    ),
+    lowPassFreqSpec = runningWater.specs.at(
+      runningWater.argsAndIndices().at('lowPassFreq')
+    ),
+    inverseHell = 1.0 - hell,
+    out;
+
+  out = Instr.ar("sfx.RunningWaterStream", (
+    buffer: buffer,
+    gate: gate,
+    amp: amp,
+    decimatorRate: decimatorRateSpec.map(inverseHell),
+    lowPassFreq: lowPassFreqSpec.map(inverseHell)
+  ));
+
+  out;
+
+}, [
+  \buffer.asSpec(),
+  \gate.asSpec(),
+  \amp.asSpec(),
+  ControlSpec(0.0, 1.0, \linear),
+  ControlSpec(0.0, 1.0, \linear),
+  \beats.asSpec()
 ]);

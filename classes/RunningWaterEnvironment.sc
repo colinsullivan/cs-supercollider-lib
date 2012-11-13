@@ -21,7 +21,7 @@ RunningWaterEnvironment : PatchEnvironment {
   load_patch {
     super.load_patch();
 
-    this.patch = Patch(Instr.at("sfx.RunningWaterStream"), (
+    this.patch = Patch(Instr.at("sfx.RunningWaterStreamAutomated"), (
       buffer: this.buf,
       gate: KrNumberEditor.new(0, \gate.asSpec())
     ));
@@ -39,6 +39,9 @@ RunningWaterEnvironment : PatchEnvironment {
     super.init_gui(params);
 
     patch.amp.gui(layout);
+    patch.hellMin.gui(layout);
+    patch.hellMax.gui(layout);
+    patch.hellFreq.gui(layout);
 
     toggleButton = Button(layout, Rect(10, 10, 100, 30))
       .states_([
@@ -52,13 +55,13 @@ RunningWaterEnvironment : PatchEnvironment {
       });
 
     /* slider mapped to both cutoff freq and bit crusher */
-    this.hellSlider = Slider(layout, Rect(10, 10, 100, 20))
+    /*this.hellSlider = Slider(layout, Rect(10, 10, 100, 20))
       .action_({
         arg hellSlider;
         var inverseHell = 1.0 - hellSlider.value;
         patch.lowPassFreq.value = patch.lowPassFreq.spec.map(inverseHell);
         patch.decimatorRate.value = patch.decimatorRate.spec.map(inverseHell);
-      });
+      });*/
   }
 
   load_external_controller_mappings {
