@@ -70,7 +70,12 @@ Instr("sfx.RunningWaterStreamAutomated", {
     /**
      *  Frequency at which hell is changing
      **/
-    hellFreq = 0;
+    hellFreq = 0,
+    /**
+     *  Bus to return the hellValue on for display.
+     **/
+    hellValueBus;
+
 
   /**
    *  Actual hell value after oscillation
@@ -86,6 +91,8 @@ Instr("sfx.RunningWaterStreamAutomated", {
     inverseHell = 1.0 - hell,
     out;
 
+  Out.kr(hellValueBus, hell);
+  
   out = Instr.ar("sfx.RunningWaterStream", (
     buffer: buffer,
     gate: gate,
@@ -102,5 +109,6 @@ Instr("sfx.RunningWaterStreamAutomated", {
   \amp.asSpec(),
   ControlSpec(0.0, 1.0, \linear),
   ControlSpec(0.0, 1.0, \linear),
-  \beats.asSpec()
+  \beats.asSpec(),
+  \controlbus.asSpec()
 ]);

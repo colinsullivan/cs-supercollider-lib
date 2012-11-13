@@ -1,5 +1,14 @@
 RunningWaterEnvironment : PatchEnvironment {
 
+  var <>hellValueBus, <>hellValueLabel, <>hellValueUpdater;
+
+  init {
+    arg params;
+    super.init(params);
+    
+    this.hellValueBus = Bus.control(numChannels: 1);
+  }
+
   load_samples {
     arg callback;
 
@@ -21,7 +30,8 @@ RunningWaterEnvironment : PatchEnvironment {
 
     this.patch = Patch(Instr.at("sfx.RunningWaterStreamAutomated"), (
       buffer: this.buf,
-      gate: KrNumberEditor.new(0, \gate.asSpec())
+      gate: KrNumberEditor.new(0, \gate.asSpec()),
+      hellValueBus: this.hellValueBus
     ));
     this.patch.prepareForPlay();
   }
@@ -33,7 +43,8 @@ RunningWaterEnvironment : PatchEnvironment {
       patch = this.patch,
       layout = params['layout'],
       interface = this.interface,
-      labelWidth = 50;
+      labelWidth = 50,
+      me = this;
 
     super.init_gui(params);
 
@@ -73,6 +84,55 @@ RunningWaterEnvironment : PatchEnvironment {
         });
 
     });
+
+    layout.flow({
+      arg layout;
+
+      ArgNameLabel("hellValue", layout, labelWidth);
+      me.hellValueLabel = ArgNameLabel("", layout, labelWidth);
+      me.hellValueLabel.background = Color.black();
+      me.hellValueLabel.stringColor = Color.green();
+
+    });
+
+    this.hellValueUpdater = Routine.new({
+
+      {
+        {
+          me.window.isClosed.not.if {
+            me.hellValueBus.get({
+              arg hellValue;
+ 
+              {me.hellValueLabel.string = " " + hellValue.round(0.01);}.defer();
+  
+            });
+          };
+  
+        }.defer();
+        
+  
+        0.01.wait;
+      }.loop();
+    });
+
+    this.hellValueUpdater.play();
+
+    this.window.onClose = { me.hellValueUpdater.stop(); };
+
+    /*{
+      fork {
+        while { me.window.isClosed.not } {
+          me.hellValueBus.get({
+            arg hellValue;
+  
+            "hellValue:".postln;
+            hellValue.postln;
+          });
+  
+          0.01.wait;
+        }
+      };
+    }.defer();*/
 
   }
 
