@@ -31,6 +31,7 @@ RunningWaterEnvironment : PatchEnvironment {
     this.patch = Patch(Instr.at("sfx.RunningWaterStreamAutomated"), (
       buffer: this.buf,
       gate: KrNumberEditor.new(0, \gate.asSpec()),
+      useOscillator: KrNumberEditor.new(0, \gate.asSpec()),
       hellValueBus: this.hellValueBus
     ));
     this.patch.prepareForPlay();
@@ -64,7 +65,18 @@ RunningWaterEnvironment : PatchEnvironment {
       layout.startRow();
 
       ArgNameLabel("hellFreq", layout, labelWidth);
-      patch.hellFreq.gui(layout);
+      Knob.new(layout, Rect(0, 0, 25, 25))
+        .action_({
+          arg knob;
+
+          if (knob.value() == 0, {
+            patch.set(\useOscillator, 0);
+          }, {
+            patch.set(\useOscillator, 1);
+            patch.set(\hellFreq, patch.hellFreq.spec.map(knob.value()));
+          });
+
+        });
       layout.startRow();
 
     });

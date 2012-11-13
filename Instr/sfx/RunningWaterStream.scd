@@ -74,7 +74,12 @@ Instr("sfx.RunningWaterStreamAutomated", {
     /**
      *  Bus to return the hellValue on for display.
      **/
-    hellValueBus;
+    hellValueBus,
+    /**
+     *  Wether or not to use the oscillator.  If 0, hellMax is used as the
+     *  hellValue.
+     **/
+    useOscillator = 0;
 
 
   /**
@@ -88,9 +93,14 @@ Instr("sfx.RunningWaterStreamAutomated", {
     lowPassFreqSpec = runningWater.specs.at(
       runningWater.argsAndIndices().at('lowPassFreq')
     ),
-    inverseHell = 1.0 - hell,
+    inverseHell,
     out;
 
+  // if useOscillator is high, use oscillator, if low, use hellMax
+  hell = (useOscillator * hell) + ((1.0 - useOscillator) * hellMax);
+
+  inverseHell = 1.0 - hell;
+  
   Out.kr(hellValueBus, hell);
   
   out = Instr.ar("sfx.RunningWaterStream", (
@@ -110,5 +120,6 @@ Instr("sfx.RunningWaterStreamAutomated", {
   ControlSpec(0.0, 1.0, \linear),
   ControlSpec(0.0, 1.0, \linear),
   \beats.asSpec(),
-  \controlbus.asSpec()
+  \controlbus.asSpec(),
+  \gate.asSpec()
 ]);
