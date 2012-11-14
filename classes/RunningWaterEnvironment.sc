@@ -67,25 +67,9 @@ RunningWaterEnvironment : PatchEnvironment {
       patch.hellMax.gui(layout);
       layout.startRow();
 
+
       ArgNameLabel("hellFreq", layout, labelWidth);
-      Knob.new(layout, Rect(0, 0, 25, 25))
-        .action_({
-          arg knob;
-          var newFreqVal;
-
-          if (knob.value() == 0, {
-            patch.set(\useOscillator, 0);
-          }, {
-            patch.set(\useOscillator, 1);
-            newFreqVal = patch.hellFreq.spec.map(knob.value());
-            patch.set(\hellFreq, newFreqVal);
-            me.hellFreqLabel.string = newFreqVal.round(0.01);
-          });
-
-        });
-      this.hellFreqLabel = ArgNameLabel("", layout, labelWidth);
-      this.hellFreqLabel.background = Color.black();
-      this.hellFreqLabel.stringColor = Color.green();
+      patch.hellFreq.gui(layout);
       layout.startRow();
 
     });
@@ -121,18 +105,46 @@ RunningWaterEnvironment : PatchEnvironment {
       {
         {
           me.window.isClosed.not.if {
+
             me.hellValueBus.get({
               arg hellValue;
  
-              {me.hellValueLabel.string = " " + hellValue.round(0.01);}.defer();
+              {
+                me.hellValueLabel.string = " " + hellValue.round(0.01);
+              }.defer();
   
             });
+
+            {
+              var currentHellFreq = me.patch.hellFreq.value(),
+                currentUseOsc = me.patch.useOscillator.value();
+  
+              // if frequency is set to zero
+              if (currentHellFreq == 0, {
+  
+                  // if oscillator is still on
+                  if (currentUseOsc == 1, {
+                    // turn off oscillator
+                    me.patch.set(\useOscillator, 0);
+                  });
+                
+              }, {
+                // frequency is not set to zero
+  
+                // if oscillator is off
+                if (currentUseOsc == 0, {
+                  // turn on oscillator
+                  me.patch.set(\useOscillator, 1);
+                });
+              
+              });
+            }.defer();
+
           };
   
         }.defer();
-        
   
-        0.01.wait;
+        0.1.wait;
       }.loop();
     });
 
@@ -140,28 +152,16 @@ RunningWaterEnvironment : PatchEnvironment {
 
     this.window.onClose = { me.hellValueUpdater.stop(); };
 
-    /*{
-      fork {
-        while { me.window.isClosed.not } {
-          me.hellValueBus.get({
-            arg hellValue;
-  
-            "hellValue:".postln;
-            hellValue.postln;
-          });
-  
-          0.01.wait;
-        }
-      };
-    }.defer();*/
-
   }
 
   load_external_controller_mappings {
     
     super.load_external_controller_mappings();
 
-    this.map_uc33_to_patch('sl2', \amp);
+    this.map_uc33_to_patch(\sl2, \amp);
+    this.map_uc33_to_patch(\knu2, \hellMax);
+    this.map_uc33_to_patch(\knm2, \hellMin);
+    this.map_uc33_to_patch(\knl2, \hellFreq);
   }
 
 }
