@@ -14,6 +14,9 @@ PerformanceEnvironmentComponent : Object {
   init {
     arg params;
 
+    ("  * Starting " + this.gui_window_title()).postln;
+    ("----------------------------------------").postln;
+
     this.origin = params['origin'];
     this.init_done_callback = params['init_done_callback'];
   

@@ -27,12 +27,11 @@ DubbassVoicerEnvironment : PerformanceEnvironmentComponent {
 
     voicer.portaTime = 0;
 
-
     sock = VoicerMIDISocket(
-      [MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To SuperCollider")), 0],
+      [MIDIPort.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To SuperCollider")), 0],
       voicer
     );
-
+    
     sock.addControl(7, \amp);
     sock.addControl(15, \rateMultiplier);
 

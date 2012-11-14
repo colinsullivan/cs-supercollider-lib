@@ -1,10 +1,13 @@
 (
   var m, mBounds;
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  s.options.outDevice= "Soundflower (64ch)";
+  /*s.options.inDevice = "SF + 1818";*/
+  s.options.inDevice = "AudioBox 1818 VSL ";
+
+  s.options.outDevice = "Soundflower (64ch)";
   s.quit;
   s.options.sampleRate = 48000;
-  s.options.hardwareBufferSize = 128;
+  s.options.hardwareBufferSize = 256;
   s.boot();
   s.latency = 0;
   m = s.meter();
