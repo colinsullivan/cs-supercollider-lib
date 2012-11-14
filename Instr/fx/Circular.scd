@@ -33,7 +33,8 @@ Instr("fx.Circular.Recorder", {
 Instr("fx.Circular.Player", {
   arg gate = 1,
     outBus = 0,
-    buf = 0;
+    buf = 0,
+    amp = 1.0;
 
   var out,
     outEnv,
@@ -47,10 +48,10 @@ Instr("fx.Circular.Player", {
 
   outEnv = EnvGen.kr(Env.cutoff(2, 1.0), gate, doneAction: 2);
   out = out * outEnv;
-
-  [out, out];
+  out = amp * out;
 }, [
   \gate,
   \bus,
-  \buffer
+  \buffer,
+  \amp
 ]);

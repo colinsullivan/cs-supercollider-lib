@@ -9,6 +9,9 @@ Instr("fx.FFT.Shuffle", {
 
   out = IFFT(spectrum);
 
+  // output stereo here for now.
+  [out, out];
+
 }, [
   nil // don't know what the spec for another instrument should be
 ]);

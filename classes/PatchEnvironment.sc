@@ -3,7 +3,8 @@ PatchEnvironment : PerformanceEnvironmentComponent {
   var <>buf,
     <>patch,
     <>interface,
-    <>uc33Controller;
+    <>uc33Controller,
+    <>outputBus;
 
 
   init {
@@ -11,6 +12,8 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     var me = this;
 
     super.init(params);
+    
+    this.outputBus = 0;
 
     /*"PatchEnvironment.init".postln;*/
 
@@ -43,7 +46,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
   }
 
   on_play {
-    this.patch.play(bus: Bus.audio(Server.default, 0));
+    this.patch.play(bus: Bus.audio(Server.default, this.outputBus));
   }
 
   on_stop {
@@ -70,12 +73,12 @@ PatchEnvironment : PerformanceEnvironmentComponent {
    *  to control with the aforementioned controller knob.  Ex: \amp.
    **/
   map_uc33_to_patch {
-    arg controllerComponent, patchPropertyKey;
+    arg controllerComponent, patchPropertyKey, patch = this.patch;
     var patchProperty;
 
     /*"PatchEnvironment.map_uc33_to_patch".postln;*/
     
-    patchProperty = this.patch.performMsg([patchPropertyKey]);
+    patchProperty = patch.performMsg([patchPropertyKey]);
 
     this.uc33Controller.mapCCS(1, controllerComponent, {
       arg ccval;
@@ -86,7 +89,9 @@ PatchEnvironment : PerformanceEnvironmentComponent {
 
   load_external_controller_mappings {
     /*this.uc33Controller = UC33Ktl.new();*/
-    this.uc33Controller = UC33Ktl.new(MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1").uid);
+    this.uc33Controller = UC33Ktl.new(
+      MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1").uid
+    );
     // sub-classes should use this UC33Ktl instance to assign knobs and such.
 
     /*"PatchEnvironment.load_external_controller_mappings".postln;*/

@@ -6,7 +6,8 @@ PerformanceEnvironment : Object {
     <>sequencedGranularEnvironment,
     <>dubBassEnvironment,
     <>rhodesVoicerEnvironment,
-    <>randomizedLazersEnvironment;
+    <>randomizedLazersEnvironment,
+    <>circularWarpInputEnvironment;
 
   *new {
     arg modules = [];
@@ -45,27 +46,35 @@ PerformanceEnvironment : Object {
               origin: instrX@instrY,
               init_done_callback: {
 
-                instrY = instrY + 800 - me.runningWaterEnvironment.window.bounds.height;
-                
-                me.dubBassEnvironment = DubbassVoicerEnvironment.new((
-                  origin: instrX@instrY,
-                  init_done_callback: {
-                    instrY = instrY - me.dubBassEnvironment.window.bounds.height;
+                instrY = instrY - 25 - me.runningWaterEnvironment.window.bounds.height;
 
-                    me.rhodesVoicerEnvironment = RhodesVoicerEnvironment.new((
+                me.circularWarpInputEnvironment = CircularWarpInputEnvironment.new((
+                  origin: instrX@instrY,
+                  
+                  init_done_callback: {
+                
+                    instrY = instrY + 800 - me.circularWarpInputEnvironment.window.bounds.height;
+                    
+                    me.dubBassEnvironment = DubbassVoicerEnvironment.new((
                       origin: instrX@instrY,
                       init_done_callback: {
-                        instrY = instrY - me.rhodesVoicerEnvironment.window.bounds.height;
+                        instrY = instrY - me.dubBassEnvironment.window.bounds.height;
 
-                        me.randomizedLazersEnvironment = RandomizedLazersEnvironment.new((
-                          origin: instrX@instrY
+                        me.rhodesVoicerEnvironment = RhodesVoicerEnvironment.new((
+                          origin: instrX@instrY,
+                          init_done_callback: {
+                            instrY = instrY - me.rhodesVoicerEnvironment.window.bounds.height;
+
+                            me.randomizedLazersEnvironment = RandomizedLazersEnvironment.new((
+                              origin: instrX@instrY
+                            ));
+                          }
                         ));
+                      
                       }
                     ));
-                  
                   }
                 ));
-              
               }
             ));
 
