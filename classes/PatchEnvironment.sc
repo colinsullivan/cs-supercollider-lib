@@ -85,8 +85,8 @@ PatchEnvironment : PerformanceEnvironmentComponent {
   }
 
   load_external_controller_mappings {
-    this.uc33Controller = UC33Ktl.new();
-    /*this.uc33Controller = UC33Ktl.new(MIDIIn.findPort("", "").uid);*/
+    /*this.uc33Controller = UC33Ktl.new();*/
+    this.uc33Controller = UC33Ktl.new(MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1").uid);
     // sub-classes should use this UC33Ktl instance to assign knobs and such.
 
     /*"PatchEnvironment.load_external_controller_mappings".postln;*/
