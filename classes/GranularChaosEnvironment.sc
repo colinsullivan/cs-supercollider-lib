@@ -50,14 +50,17 @@ GranularChaosEnvironment : PatchEnvironment {
     /**
      *  UC-33 Mappings
      **/
-    /* slider 1 to amplitude */
-    this.map_uc33_to_patch('sl1', \amp);
+    if (this.uc33Controller != nil, {
+      /* slider 1 to amplitude */
+      this.map_uc33_to_patch('sl1', \amp);
 
-    /* knob 25 to position */
-    this.map_uc33_to_patch('knu1', \pointer);
+      /* knob 25 to position */
+      this.map_uc33_to_patch('knu1', \pointer);
 
-    /* knob 17 to pitch */
-    this.map_uc33_to_patch('knm1', \pitch);
+      /* knob 17 to pitch */
+      this.map_uc33_to_patch('knm1', \pitch);
+    
+    });
   }
 
   init_gui {

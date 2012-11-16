@@ -89,10 +89,18 @@ PatchEnvironment : PerformanceEnvironmentComponent {
 
   load_external_controller_mappings {
     /*this.uc33Controller = UC33Ktl.new();*/
-    this.uc33Controller = UC33Ktl.new(
-      MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1").uid
-    );
-    // sub-classes should use this UC33Ktl instance to assign knobs and such.
+    var uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");
+
+    if (uc33Port != nil, {
+      // sub-classes should use this UC33Ktl instance to assign knobs and such.
+      this.uc33Controller = UC33Ktl.new(
+        uc33Port.uid
+      );
+    }, {
+      // sub-classes should check to see if uc33Controller is nil to determine
+      // if it is currently connected.
+      this.uc33Controller = nil;
+    });
 
     /*"PatchEnvironment.load_external_controller_mappings".postln;*/
   }

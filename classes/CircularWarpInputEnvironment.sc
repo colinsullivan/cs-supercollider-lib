@@ -80,6 +80,9 @@ CircularWarpInputEnvironment : PatchEnvironment {
   load_external_controller_mappings {
     super.load_external_controller_mappings();
 
-    this.map_uc33_to_patch('sl3', 'amp', this.outPatch);
+    if (this.uc33Controller != nil, {
+      this.map_uc33_to_patch('sl3', 'amp', this.outPatch);
+    });
+
   }
 }
