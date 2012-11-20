@@ -26,9 +26,16 @@
   Instr.dir = "/Users/colin/Projects/sounds/cs-supercollider-lib/Instr/";
   Instr.loadAll();
 
-)
+  s.doWhenBooted({
+    MIDIClient.init();
+    MIDIPort.init();
+    MIDIIn.connectAll();
+    
+    "----------------------------------------".postln;
+    "* Starting Performance Environment...".postln;
+    "----------------------------------------".postln;
+    
+    ~performanceEnvironment = PerformanceEnvironment.new();
+  });
 
-(
-  
-  ~performanceEnvironment = PerformanceEnvironment.new();
 )
