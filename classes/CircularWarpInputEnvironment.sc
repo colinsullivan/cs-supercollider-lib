@@ -84,5 +84,10 @@ CircularWarpInputEnvironment : PatchEnvironment {
       this.map_uc33_to_patch('sl3', 'amp', this.outPatch);
     });
 
+    if (this.softStepController != nil, {
+      this.map_softStep_to_patch('6_pressure', 'amp', this.outPatch);    
+    });
+
+
   }
 }

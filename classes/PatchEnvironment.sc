@@ -4,6 +4,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     <>patch,
     <>interface,
     <>uc33Controller,
+    <>softStepController,
     <>outputBus;
 
 
@@ -87,9 +88,23 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     });
   }
 
+  map_softStep_to_patch {
+    arg controllerComponent, patchPropertyKey, patch = this.patch;
+    var patchProperty;
+
+    patchProperty = patch.performMsg([patchPropertyKey]);
+
+    this.softStepController.mapCC(controllerComponent, {
+      arg ccval;
+
+      patchProperty.value = patchProperty.spec.map(ccval / 127);
+    });
+  }
+
   load_external_controller_mappings {
     /*this.uc33Controller = UC33Ktl.new();*/
-    var uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");
+    var uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1"),
+      softStepPort = MIDIIn.findPort("SoftStep Share", "SoftStep Share");
 
     if (uc33Port != nil, {
       // sub-classes should use this UC33Ktl instance to assign knobs and such.
@@ -100,6 +115,12 @@ PatchEnvironment : PerformanceEnvironmentComponent {
       // sub-classes should check to see if uc33Controller is nil to determine
       // if it is currently connected.
       this.uc33Controller = nil;
+    });
+
+    if (softStepPort != nil, {
+      this.softStepController = SoftStepKtl.new(softStepPort.uid);    
+    }, {
+      this.softStepController = nil;
     });
 
     /*"PatchEnvironment.load_external_controller_mappings".postln;*/
