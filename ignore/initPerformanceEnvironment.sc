@@ -23,7 +23,7 @@
   m.window.setTopLeftBounds(mBounds);
   
   GUI.qt;
-  Instr.dir = "/Users/colin/Projects/sounds/cs-supercollider-lib/Instr/";
+  Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
   Instr.loadAll();
 
   s.doWhenBooted({
