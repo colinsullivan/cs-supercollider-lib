@@ -8,7 +8,7 @@ SequencedGranularEnvironment : PatchEnvironment {
       winenv = Env.sine(4.0),
       me = this;
 
-    "SequencedGranularEnvironment.load_samples".postln;
+    /*"SequencedGranularEnvironment.load_samples".postln;*/
 
     /*Buffer.read(Server.default, sfxRoot ++ "outdoors_crickets_train-passing_nice-stereo.aif", action: {*/
     Buffer.read(Server.default, sfxRoot ++ "plane-flying-overhead-jet-good.aif", action: {
@@ -30,7 +30,7 @@ SequencedGranularEnvironment : PatchEnvironment {
   load_patch {
     super.load_patch();
 
-    "SequencedGranularEnvironment.load_patch".postln;
+    /*"SequencedGranularEnvironment.load_patch".postln;*/
 
     this.patch = Patch(Instr.at("sfx.GranularChaos"), (
       buffer: this.buf,

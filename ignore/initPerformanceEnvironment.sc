@@ -8,6 +8,7 @@
   s.options.outDevice = "Soundflower (64ch)";
   s.quit;
   s.options.sampleRate = 48000;
+  s.options.blockSize = 16;
   /*s.options.hardwareBufferSize = 256;*/
   s.boot();
   s.latency = 0;
@@ -21,7 +22,7 @@
   mBounds.top = 900;
   
   m.window.setTopLeftBounds(mBounds);
-  
+ 
   GUI.qt;
   Instr.dir = "/Users/colin/Projects/sounds/cs-supercollider-lib/Instr/";
   Instr.loadAll();
@@ -29,6 +30,5 @@
 )
 
 (
-  
   ~performanceEnvironment = PerformanceEnvironment.new();
 )
