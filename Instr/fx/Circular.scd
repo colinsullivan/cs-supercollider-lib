@@ -22,7 +22,7 @@ Instr("fx.Circular.Recorder", {
 
 }, [
   \buffer,
-  \bus,
+  \nil,
   ControlSpec(0.0, 1.0, \linear)
 ]);
 
@@ -32,16 +32,16 @@ Instr("fx.Circular.Recorder", {
  **/
 Instr("fx.Circular.Player", {
   arg gate = 1,
-    outBus = 0,
     buf = 0,
-    amp = 1.0;
+    amp = 1.0,
+    playbackRate = 1.0;
 
   var out,
     outEnv,
     chain;
 
   out = PlayBuf.ar(1, buf,
-    BufRateScale.kr(buf) * MouseX.kr(0.1, 5.0), 
+    BufRateScale.kr(buf) * playbackRate,
     loop: -1
   );
 
@@ -51,7 +51,7 @@ Instr("fx.Circular.Player", {
   out = amp * out;
 }, [
   \gate,
-  \bus,
   \buffer,
-  \amp
+  \amp,
+  ControlSpec(0.1, 5.0)
 ]);

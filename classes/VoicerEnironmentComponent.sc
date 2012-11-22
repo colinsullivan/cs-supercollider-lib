@@ -11,7 +11,7 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     this.sock = VoicerMIDISocket(
       [
         MIDIClient.sources.indexOf(
-          MIDIIn.findPort("(out) To SuperCollider", "(out) To SuperCollider")
+          MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider")
         ),
         params['inChannel']
       ],

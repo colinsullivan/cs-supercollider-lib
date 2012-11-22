@@ -92,19 +92,38 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     arg controllerComponent, patchPropertyKey, patch = this.patch;
     var patchProperty;
 
-    patchProperty = patch.performMsg([patchPropertyKey]);
+    if (patchPropertyKey.isString(), {
+      patchProperty = patch.performMsg([patchPropertyKey]);
 
-    this.softStepController.mapCC(controllerComponent, {
-      arg ccval;
+      this.softStepController.mapCC(controllerComponent, {
+        arg ccval;
 
-      patchProperty.value = patchProperty.spec.map(ccval / 127);
+        patchProperty.value = patchProperty.spec.map(ccval / 127);
+      });
+    });
+
+    if (patchPropertyKey.isArray(), {
+      this.softStepController.mapCC(controllerComponent, {
+        arg ccval;
+
+        for (0, patchPropertyKey.size - 1, {
+          arg i;
+
+          patchProperty = patch.performMsg([patchPropertyKey[i]]);
+          patchProperty.value = patchProperty.spec.map(ccval / 127);
+        });
+      }); 
     });
   }
 
   load_external_controller_mappings {
     /*this.uc33Controller = UC33Ktl.new();*/
-    var uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1"),
-      softStepPort = MIDIIn.findPort("SoftStep Share", "SoftStep Share");
+    var uc33Port,
+      softStepPort;
+    
+    /*uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");*/
+    uc33Port = MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider");
+    softStepPort = MIDIIn.findPort("SoftStep Share", "SoftStep Share");
 
     if (uc33Port != nil, {
       // sub-classes should use this UC33Ktl instance to assign knobs and such.

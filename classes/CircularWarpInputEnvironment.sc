@@ -37,33 +37,44 @@ CircularWarpInputEnvironment : PatchEnvironment {
    *  we need two patches, one for the circular input and one to affect it.
    **/
   load_patch {
-    var outInstr;
-
     this.inPatch = Patch(Instr.at("fx.Circular.Recorder"), (
-      buf: this.circularBuf
+      buf: this.circularBuf,
+      inChannel: 1
     ));
     
-    // make compound instrument
-    outInstr = Instr.at("fx.Circular.Player") <>> Instr.at("fx.FFT.Shuffle");
-
-    this.outPatch = Patch(outInstr, (
-      buf: this.circularBuf,
-      gate: 1
+    this.outPatch = Patch(Instr.at("fx.CircularWarpInput"), (
+      buf: this.circularBuf
     ));
 
     this.inPatch.prepareForPlay();
     this.outPatch.prepareForPlay();
-
   }
 
   init_gui {
     arg params;
 
-    var layout = params['layout'];
+    var layout = params['layout'],
+      labelWidth = 50,
+      outPatch = this.outPatch;
 
     super.init_gui(params);
 
-    this.outPatch.amp.gui(layout);
+    layout.flow({
+      arg layout;
+
+      ArgNameLabel("amp", layout, labelWidth);
+      outPatch.amp.gui(layout);
+      layout.startRow();
+   
+      ArgNameLabel("playbackRate", layout, labelWidth);
+      outPatch.playbackRate.gui(layout);
+      layout.startRow();
+      
+      ArgNameLabel("scrambleAmt", layout, labelWidth);
+      outPatch.scrambleAmt.gui(layout);
+      layout.startRow();
+    });
+
   }
 
   on_play {
@@ -85,7 +96,7 @@ CircularWarpInputEnvironment : PatchEnvironment {
     });
 
     if (this.softStepController != nil, {
-      this.map_softStep_to_patch('6_pressure', 'amp', this.outPatch);    
+      this.map_softStep_to_patch('6_pressure', ['playbackRate', 'scrambleAmt'], this.outPatch);
     });
 
 

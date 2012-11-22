@@ -28,7 +28,7 @@ DubbassVoicerEnvironment : PerformanceEnvironmentComponent {
     voicer.portaTime = 0;
 
     sock = VoicerMIDISocket(
-      [MIDIPort.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To SuperCollider")), 0],
+      [MIDIPort.sources.indexOf(MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider")), 0],
       voicer
     );
     
