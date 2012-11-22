@@ -612,7 +612,9 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 
 (
   {
-    var input = SoundIn.ar(0);
+    var input = SoundIn.ar(1);
     Out.ar(0, input);
   }.play();
 )
+
+\buffer.asSpec()

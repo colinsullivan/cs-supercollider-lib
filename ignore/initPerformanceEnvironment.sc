@@ -10,7 +10,7 @@
   s.options.sampleRate = 48000;
   /*s.options.hardwareBufferSize = 256;*/
   s.boot();
-  s.latency = 0;
+  /*s.latency = 0;*/
   m = s.meter();
 
   // move level meter to bottom right of screen
