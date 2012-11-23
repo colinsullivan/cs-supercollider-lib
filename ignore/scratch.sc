@@ -3,7 +3,7 @@
 }.value());
 
 ({
-  s.options.inDevice = "PreSonus FIREPOD (2112)";
+  /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
   s.options.outDevice= "Soundflower (64ch)";
   s.options.sampleRate = 48000;
   s.boot();
@@ -618,3 +618,109 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 )
 
 \buffer.asSpec()
+
+'test'.isSymbol()
+
+
+(
+  var one,
+    two;
+
+  Instr("test-fm", {
+    arg freqOffset = 0,
+      freq,
+      amp;
+
+    var carrier,
+      modulator,
+      out,
+      /*freq = MouseX.kr(280, 350).poll(10, "freq"),*/
+      modFreq = freq * 2.0,
+      /*modIndex = MouseY.kr(0.8, 1.2).poll(10, "modIndex"),*/
+      modIndex = 1.07,
+      /*modIndex = IRand.new(0.8, 1.2),*/
+      lfo1,
+      lfo2;
+ 
+    lfo1 = SinOsc.kr(0.5).range(freq, freq + 0.25);
+    lfo2 = SinOsc.kr(0.5).range(modIndex, modIndex + 0.01);
+    modulator = SinOsc.ar(lfo1 * lfo2);
+    carrier = SinOsc.ar(lfo1 + (modulator * 666) + freqOffset);
+  
+    out = amp * carrier;
+
+    /*out = BPeakEQ.ar(
+      out,
+      freq: MouseX.kr(500, 15000),
+      rq: MouseY.kr(0.001, 50),
+      db: -12
+    );*/
+
+    /*out = MoogFF.ar(out,
+      freq: MouseX.kr(500, 1000),
+      gain: -6
+    );*/
+
+    /*out = out + AllpassC.ar(out, delayTime: 0.01);*/
+    
+    [out, out];
+
+  });
+  
+  Instr("scary-fm-attempt", {
+    arg numHarms = 3,
+      amp = 0.9;
+
+    /*var baseFreq = IRand.new(280, 350),*/
+    var baseFreq = IRand.new(280, 350),
+      i = 1,
+      freq,
+      outL = Silence.ar(),
+      outR = Silence.ar(),
+      mix,
+      filterMix;
+
+    (numHarms.asInteger).do({
+
+      freq = baseFreq * (i + IRand.new(0.05, 0.15));
+      outL = outL + Instr.ar("test-fm", (
+        freq: freq,
+        amp: (0.75 / numHarms)
+      ));
+      outR = outR + Instr.ar("test-fm", (
+        freq: freq + 0.5,
+        amp: (0.75 / numHarms)
+      ));
+
+      i = i + 1;
+      
+    });
+
+    mix = Pan2.ar(outL, -0.75) + Pan2.ar(outR, 0.75);
+
+    filterMix = 0.8;
+    mix = ((1 - filterMix) * mix) + (filterMix * BLowPass.ar(mix,
+      freq: SinOsc.kr(0.5).range(300, 440),
+      rq: 0.1
+    ));
+
+    mix = amp * mix;
+
+  });
+
+  Patch(Instr.at("scary-fm-attempt"), (
+    numHarms: 15
+  )).play();
+
+  /*one = Patch(Instr.at("test-fm"), (
+    freqOffset: 0
+  ));
+  two = Patch(Instr.at("test-fm"), (
+    freqOffset: 0.25
+  ));*/
+
+  /*one.play();
+  two.play();
+*/
+  
+)
