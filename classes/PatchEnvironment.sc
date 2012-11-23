@@ -92,7 +92,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     arg controllerComponent, patchPropertyKey, patch = this.patch;
     var patchProperty;
 
-    if (patchPropertyKey.isString(), {
+    if (patchPropertyKey.isSymbol(), {
       patchProperty = patch.performMsg([patchPropertyKey]);
 
       this.softStepController.mapCC(controllerComponent, {

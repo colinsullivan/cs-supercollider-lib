@@ -14,17 +14,20 @@ Instr("fx.CircularWarpInput", {
   
   out = Instr.ar("fx.Circular.Player", (
     buf: buf,
+    /*playbackRate: MouseY.kr(0.1, 5.0)*/
     playbackRate: playbackRate
   ));
   out = Instr.ar("fx.FFT.Shuffle", (
     in: out,
+    /*scrambleAmt: MouseX.kr(0.25, 1.0)*/
     scrambleAmt: scrambleAmt
   ));
 
   out = amp * out;
 
 }, [
-  \amp,
+  // this effect is soft
+  ControlSpec(0.0, 2.5),
   \buffer,
   ControlSpec(0.1, 5.0, \exp),
   ControlSpec(0.25, 1.0)

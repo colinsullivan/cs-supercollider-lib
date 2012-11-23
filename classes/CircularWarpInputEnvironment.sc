@@ -96,7 +96,10 @@ CircularWarpInputEnvironment : PatchEnvironment {
     });
 
     if (this.softStepController != nil, {
-      this.map_softStep_to_patch('6_pressure', ['playbackRate', 'scrambleAmt'], this.outPatch);
+      /*this.map_softStep_to_patch('6_pressure', ['playbackRate', 'scrambleAmt'], this.outPatch);*/
+      this.map_softStep_to_patch('6_x', 'playbackRate', this.outPatch);
+      this.map_softStep_to_patch('6_y', 'scrambleAmt', this.outPatch);
+      this.map_softStep_to_patch('6_pressure', 'amp', this.outPatch);
     });
 
 

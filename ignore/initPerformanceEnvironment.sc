@@ -1,16 +1,18 @@
 (
   var m, mBounds;
+ 
+  s.quit;
+  
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
   /*s.options.inDevice = "SF + 1818";*/
   /*s.options.inDevice = "AudioBox 1818 VSL ";*/
   /*s.options.inDevice = "Soundflower (64ch)";*/
 
   s.options.outDevice = "Soundflower (64ch)";
-  s.quit;
-  s.options.sampleRate = 48000;
-  /*s.options.hardwareBufferSize = 256;*/
+  /*s.options.sampleRate = 48000;*/
+  s.options.blockSize = 32;
+  /*s.options.hardwareBufferSize = 128;*/
   s.boot();
-  /*s.latency = 0;*/
   m = s.meter();
 
   // move level meter to bottom right of screen
