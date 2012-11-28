@@ -9,7 +9,7 @@
   /*s.options.inDevice = "Soundflower (64ch)";*/
 
   s.options.outDevice = "Soundflower (64ch)";
-  /*s.options.sampleRate = 48000;*/
+  s.options.sampleRate = 48000;
   s.options.blockSize = 32;
   /*s.options.hardwareBufferSize = 128;*/
   s.boot();

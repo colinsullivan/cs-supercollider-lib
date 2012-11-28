@@ -39,7 +39,7 @@ CircularWarpInputEnvironment : PatchEnvironment {
   load_patch {
     this.inPatch = Patch(Instr.at("fx.Circular.Recorder"), (
       buf: this.circularBuf,
-      inChannel: 1
+      inChannel: 0
     ));
     
     this.outPatch = Patch(Instr.at("fx.CircularWarpInput"), (
@@ -99,7 +99,7 @@ CircularWarpInputEnvironment : PatchEnvironment {
       /*this.map_softStep_to_patch('6_pressure', ['playbackRate', 'scrambleAmt'], this.outPatch);*/
       this.map_softStep_to_patch('6_x', 'playbackRate', this.outPatch);
       this.map_softStep_to_patch('6_y', 'scrambleAmt', this.outPatch);
-      this.map_softStep_to_patch('6_pressure', 'amp', this.outPatch);
+      /*this.map_softStep_to_patch('6_pressure', 'gate', this.outPatch);*/
     });
 
 
