@@ -3,7 +3,7 @@
  
   s.quit;
   
-  /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
+  s.options.inDevice = "PreSonus FIREPOD (2112)";
   /*s.options.inDevice = "SF + 1818";*/
   /*s.options.inDevice = "AudioBox 1818 VSL ";*/
   /*s.options.inDevice = "Soundflower (64ch)";*/

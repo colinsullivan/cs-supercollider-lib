@@ -1,4 +1,4 @@
-CircularWarpInputEnvironment : PatchEnvironment {
+CircularWarpInputEnvironment : PatchEnvironmentComponent {
 
   var <>circularBuf,
     circularBufferDuration = 3.0,
@@ -88,8 +88,8 @@ CircularWarpInputEnvironment : PatchEnvironment {
     );
   }
 
-  load_external_controller_mappings {
-    super.load_external_controller_mappings();
+  init_external_controller_mappings {
+    super.init_external_controller_mappings();
 
     if (this.uc33Controller != nil, {
       this.map_uc33_to_patch('sl3', 'amp', this.outPatch);

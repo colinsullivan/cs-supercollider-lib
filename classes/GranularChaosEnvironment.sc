@@ -1,4 +1,4 @@
-GranularChaosEnvironment : PatchEnvironment {
+GranularChaosEnvironment : PatchEnvironmentComponent {
 
   var <>grainEnvBuf;
 
@@ -42,10 +42,10 @@ GranularChaosEnvironment : PatchEnvironment {
 
   }
 
-  load_external_controller_mappings {
-    super.load_external_controller_mappings();
+  init_external_controller_mappings {
+    super.init_external_controller_mappings();
 
-    /*"GranularChaosEnvironment.load_external_controller_mappings".postln;*/
+    /*"GranularChaosEnvironment.init_external_controller_mappings".postln;*/
     
     /**
      *  UC-33 Mappings

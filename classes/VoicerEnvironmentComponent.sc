@@ -24,6 +24,8 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
       window: gui.masterLayout
     ));
 
+    this.init_external_controller_mappings();
+
     {this.init_done_callback.value();}.defer(1);
   }
 }

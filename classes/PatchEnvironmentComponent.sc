@@ -1,10 +1,8 @@
-PatchEnvironment : PerformanceEnvironmentComponent {
+PatchEnvironmentComponent : PerformanceEnvironmentComponent {
 
   var <>buf,
     <>patch,
     <>interface,
-    <>uc33Controller,
-    <>softStepController,
     <>outputBus;
 
 
@@ -16,7 +14,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     
     this.outputBus = 0;
 
-    /*"PatchEnvironment.init".postln;*/
+    /*"PatchEnvironmentComponent.init".postln;*/
 
     this.load_samples({
 
@@ -35,7 +33,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
           layout: layout,
           metaPatch: metaPatch
         ));
-        me.load_external_controller_mappings();
+        me.init_external_controller_mappings();
       };
 
       {
@@ -61,7 +59,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
   }
 
   load_patch {
-    /*"PatchEnvironment.load_samples".postln;*/
+    /*"PatchEnvironmentComponent.load_samples".postln;*/
     // subclasses should instantiate Patch objects here and call prepareForPlay
   }
 
@@ -77,7 +75,7 @@ PatchEnvironment : PerformanceEnvironmentComponent {
     arg controllerComponent, patchPropertyKey, patch = this.patch;
     var patchProperty;
 
-    /*"PatchEnvironment.map_uc33_to_patch".postln;*/
+    /*"PatchEnvironmentComponent.map_uc33_to_patch".postln;*/
     
     patchProperty = patch.performMsg([patchPropertyKey]);
 
@@ -114,35 +112,6 @@ PatchEnvironment : PerformanceEnvironmentComponent {
         });
       }); 
     });
-  }
-
-  load_external_controller_mappings {
-    /*this.uc33Controller = UC33Ktl.new();*/
-    var uc33Port,
-      softStepPort;
-    
-    /*uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");*/
-    uc33Port = MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider");
-    softStepPort = MIDIIn.findPort("SoftStep Share", "SoftStep Share");
-
-    if (uc33Port != nil, {
-      // sub-classes should use this UC33Ktl instance to assign knobs and such.
-      this.uc33Controller = UC33Ktl.new(
-        uc33Port.uid
-      );
-    }, {
-      // sub-classes should check to see if uc33Controller is nil to determine
-      // if it is currently connected.
-      this.uc33Controller = nil;
-    });
-
-    if (softStepPort != nil, {
-      this.softStepController = SoftStepKtl.new(softStepPort.uid);    
-    }, {
-      this.softStepController = nil;
-    });
-
-    /*"PatchEnvironment.load_external_controller_mappings".postln;*/
   }
 
 }

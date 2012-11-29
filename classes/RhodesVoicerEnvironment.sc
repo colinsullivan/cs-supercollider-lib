@@ -8,6 +8,21 @@ RhodesVoicerEnvironment : VoicerEnvironmentComponent {
 
     super.init(params);
 
+  }
+
+  init_external_controller_mappings {
+
+    super.init_external_controller_mappings();
+    
     this.sock.addControl(7, \amp);
+
+    this.uc33Controller.mapCCS(1, 'sl5', {
+      arg ccval;
+
+      "ccval:".postln;
+      ccval.postln;
+
+    });
+
   }
 }
