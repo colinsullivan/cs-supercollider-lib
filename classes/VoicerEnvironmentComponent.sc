@@ -1,5 +1,5 @@
 VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
-  var <>voicer, <>sock;
+  var <>voicer, <>sock, <>inChannel;
 
   init {
     arg params;
@@ -7,16 +7,9 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     
     super.init(params);
 
+    this.inChannel = params['inChannel'];
+
     this.voicer = Voicer.new(params['numVoices'], params['instr']);
-    this.sock = VoicerMIDISocket(
-      [
-        MIDIClient.sources.indexOf(
-          MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider")
-        ),
-        params['inChannel']
-      ],
-      this.voicer
-    );
 
     gui = voicer.gui();
     
@@ -27,5 +20,20 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     this.init_external_controller_mappings();
 
     {this.init_done_callback.value();}.defer(1);
+  }
+
+  init_external_controller_mappings {
+    super.init_external_controller_mappings();
+
+    this.sock = VoicerMIDISocket(
+      [
+        MIDIClient.sources.indexOf(
+          MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider")
+        ),
+        this.inChannel
+      ],
+      this.voicer
+    );
+  
   }
 }

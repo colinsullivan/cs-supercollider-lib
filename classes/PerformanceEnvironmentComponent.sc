@@ -5,8 +5,6 @@
 PerformanceEnvironmentComponent : Object {
   var <>origin,
     <>window,
-    <>uc33Controller,
-    <>softStepController,
     <>init_done_callback;
 
   *new {
@@ -35,29 +33,6 @@ PerformanceEnvironmentComponent : Object {
   }
 
   init_external_controller_mappings {
-    var uc33Port,
-      softStepPort;
-    
-    uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");
-    /*uc33Port = MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider");*/
-    softStepPort = MIDIIn.findPort("SoftStep Share", "SoftStep Share");
-
-    if (uc33Port != nil, {
-      // sub-classes should use this UC33Ktl instance to assign knobs and such.
-      this.uc33Controller = UC33Ktl.new(
-        uc33Port.uid
-      );
-    }, {
-      // sub-classes should check to see if uc33Controller is nil to determine
-      // if it is currently connected.
-      this.uc33Controller = nil;
-    });
-
-    if (softStepPort != nil, {
-      this.softStepController = SoftStepKtl.new(softStepPort.uid);    
-    }, {
-      this.softStepController = nil;
-    });
     
   }
 
