@@ -14,22 +14,27 @@ RhodesVoicerEnvironment : VoicerEnvironmentComponent {
 
   init_external_controller_mappings {
 
+    var uc33Port;
+
     super.init_external_controller_mappings();
   
     // volume control from ableton
     this.sock.addControl(7, \amp);
 
-    this.uc33Controller = VoicerMIDISocket(
-      [
-        MIDIClient.sources.indexOf(
-          MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1")
-        ),
-        // slider 5
-        4
-      ],
-      this.voicer
-    );
+    uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");
 
-    this.uc33Controller.addControl(7, \amp);
+    if (uc33Port != nil, {
+      this.uc33Controller = VoicerMIDISocket(
+        [
+          MIDIClient.sources.indexOf(uc33Port),
+          // slider 5
+          4
+        ],
+        this.voicer
+      );
+
+      this.uc33Controller.addControl(7, \amp);
+    });
+
   }
 }

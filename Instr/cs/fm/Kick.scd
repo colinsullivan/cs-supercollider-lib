@@ -1,4 +1,4 @@
-Instr("fm.Kick", {
+Instr("cs.fm.Kick", {
   arg freq = 55,
     amp = 1.0,
     gate = 0;

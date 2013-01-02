@@ -1,7 +1,7 @@
 /**
  *  Adapted from [Decimator Wobble Bass](http://www.phrontist.org/2010/06/decimator-wobble-bass/)
  **/
-Instr("synths.DubBass", {
+Instr("cs.synths.DubBass", {
   arg freq = 440,
     freqlag,
     gate = 1,

@@ -1,4 +1,4 @@
-Instr("sfx.RunningWaterStream", {
+Instr("cs.sfx.RunningWaterStream", {
 
   arg buffer,
     gate = 0,

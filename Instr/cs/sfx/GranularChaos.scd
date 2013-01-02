@@ -1,4 +1,4 @@
-Instr("sfx.GranularChaos", {
+Instr("cs.sfx.GranularChaos", {
   arg buffer,
     envbuf = -1,
     gate = 0,
@@ -33,6 +33,8 @@ Instr("sfx.GranularChaos", {
       windowRandRatio: 0.1,
       interp: 4
     );
+
+    out = LPF.ar(out, 15000);
 
     out = amp * (env * out);
 

@@ -1,4 +1,4 @@
-Instr("sfx.Play", {
+Instr("cs.sfx.Play", {
 
   arg buf;
 

@@ -3,14 +3,14 @@
  
   s.quit;
   
-  s.options.inDevice = "PreSonus FIREPOD (2112)";
+  /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
   /*s.options.inDevice = "SF + 1818";*/
   /*s.options.inDevice = "AudioBox 1818 VSL ";*/
   /*s.options.inDevice = "Soundflower (64ch)";*/
 
   s.options.outDevice = "Soundflower (64ch)";
   s.options.sampleRate = 48000;
-  s.options.blockSize = 32;
+  s.options.blockSize = 8;
   /*s.options.hardwareBufferSize = 128;*/
   s.boot();
   m = s.meter();

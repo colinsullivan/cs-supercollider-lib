@@ -1,4 +1,4 @@
-Instr("fm.BasicFM", {
+Instr("cs.fm.BasicFM", {
   arg freq = 440,
     amp = 0.9,
     gate = 0,

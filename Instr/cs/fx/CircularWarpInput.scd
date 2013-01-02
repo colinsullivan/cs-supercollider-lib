@@ -2,7 +2,7 @@
 /**
  *  A combination of effects.
  **/
-Instr("fx.CircularWarpInput", {
+Instr("cs.fx.CircularWarpInput", {
   // the overall amplitude of the effect
   arg amp,
     // circular buffer
@@ -23,12 +23,12 @@ Instr("fx.CircularWarpInput", {
 
   env = EnvGen.ar(envShape, gate);
   
-  out = Instr.ar("fx.Circular.Player", (
+  out = Instr.ar("cs.fx.Circular.Player", (
     buf: buf,
     /*playbackRate: MouseY.kr(0.1, 5.0)*/
     playbackRate: playbackRate
   ));
-  out = Instr.ar("fx.FFT.Shuffle", (
+  out = Instr.ar("cs.fx.FFT.Shuffle", (
     in: out,
     /*scrambleAmt: MouseX.kr(0.25, 1.0)*/
     scrambleAmt: scrambleAmt

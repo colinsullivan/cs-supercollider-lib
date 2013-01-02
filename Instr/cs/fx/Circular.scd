@@ -3,7 +3,7 @@
  *  to that buffer at the desired feedback level (ratio of new amplitude
  *  to old amplitude).
  **/
-Instr("fx.Circular.Recorder", {
+Instr("cs.fx.Circular.Recorder", {
   arg buf,
     inChannel = 0,
     feedbackRatio = 0.5;
@@ -30,7 +30,7 @@ Instr("fx.Circular.Recorder", {
  *  This patch plays the circular buffer that was likely recorded with a
  *  `fx.Circular.Recorder` instance.
  **/
-Instr("fx.Circular.Player", {
+Instr("cs.fx.Circular.Player", {
   arg gate = 1,
     buf = 0,
     amp = 1.0,

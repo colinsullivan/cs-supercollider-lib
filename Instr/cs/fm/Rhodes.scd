@@ -1,4 +1,4 @@
-Instr("fm.Rhodes", {
+Instr("cs.fm.Rhodes", {
   arg freq = 440,
     amp = 0.9,
     gate = 0;
@@ -10,7 +10,7 @@ Instr("fm.Rhodes", {
     fm2,
     trem;
 
-  fm1 = Instr.ar("fm.BasicFM", (
+  fm1 = Instr.ar("cs.fm.BasicFM", (
     freq: freq,
     amp: amp,
     gate: gate,
@@ -33,7 +33,7 @@ Instr("fm.Rhodes", {
     )
   ));
 
-  fm2 = Instr.ar("fm.BasicFM", (
+  fm2 = Instr.ar("cs.fm.BasicFM", (
     freq: freq,
     amp: amp,
     gate: gate,

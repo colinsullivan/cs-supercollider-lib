@@ -1,4 +1,4 @@
-Instr("fx.FFT.Shuffle", {
+Instr("cs.fx.FFT.Shuffle", {
   arg in,
     scrambleAmt = 0.0,
     scrambleWidth = 0.1;
@@ -13,6 +13,8 @@ Instr("fx.FFT.Shuffle", {
   spectrum = PV_BinScramble(spectrum, scrambleAmt, scrambleWidth, gate);
 
   out = IFFT(spectrum);
+
+  out = LPF.ar(out, 1500);
 
   // output stereo here for now.
   [out, out];

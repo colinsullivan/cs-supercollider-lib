@@ -1,4 +1,4 @@
-Instr("fm.Lazers", {
+Instr("cs.fm.Lazers", {
   arg freq = 440,
     amp = 1.0,
     gate = 1,
