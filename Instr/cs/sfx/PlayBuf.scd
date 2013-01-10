@@ -2,18 +2,18 @@ Instr("cs.sfx.PlayBuf", {
   
   arg buf,
     gate = 1,
-    startTime = 0.0,
-    attackTime = 1.0,
-    releaseTime = 1.0,
-    convertToStereo = 0,
-    rate = 1;
+    playbackRate,
+    startTime,
+    attackTime,
+    releaseTime,
+    convertToStereo = 0;
 
   var out;
 
   out = PlayBuf.ar(
     buf.numChannels,
     buf,
-    rate * BufRateScale.kr(buf),
+    playbackRate * BufRateScale.kr(buf),
     gate,
     startTime * buf.sampleRate * buf.numChannels
   );
@@ -27,5 +27,9 @@ Instr("cs.sfx.PlayBuf", {
 
 }, [
   \buffer,
-  \gate
+  \gate,
+  ObjectSpec(1.0),
+  ObjectSpec(0.0),
+  ObjectSpec(1.0),
+  ObjectSpec(1.0)
 ]);
