@@ -10,7 +10,7 @@ Instr("cs.fx.LPFer", {
 
 Instr("cs.fx.LPFerModulated", {
 
-  arg in, cutoffMinFreq, cutoffMaxFreq, cutoffModFreq;
+  arg in, cutoffMinFreq, cutoffMaxFreq, cutoffModFreq, cutoffModPhase = 0;
 
   var out;
 
