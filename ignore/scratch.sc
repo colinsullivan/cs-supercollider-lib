@@ -4,10 +4,11 @@
 
 ({
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  s.options.outDevice= "Soundflower (64ch)";
+  /*s.options.outDevice= "Soundflower (64ch)";*/
   s.options.sampleRate = 48000;
   s.boot();
   s.meter();
+  FreqScope.new(400, 200);
 }.value());
 
 ({
@@ -408,11 +409,11 @@ a.show;
 (
   Pbind(
     \type,    \instr,
-    \instr,   "fm.Kick",
+    \instr,   "cs.fm.Kick",
     \freq,    55,
-    \dur,     Pseq([1.0], 2),
+    \dur,     Pseq([1.0], 1),
     \amp,     1.0,
-    \legato,  1.0,
+    \legato,  0.5,
     \trig,    0,
     \gate,    1
   ).play;
@@ -421,7 +422,7 @@ a.show;
 (
   Pbind(
     \type,    \instr,
-    \instr,   "fm.Lazers",
+    \instr,   "cs.fm.Lazers",
     \dur,     Pseq([(1/16)], 48),
     \amp,     1.0,
     \modIndex,  Pfunc({ exprand(0.01, 6); }),
@@ -723,4 +724,43 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
   two.play();
 */
   
+)
+
+(
+  var m, mBounds;
+  /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
+  /*s.options.outDevice= "Soundflower (64ch)";*/
+  s.quit;
+  s.options.sampleRate = 48000;
+  s.options.hardwareBufferSize = 128;
+  s.boot();
+  s.latency = 0;
+  m = s.meter();
+
+  // move level meter to bottom right of screen
+  mBounds = m.window.bounds;
+  /*mBounds.left = 1680;
+  mBounds.top = 1000;*/
+  mBounds.left = 1440;
+  mBounds.top = 900;
+  
+  m.window.setTopLeftBounds(mBounds);
+  
+  m = FreqScope.new(400, 200);
+  mBounds.top = mBounds.top - 250;
+  m.window.setTopLeftBounds(mBounds);
+
+
+  s.doWhenBooted({
+    var kickTest;
+    
+    Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
+    Instr.loadAll();
+
+    1.0.wait();
+
+    kickTest = Patch("cs.fm.Kick.SoftKick").play();
+    
+  });
+
 )

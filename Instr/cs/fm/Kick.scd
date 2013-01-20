@@ -1,4 +1,4 @@
-Instr("cs.fm.Kick", {
+Instr("cs.fm.Kick.SoftKick", {
   arg freq = 55,
     amp = 1.0,
     gate = 0;
@@ -10,10 +10,11 @@ Instr("cs.fm.Kick", {
     modEnv,
     mod,
     out,
-    trigGate = Trig1.ar(gate, 0.01);
+    /*trigGate = Trig1.ar(gate, 0.01);*/
+    trigGate = gate;
 
   carrierEnvShape = Env.adsr(
-    attackTime: 0.05,
+    attackTime: 0.1,
     decayTime: 0.8,
     sustainLevel: 0.9,
     releaseTime: 1.3,
@@ -27,11 +28,11 @@ Instr("cs.fm.Kick", {
   );*/
 
   modEnvShape = Env.adsr(
-    attackTime: 0.05,
+    attackTime: 0.08,
     decayTime: 0.5,
     sustainLevel: 0.6,
     releaseTime: 0.2,
-    curve: -10
+    curve: -5
   );
   /*modEnvShape.releaseNode = nil;*/
 
@@ -46,7 +47,7 @@ Instr("cs.fm.Kick", {
     gate: trigGate
   );
 
-  mod = modEnv * LFPar.ar(0.5 * freq);
+  mod = modEnv * LFTri.ar(3.0 * freq);
 
   /*carrierEnvShape = Env.adsr();*/
 
@@ -57,7 +58,7 @@ Instr("cs.fm.Kick", {
     gate: trigGate
   );
 
-  carrier = carrierEnv * SinOsc.ar(freq + (mod * freq * 20));
+  carrier = carrierEnv * SinOsc.ar(freq + (mod * freq));
 
   out = amp * carrier;
 
