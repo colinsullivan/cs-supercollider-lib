@@ -9,7 +9,7 @@ Instr("cs.fx.Reverb", {
 
   out = Instr.ar("reverbs.reverberator3", (
     audio: in,
-    revBalance: 1.0,
+    revBalance: mix,
 	 	revTime: 9.0,
 	 	taps: 10,
 	 	combs: 10,

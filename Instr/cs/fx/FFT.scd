@@ -1,14 +1,13 @@
 Instr("cs.fx.FFT.Shuffle", {
   arg in,
     scrambleAmt = 0.0,
-    scrambleWidth = 0.1;
+    scrambleWidth = 0.1,
+    gate = 0;
 
   var out,
-    spectrum,
-    gate;
+    spectrum;
 
-  gate = BinaryOpUGen('>', scrambleAmt, 0.1);
-
+  /*gate = BinaryOpUGen('>', scrambleAmt, 0.1); */
   spectrum = FFT(LocalBuf(2048), in);
   spectrum = PV_BinScramble(spectrum, scrambleAmt, scrambleWidth, gate);
 
@@ -22,5 +21,6 @@ Instr("cs.fx.FFT.Shuffle", {
 }, [
   nil, // don't know what the spec for another instrument should be
   ControlSpec(0.0, 1.0),
-  ControlSpec(0.1, 1.0)
+  ControlSpec(0.1, 1.0),
+  \gate
 ]);
