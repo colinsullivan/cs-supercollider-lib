@@ -10,14 +10,20 @@ Instr("cs.sfx.PlayBufSegment", {
     gain,
     convertToStereo = 0;
 
-  var out;
+  var out, bufnum;
+
+  if (buf.class == BufferProxy, {
+    bufnum = buf.bufnumIr    
+  }, {
+    bufnum = buf.bufnum
+  });
 
   out = gain * PlayBuf.ar(
     buf.numChannels,
-    buf,
-    playbackRate * BufRateScale.kr(buf),
+    bufnum,
+    playbackRate * BufRateScale.kr(bufnum),
     gate,
-    startTime * buf.sampleRate * buf.numChannels
+    (startTime / BufDur.kr(bufnum)) * BufFrames.kr(bufnum)
   );
 
   out = out * EnvGen.ar(
@@ -36,14 +42,14 @@ Instr("cs.sfx.PlayBufSegment", {
   \buffer,
   \gate,
   // playbackRate
-  ObjectSpec(1.0),
+  ControlSpec(-10, 10),
   // startTime
-  ObjectSpec(0.0),
+  ControlSpec(0, 9999999999),
   // attackTime
-  ObjectSpec(1.0),
+  ControlSpec(0.01, 4.0),
   // endTime (default plays one second of soundfile)
-  ObjectSpec(1.0),
+  ControlSpec(0, 99999999999),
   \gain,
   // releaseTime
-  ObjectSpec(1.0)
+  ControlSpec(0.01, 4.0)
 ]);

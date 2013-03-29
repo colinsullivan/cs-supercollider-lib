@@ -2,7 +2,6 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
 
   var <>buf,
     <>patch,
-    <>interface,
     <>uc33Controller,
     <>softStepController,
     <>outputBus;
@@ -10,54 +9,21 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
 
   init {
     arg params;
-    var me = this;
+    this.outputBus = 0;
 
     super.init(params);
-    
-    this.outputBus = 0;
 
     /*"PatchEnvironmentComponent.init".postln;*/
 
-    this.load_samples({
-
-      me.interface = Interface({
-        me.load_patch();
-      }).onPlay_({
-        me.on_play();
-      }).onStop_({
-        me.on_stop();
-      });
-
-      me.interface.gui = {
-        arg layout, metaPatch;
-        me.init_gui((
-          window: layout.parent.parent,
-          layout: layout,
-          metaPatch: metaPatch
-        ));
-        me.init_external_controller_mappings();
-      };
-
-      {
-        me.interface.gui();
-        me.init_done_callback.value();
-      }.defer(1);
     
-    });
   }
 
   on_play {
     this.patch.play(bus: Bus.audio(Server.default, this.outputBus));
   }
 
-  on_stop {
-  
-  }
-
-  load_samples {
-    arg callback;
-    // subclasses should load samples before using callback
-    callback.value();
+  load_environment {
+    this.load_patch();
   }
 
   load_patch {
