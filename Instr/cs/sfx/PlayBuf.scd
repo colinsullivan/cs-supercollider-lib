@@ -28,8 +28,12 @@ Instr("cs.sfx.PlayBuf", {
 }, [
   \buffer,
   \gate,
+  // playbackRate
   ObjectSpec(1.0),
+  // startTime
   ObjectSpec(0.0),
+  // attackTime
   ObjectSpec(1.0),
+  // releaseTime
   ObjectSpec(1.0)
 ]);
