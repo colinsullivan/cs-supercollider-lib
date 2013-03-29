@@ -28,6 +28,9 @@ PerformanceEnvironmentComponent : Object {
     arg params;
    
     this.window = params['window'];
+
+
+
     this.window.bounds = this.window.bounds.moveToPoint(this.origin);
     this.window.name = this.gui_window_title();
   }

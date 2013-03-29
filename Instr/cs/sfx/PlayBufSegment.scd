@@ -7,11 +7,12 @@ Instr("cs.sfx.PlayBufSegment", {
     attackTime,
     endTime,
     releaseTime,
+    gain,
     convertToStereo = 0;
 
   var out;
 
-  out = PlayBuf.ar(
+  out = gain * PlayBuf.ar(
     buf.numChannels,
     buf,
     playbackRate * BufRateScale.kr(buf),
@@ -42,6 +43,7 @@ Instr("cs.sfx.PlayBufSegment", {
   ObjectSpec(1.0),
   // endTime (default plays one second of soundfile)
   ObjectSpec(1.0),
+  \gain,
   // releaseTime
   ObjectSpec(1.0)
 ]);

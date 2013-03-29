@@ -31,7 +31,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
   load_patch {
     super.load_patch();
 
-    this.patch = Patch(Instr.at("sfx.RunningWaterStreamAutomated"), (
+    this.patch = Patch(Instr.at("cs.sfx.RunningWaterStream.RunningWaterStreamAutomated"), (
       buffer: this.buf,
       gate: KrNumberEditor.new(0, \gate.asSpec()),
       useOscillator: KrNumberEditor.new(0, \gate.asSpec()),
