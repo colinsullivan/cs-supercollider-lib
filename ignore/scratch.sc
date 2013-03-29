@@ -729,12 +729,10 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 (
   var m, mBounds;
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  /*s.options.outDevice= "Soundflower (64ch)";*/
+  s.options.outDevice= "Soundflower (64ch)";
   s.quit;
-  s.options.sampleRate = 48000;
-  s.options.hardwareBufferSize = 128;
   s.boot();
-  s.latency = 0;
+  //s.latency = 0;
   m = s.meter();
 
   // move level meter to bottom right of screen
@@ -746,20 +744,30 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
   
   m.window.setTopLeftBounds(mBounds);
   
-  m = FreqScope.new(400, 200);
+  //m = FreqScope.new(400, 200);
   mBounds.top = mBounds.top - 250;
-  m.window.setTopLeftBounds(mBounds);
+  //m.window.setTopLeftBounds(mBounds);
 
 
   s.doWhenBooted({
-    var kickTest;
+    var test,
+      sfxRoot = "/Volumes/Secondary/Samples/Recorded Sounds/Sound Effects/";
     
     Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
     Instr.loadAll();
 
-    1.0.wait();
+    //test = Patch("cs.fm.Kick.SoftKick").play();
 
-    kickTest = Patch("cs.fm.Kick.SoftKick").play();
+    Buffer.read(Server.default, sfxRoot ++ "harp-plucks-04_long.aif", action: {
+      arg buf;
+
+      test = Patch("cs.sfx.PlayBufSegment", (
+        buf: buf,
+        gate: 1
+      ));
+    
+      test.play();
+    });
     
   });
 
