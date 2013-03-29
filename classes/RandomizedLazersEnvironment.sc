@@ -4,13 +4,13 @@ RandomizedLazersEnvironment : VoicerEnvironmentComponent {
     arg params;
     
     params['numVoices'] = 4;
-    params['instr'] = Instr("fm.Lazers");
+    params['instr'] = Instr("cs.fm.Lazers");
     params['inChannel'] = 2;
 
     super.init(params);
 
-    this.sock.lowkey = "E4".notemidi();
-    this.sock.hikey = "E4".notemidi();
+    this.sock.lowkey = "B4".notemidi();
+    this.sock.hikey = "B4".notemidi();
 
     this.sock.noteOnArgsPat = Pbind(
       \modIndex,  Pfunc({ exprand(0.01, 6); }),

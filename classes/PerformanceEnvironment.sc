@@ -1,36 +1,64 @@
 PerformanceEnvironment : Object {
 
-  var <>granularChaosEnvironment,
-    <>runningWaterEnvironment,
-    <>clockEnvironment,
-    <>sequencedGranularEnvironment,
-    <>dubBassEnvironment,
-    <>rhodesVoicerEnvironment,
-    <>randomizedLazersEnvironment,
-    <>circularWarpInputEnvironment;
+  var 
+    /**
+     *  Dictionary storing all loaded modules indexed by name.
+     **/
+    <>modules;
 
   *new {
-    arg modules = [];
     ^super.new.init();
   }
 
   init {
-    arg modules;
-    var me = this;
+    var modulesToLoad;
 
-    this.load_modules();
+    this.modules = ();
+
+    modulesToLoad = (
+      clockEnvironment: (
+        class: ClockEnvironment
+      ),
+      randomizedLazersEnvironment: (
+        class: RandomizedLazersEnvironment
+      )
+    );
+
+    this.load_modules(modulesToLoad);
   }
 
   load_modules {
+    arg modulesToLoad;
     var me = this,
       screenHeight = 960,
       screenWidth = 1440,
       instrX,
       instrY;
 
-    instrY = 0;
+    instrY = screenHeight - 34;
     instrX = 0;
-    this.clockEnvironment = ClockEnvironment.new((
+
+    modulesToLoad.keysValuesDo({
+      arg moduleName, moduleProperties;
+
+      var module;
+
+      module = moduleProperties['class'].new((
+        origin: instrX@instrY,
+        init_done_callback: {
+          me.modules[moduleName] = module;
+
+          if (me.modules.size == modulesToLoad.size, {
+            me.modules_all_loaded();    
+          });
+
+        }
+      ));
+
+      instrY = instrY - module.window.bounds.height;
+
+    });
+    /*this.clockEnvironment = ClockEnvironment.new((
       origin: instrX@screenHeight,
       init_done_callback: {
 
@@ -81,9 +109,12 @@ PerformanceEnvironment : Object {
           }
         ));
       }
-    ));
+    ));*/
     /*this.sequencedGranularEnvironment = SequencedGranularEnvironment.new();*/
 
-    {me.clockEnvironment.request_tempo_update();}.defer(2);
+  }
+
+  modules_all_loaded {
+    this.modules['clockEnvironment'].request_tempo_update();
   }
 }
