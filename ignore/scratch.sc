@@ -772,3 +772,14 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
   });
 
 )
+
+/** Simple data structures **/
+(
+  var testList;
+
+  testList = [];
+
+  testList.add(5);
+
+  testList.add(10);
+)
