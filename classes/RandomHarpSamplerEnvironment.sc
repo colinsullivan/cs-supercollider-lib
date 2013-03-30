@@ -13,6 +13,8 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
     <>probability,
     // master frequency control (wait time between)
     <>waitTime,
+    // probability of playing pluck in reverse
+    <>reverseProbability,
     <>willPlayNext,
     <>outputChannel,
     <>playerRoutine;
@@ -70,8 +72,9 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
     this.voicer = nil;
 
-    this.probability = KrNumberEditor.new(0.7, \unipolar, \exp);
-    this.waitTime = KrNumberEditor.new(2.0, ControlSpec(4.0, 0.1, \exp));
+    this.probability = KrNumberEditor.new(0.5, ControlSpec(0.5, 1.0));
+    this.waitTime = KrNumberEditor.new(2.5, ControlSpec(2.5, 0.1, \exp));
+    this.reverseProbability = KrNumberEditor.new(0.0, \unipolar);
 
     this.willPlayNext = false;
     
@@ -94,13 +97,21 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
   play_next_pluck {
 
-    var nextBufSegment;
+    var nextBufSegment,
+      playbackRate;
 
     if (1.0.rand() < this.probability.value(), {
       nextBufSegment = this.bufSegments.choose();
+
+      playbackRate = 1.0;
+
+      if (1.0.rand() < this.reverseProbability.value(), {
+        playbackRate = -1.0;    
+      });
       
       // play
       this.voicer.trigger1(0, 1, [
+        \playbackRate, playbackRate,
         \startTime, nextBufSegment['start'],
         \endTime, nextBufSegment['end'],
         \gain, nextBufSegment['gain']
@@ -120,11 +131,10 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
     );
 
     this.voicer = Voicer.new(
-      8,
+      16,
       Instr.at("cs.sfx.PlayBufSegment"),
       [
         \buf, this.buf,
-        \playbackRate, 1.0,
         \attackTime, this.attackTime,
         \releaseTime, this.releaseTime
       ],
@@ -153,7 +163,7 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
     arg params;
 
     var layout = params['layout'],
-      labelWidth = 50,
+      labelWidth = 80,
       me = this;
 
     super.init_gui(params);
@@ -169,7 +179,18 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
       me.waitTime.gui(layout);
       layout.startRow();
       
+      ArgNameLabel("reverse prob", layout, labelWidth);
+      me.reverseProbability.gui(layout);
+      layout.startRow();
+      
     });
+  }
+
+  init_external_controller_mappings {
+    super.init_external_controller_mappings();
+
+    this.map_uc33_to_property(\knu1, [\probability, \waitTime]);
+    this.map_uc33_to_property(\knm1, \reverseProbability);
   }
 
 }
