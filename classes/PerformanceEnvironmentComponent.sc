@@ -126,18 +126,37 @@ PerformanceEnvironmentComponent : Object {
    *
    *  @param  Symbol  The key used to identify the knob or slider on the 
    *  controller.  Ex. \sl1
-   *  @param  Symbol  Used as a key to identify the property of the component
-   *  to control with the aforementioned controller knob.  Ex: \amp
+   *  @param  Symbol|Array  Used as a key to identify the property of the
+   *  component to control with the aforementioned controller knob.
+   *  Ex: \amp.  If provided an array, knob controls all of the elements.
+   *  @param  [Object]  The actual object to map to.  Defaults to `this` for
+   *  mapping controller to member variables.
    **/
   map_uc33_to_property {
-    arg controllerComponent, propertyKey, mapTo = this;
-    var property;
+    arg controllerComponent, propertyKeys, mapTo = this;
+    var properties;
 
-    property = mapTo.performMsg([propertyKey]);
+    if (propertyKeys.class == Symbol, {
+      propertyKeys = [propertyKeys];    
+    });
+
+    properties = Array.new(propertyKeys.size());
+
+    propertyKeys.do({
+      arg propertyKey;
+
+      properties = properties.add(mapTo.performMsg([propertyKey]));
+    });
+
     this.uc33Controller.mapCCS(1, controllerComponent, {
       arg ccval;
 
-      property.value = property.spec.map(ccval / 127);
+      properties.do({
+        arg property;
+
+        property.value = property.spec.map(ccval / 127);
+      });
+
     });
   
   }
