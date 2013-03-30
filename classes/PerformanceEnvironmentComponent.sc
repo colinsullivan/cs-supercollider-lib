@@ -4,9 +4,12 @@
  **/
 PerformanceEnvironmentComponent : Object {
   var <>origin,
+    <>uc33Controller,
+    <>softStepController,
     <>interface,
     <>window,
-    <>init_done_callback;
+    <>init_done_callback,
+    <>outputBus;
 
   *new {
     arg params;
@@ -92,7 +95,51 @@ PerformanceEnvironmentComponent : Object {
   }
 
   init_external_controller_mappings {
+    var uc33Port,
+      softStepPort;
     
+    uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");
+    /*uc33Port = MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider");*/
+    softStepPort = MIDIIn.findPort("SoftStep Share", "SoftStep Share");
+
+    if (uc33Port != nil, {
+      // sub-classes should use this UC33Ktl instance to assign knobs and such.
+      this.uc33Controller = UC33Ktl.new(
+        uc33Port.uid
+      );
+    }, {
+      // sub-classes should check to see if uc33Controller is nil to determine
+      // if it is currently connected.
+      this.uc33Controller = nil;
+    });
+
+    if (softStepPort != nil, {
+      this.softStepController = SoftStepKtl.new(softStepPort.uid);    
+    }, {
+      this.softStepController = nil;
+    });
+  }
+
+  /**
+   *  Map a property of the component (member variable) to a UC-33 controller
+   *  knob or slider.
+   *
+   *  @param  Symbol  The key used to identify the knob or slider on the 
+   *  controller.  Ex. \sl1
+   *  @param  Symbol  Used as a key to identify the property of the component
+   *  to control with the aforementioned controller knob.  Ex: \amp
+   **/
+  map_uc33_to_property {
+    arg controllerComponent, propertyKey, mapTo = this;
+    var property;
+
+    property = mapTo.performMsg([propertyKey]);
+    this.uc33Controller.mapCCS(1, controllerComponent, {
+      arg ccval;
+
+      property.value = property.spec.map(ccval / 127);
+    });
+  
   }
 
   /**
