@@ -2,8 +2,9 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
   // the segments of the buffer we want to play
   var <>bufSegments,
-    <>outputBus,
-    <>patch,
+    // attack and release times for each segment
+    <>attackTime,
+    <>releaseTime,
     // a single voicer which will have voices for each segment
     <>voicer,
     // the buffer
@@ -18,6 +19,8 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
   init {
     arg params;
+
+    super.init(params);
 
     this.bufSegments = [
       (
@@ -52,23 +55,27 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
       )
     ];
 
+    this.attackTime = 0.1;
+    this.releaseTime = 0.1;
+
     this.bufSegments.do({
       arg bufSegment;
 
+      // gains are relative to all of the segments playing simultaneously
       bufSegment['gain'] = (1.0 / this.bufSegments.size()) * bufSegment['gain'];
+
+      // end time less release time so it doesn't fade into next segment
+      bufSegment['end'] = bufSegment['end'] - this.releaseTime;
     });
 
     this.voicer = nil;
-    this.patch = nil;
 
     this.probability = KrNumberEditor.new(0.7, \unipolar, \exp);
     this.waitTime = KrNumberEditor.new(2.0, ControlSpec(4.0, 0.1, \exp));
 
     this.willPlayNext = false;
-
+    
     this.outputBus = 2;
-
-    super.init(params);
 
   }
   load_samples {
@@ -91,8 +98,7 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
     if (1.0.rand() < this.probability.value(), {
       nextBufSegment = this.bufSegments.choose();
-      "nextBufSegment:".postln;
-      nextBufSegment.postln;
+      
       // play
       this.voicer.trigger1(0, 1, [
         \startTime, nextBufSegment['start'],
@@ -119,8 +125,8 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
       [
         \buf, this.buf,
         \playbackRate, 1.0,
-        \attackTime, 0.1,
-        \releaseTime, 0.1
+        \attackTime, this.attackTime,
+        \releaseTime, this.releaseTime
       ],
       target: this.outputChannel
     );
