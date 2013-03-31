@@ -24,6 +24,10 @@ PerformanceEnvironmentComponent : Object {
     ("  * Starting " + this.gui_window_title()).postln;
     ("----------------------------------------").postln;
 
+    if (this.outputBus == nil, {
+      this.outputBus = 0;
+    });
+
     this.origin = params['origin'];
     this.init_done_callback = params['init_done_callback'];
  
@@ -54,6 +58,10 @@ PerformanceEnvironmentComponent : Object {
         me.init_done_callback.value();
       }.defer(1);
     });
+  }
+
+  done_loading_samples {
+  
   }
   
   /**
@@ -107,6 +115,8 @@ PerformanceEnvironmentComponent : Object {
       this.uc33Controller = UC33Ktl.new(
         uc33Port.uid
       );
+
+      this.init_uc33_mappings();
     }, {
       // sub-classes should check to see if uc33Controller is nil to determine
       // if it is currently connected.
@@ -114,10 +124,22 @@ PerformanceEnvironmentComponent : Object {
     });
 
     if (softStepPort != nil, {
-      this.softStepController = SoftStepKtl.new(softStepPort.uid);    
+      this.softStepController = SoftStepKtl.new(softStepPort.uid);
+      this.init_softStep_mappings();
     }, {
       this.softStepController = nil;
     });
+  }
+
+  /**
+   *  Initialize mappings for specific controllers if they are present.
+   **/
+  init_uc33_mappings {
+  
+  }
+
+  init_softStep_mappings {
+  
   }
 
   /**

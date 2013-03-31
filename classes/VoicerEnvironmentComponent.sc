@@ -1,5 +1,5 @@
 VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
-  var <>voicer, <>sock, <>inChannel;
+  var <>voicer, <>sock, <>inChannel, <>outputChannel;
 
   init {
     arg params;
@@ -9,23 +9,29 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
 
     this.inChannel = params['inChannel'];
 
-    this.voicer = Voicer.new(params['numVoices'], params['instr']);
+    this.outputChannel = MixerChannel.new(
+      nil,
+      Server.default,
+      1, 
+      2,
+      outbus: this.outputBus
+    );
 
-    gui = voicer.gui();
-    
-    this.init_gui((
-      window: gui.masterLayout
-    ));
+    if (params['numVoices'] == 1, {
+      this.voicer = MonoPortaVoicer.new(
+        1,
+        params['instr'],
+        target: this.outputChannel
+      );
+    }, {
+      this.voicer = Voicer.new(
+        params['numVoices'],
+        params['instr'],
+        target: this.outputChannel
+      );
+    });
 
-    this.init_external_controller_mappings();
-
-    {this.init_done_callback.value();}.defer(1);
-  }
-
-  init_external_controller_mappings {
-    super.init_external_controller_mappings();
-
-    this.sock = VoicerMIDISocket(
+    this.sock = VoicerMIDISocket.new(
       [
         MIDIClient.sources.indexOf(
           MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider")
@@ -34,6 +40,35 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
       ],
       this.voicer
     );
+
+    {this.init_done_callback.value();}.defer(1);
+  }
+
+  init_gui {
+
+    arg params;
+    var layout, voicerGui;
+    
+    super.init_gui(params);
+
+    this.voicer.gui(params['layout']);
+
+    //params['layout'].flow({
+      //arg layout;
+
+      //this.voicer.gui(layout);
+    
+    //});
+      
+    //voicerGui.resizeToFitContents();
+    //voicerGui.background = Color.red;
+    
+    // resize manually for now.
+    //voicerGui.layout.bounds = voicerGui.layout.bounds.resizeTo(
+      //voicerGui.layout.bounds.width,
+      //128.0
+    //);
+
   
   }
 }

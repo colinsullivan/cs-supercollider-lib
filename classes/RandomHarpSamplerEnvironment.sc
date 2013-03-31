@@ -78,7 +78,7 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
     this.willPlayNext = false;
     
-    this.outputBus = 2;
+    this.outputBus = 6;
 
   }
   load_samples {
@@ -186,8 +186,8 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
     });
   }
 
-  init_external_controller_mappings {
-    super.init_external_controller_mappings();
+  init_uc33_mappings {
+    super.init_uc33_mappings();
 
     this.map_uc33_to_property(\knu1, [\probability, \waitTime]);
     this.map_uc33_to_property(\knm1, \reverseProbability);

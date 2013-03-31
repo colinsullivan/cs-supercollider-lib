@@ -1,20 +1,17 @@
 ({
-  s.boot();
-}.value());
-
-({
-  /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  /*s.options.outDevice= "Soundflower (64ch)";*/
-  s.options.sampleRate = 48000;
-  s.boot();
-  s.meter();
-  FreqScope.new(400, 200);
-}.value());
-
-({
   s.quit();
-}.value());
+  /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
+  s.options.outDevice= "Soundflower (64ch)";
+  /*s.options.sampleRate = 48000;*/
+  s.boot();
+  //s.meter();
+  //FreqScope.new(400, 200);
 
+  s.doWhenBooted({
+    Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
+    Instr.loadAll();
+  });
+}.value());
 
 ({Help.gui;}.value());
 
@@ -198,7 +195,7 @@ SynthDef(\test, { | out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |
 (
   var bass, bassPat;
 
-  bass = Instr("synths.DubBass").asSynthDef().play;
+  bass = Instr("cs.synths.DubBass").asSynthDef().play;
   bassPat = Pbind(
     \type,            \set,
     \id,              bass.nodeID,

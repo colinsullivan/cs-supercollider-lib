@@ -7,6 +7,8 @@ RandomizedLazersEnvironment : VoicerEnvironmentComponent {
     params['instr'] = Instr("cs.fm.Lazers");
     params['inChannel'] = 2;
 
+    this.outputBus = 2;
+
     super.init(params);
 
     this.sock.lowkey = "B4".notemidi();

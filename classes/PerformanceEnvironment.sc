@@ -27,6 +27,9 @@ PerformanceEnvironment : Object {
       )  */
       randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment
+      ),
+      dubbassEnvironment: (
+        class: DubbassVoicerEnvironment
       )
     );
 
