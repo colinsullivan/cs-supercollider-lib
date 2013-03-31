@@ -27,17 +27,17 @@ Instr("cs.synths.DubBass", {
   out = VarSaw.ar(freq, width: wobble.range(0.2,0.8))
       // Subbass.
       + SinOsc.ar(freq/2, mul: wobble.range(0,1)).dup;
-  /*// Sampling resolution is decreased in time with the wobble.
+  // Sampling resolution is decreased in time with the wobble.
   out = Decimator.ar(
     in: out, 
     rate: 15000,
     bits: wobble.range(1.2, 8)
-  );*/
+  );
   // Emulated Moog Low Pass.
-  /*out = MoogLadder.ar(out,
+  out = MoogLadder.ar(out,
     ffreq: wobble.range(freq,25000),
     res: wobble.range(0.03,0.2)
-  ).dup;*/
+  ).dup;
   // Turn it down a bit to prevent clipping.
   /*out = out * 0.25;*/
   
