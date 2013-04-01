@@ -4,7 +4,7 @@ Instr("cs.fm.Lazers", {
     gate = 1,
     modIndex = 2.5,
     mod2Index = 0.2;
-  
+
   // cool downward twang
   /*modIndex = 2.5;
   mod2Index = 0.2;*/
@@ -55,7 +55,10 @@ Instr("cs.fm.Lazers", {
     mod,
     mod2,
     out,
-    trigGate = Trig1.ar(gate, 0.01);
+    trigGate = Trig1.ar(gate, 0.01),
+    velocity;
+
+  velocity = Latch.kr(gate, gate);
 
   carrierEnvShape = Env.adsr(
     attackTime: 0.1,
@@ -70,7 +73,7 @@ Instr("cs.fm.Lazers", {
     decayTime: 0.5,
     sustainLevel: 0.7,
     releaseTime: 1.5,
-    curve: -10
+    curve: velocity.exprange(-4, -10)
   );
 
   modEnv = EnvGen.kr(
@@ -83,7 +86,7 @@ Instr("cs.fm.Lazers", {
     decayTime: 0.5,
     sustainLevel: 0.7,
     releaseTime: 1.5,
-    curve: -10
+    curve: velocity.exprange(-4, -10)
   );
 
   mod2Env = EnvGen.kr(
@@ -97,6 +100,8 @@ Instr("cs.fm.Lazers", {
 
   mod2 = mod2Env * LFSaw.ar(mod2Index * freq * mod);
 
+  //mod2 = LPF.ar(mod2, velocity.exprange(5000, 20000));
+
   /*carrierEnvShape = Env.adsr();*/
 
   /*carrierEnvShape = Env.asr();*/
@@ -108,7 +113,7 @@ Instr("cs.fm.Lazers", {
 
   carrier = carrierEnv * SinOsc.ar(freq + (mod2 * freq * 100));
 
-  out = amp * carrier;
+  out = amp * carrier * velocity.exprange(0.1, 1.0);
 
   // take out some of that piercing.
   out = BPeakEQ.ar(out,
@@ -116,6 +121,8 @@ Instr("cs.fm.Lazers", {
     rq: 5,
     db: -16
   );
+
+  //out = LPF.ar(out, velocity.exprange(5000, 12000));
 
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) + Done.kr(mod2Env) - 2);
 
