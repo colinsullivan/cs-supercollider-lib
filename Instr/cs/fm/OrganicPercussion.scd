@@ -3,7 +3,10 @@ Instr("cs.fm.OrganicPercussion", {
     amp = 0.9,
     gate = 0,
     // attack resonance
-    modFreq = 2000;
+    modFreq = 2000,
+    // silly sin pitch bend
+    doFreqSweep = 0,
+    freqSweepTargetMultiplier;
 
   var carrier,
     modulator,
@@ -14,9 +17,23 @@ Instr("cs.fm.OrganicPercussion", {
     modEnvShape,
     modEnv,
     velocity,
-    out;
+    out,
+    freqSweepEnvShape,
+    freqSweepEnv,
+    sustainTime;
 
   velocity = Latch.kr(gate, gate);
+
+  sustainTime = velocity.range(0.1, 0.8);
+
+  freqSweepEnvShape = Env.new([freq, freq * freqSweepTargetMultiplier], [1.0], \exp);
+  freqSweepEnv = EnvGen.kr(
+    envelope: freqSweepEnvShape,
+    gate: gate,
+    timeScale: sustainTime
+  );
+  // choose between frequency sweep and non frequency sweep
+  freq = (doFreqSweep * freqSweepEnv) + ((1.0 - doFreqSweep) * freq);
 
   // amount of FM synthesis depends on velocity (percussive)
   modulatorGain = velocity.exprange(0.25, 25) * freq;
@@ -47,7 +64,7 @@ Instr("cs.fm.OrganicPercussion", {
   carrierEnv = EnvGen.kr(
     envelope: carrierEnvShape,
     gate: gate,
-    timeScale: 0.25
+    timeScale: sustainTime
   );
 
   carrierGain = velocity.exprange(0.25, 1.0);
@@ -62,5 +79,10 @@ Instr("cs.fm.OrganicPercussion", {
   \freq,
   \amp,
   \gate,
-  \freq
+  // modFreq
+  \freq,
+  // doFreqSweep
+  \unipolar,
+  // freqSweepTargetMultiplier
+  ControlSpec(0.01, 10, \exp)
 ]);

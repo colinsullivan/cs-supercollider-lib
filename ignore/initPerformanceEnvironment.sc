@@ -10,7 +10,7 @@
   /*s.options.inDevice = "Soundflower (64ch)";*/
 
   s.options.outDevice = "Soundflower (64ch)";
-  s.options.numOutputBusChannels = 64;
+  s.options.numOutputBusChannels = 24;
   //s.options.sampleRate = 48000;
   s.options.blockSize = 8;
   /*s.options.hardwareBufferSize = 128;*/
