@@ -2,12 +2,13 @@ Instr("cs.fm.OrganicPercussion", {
   arg freq = 440,
     amp = 0.9,
     gate = 0,
-    // brightness of attack sort of
+    // attack resonance
     modFreq = 2000;
 
   var carrier,
     modulator,
     modulatorGain,
+    carrierGain,
     carrierEnvShape,
     carrierEnv,
     modEnvShape,
@@ -16,9 +17,9 @@ Instr("cs.fm.OrganicPercussion", {
     out;
 
   velocity = Latch.kr(gate, gate);
-  
+
   // amount of FM synthesis depends on velocity (percussive)
-  modulatorGain = (velocity * 30) * freq;
+  modulatorGain = velocity.exprange(0.25, 25) * freq;
   
   modEnvShape = Env.new(
     [1.0,   0.0,    0.0 ],
@@ -49,7 +50,9 @@ Instr("cs.fm.OrganicPercussion", {
     timeScale: 0.25
   );
 
-  carrier = carrierEnv * SinOsc.ar(freq + modulator);
+  carrierGain = velocity.exprange(0.25, 1.0);
+
+  carrier = carrierEnv * carrierGain * SinOsc.ar(freq + modulator);
 
   // free synth when both carrier and modulator envelopes are done
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) - 1);
