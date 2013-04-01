@@ -236,7 +236,21 @@ SynthDef(\test, { | out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |
     curve: [4, -4, -2]
   ).plot;*/
 
-  Env.cutoff(2, 1.0).plot;
+  /*Env.cutoff(2, 1.0).plot;*/
+
+  /*Env.new(
+    //initial attack             peak          exp. decay
+    [0.0,   0.75,     0.9,      1.0,      0.9,      0.0 ],
+    [   0.001,    0.1,     0.05,      0.05,   0.79      ],
+    [0.0,   2.5,      -2.5,     2.5,      -2.5,   -5.5  ]
+  ).plot();*/
+
+  Env.new(
+    [1.0,   0.0,    0.0 ],
+    [   0.25,    0.75    ],
+    [   -3.0,    0.00    ]
+  ).plot();
+
 )
 
 (
@@ -780,3 +794,5 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 
   testList.add(10);
 )
+
+

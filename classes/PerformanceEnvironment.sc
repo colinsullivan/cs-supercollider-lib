@@ -28,8 +28,11 @@ PerformanceEnvironment : Object {
       randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment
       ),
-      dubbassEnvironment: (
-        class: DubbassVoicerEnvironment
+      smoothbassEnvironment: (
+        class: SmoothBassVoicerEnvironment
+      ),
+      fmPercussionEnvironment: (
+        class: FMPercussionVoicerEnvironment
       )
     );
 
