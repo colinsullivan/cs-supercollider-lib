@@ -9,11 +9,9 @@ FMPercussionVoicerEnvironment : VoicerEnvironmentComponent {
     params['instr'] = instr;
     params['inChannel'] = 4;
 
-    this.outputBus = 8;
-
     super.init(params);
 
-    this.voicer.mapGlobal(\amp, value: 1.0, spec: \amp);
+    this.voicer.mapGlobal(\amp, value: (1.0 / params['numVoices']), spec: \amp);
     this.sock.addControl(7, \amp);
 
     this.voicer.mapGlobal(
