@@ -3,10 +3,10 @@ Instr("cs.fm.OrganicPercussion", {
     amp = 0.9,
     gate = 0,
     // attack resonance
-    modFreq = 2000,
+    modFreq = 2400,
     // silly sin pitch bend
     doFreqSweep = 0,
-    freqSweepTargetMultiplier;
+    freqSweepTargetMultiplier = 1.0;
 
   var carrier,
     modulator,
@@ -24,7 +24,7 @@ Instr("cs.fm.OrganicPercussion", {
 
   velocity = Latch.kr(gate, gate);
 
-  sustainTime = velocity.range(0.1, 0.8);
+  sustainTime = velocity.exprange(0.1, 1.5);
 
   freqSweepEnvShape = Env.new([freq, freq * freqSweepTargetMultiplier], [1.0], \exp);
   freqSweepEnv = EnvGen.kr(
@@ -56,7 +56,7 @@ Instr("cs.fm.OrganicPercussion", {
   modEnv = EnvGen.kr(
     envelope: modEnvShape,
     gate: gate,
-    timeScale: 0.05
+    timeScale: 0.08
   );
 
   modulator = modEnv * (modulatorGain * SinOsc.ar(modFreq));
