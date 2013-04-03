@@ -24,8 +24,10 @@ PerformanceEnvironmentComponent : Object {
     ("  * Starting " + this.gui_window_title()).postln;
     ("----------------------------------------").postln;
 
-    if (this.outputBus == nil, {
+    if (params['outputBus'] == nil, {
       this.outputBus = 0;
+    }, {
+      this.outputBus = params['outputBus'];
     });
 
     this.origin = params['origin'];

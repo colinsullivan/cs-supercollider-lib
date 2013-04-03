@@ -77,8 +77,6 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
     this.reverseProbability = KrNumberEditor.new(0.0, \unipolar);
 
     this.willPlayNext = false;
-    
-    this.outputBus = 6;
 
   }
   load_samples {

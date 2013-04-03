@@ -20,19 +20,23 @@ PerformanceEnvironment : Object {
         class: ClockEnvironment
       ),
       randomizedLazersEnvironment: (
-        class: RandomizedLazersEnvironment
+        class: RandomizedLazersEnvironment,
+        outputBus: 10
       ),
       /*runningWaterEnvironment: (
         class: RunningWaterEnvironment
       )  */
       randomHarpEnvironment: (
-        class: RandomHarpSamplerEnvironment
+        class: RandomHarpSamplerEnvironment,
+        outputBus: 14
       ),
-      smoothbassEnvironment: (
-        class: SmoothBassVoicerEnvironment
+     smoothbassEnvironment: (
+        class: SmoothBassVoicerEnvironment,
+        outputBus: 12
       ),
       fmPercussionEnvironment: (
-        class: FMPercussionVoicerEnvironment
+        class: FMPercussionVoicerEnvironment,
+        outputBus: 16
       )
     );
 
@@ -48,6 +52,7 @@ PerformanceEnvironment : Object {
       var module;
       
       module = moduleProperties['class'].new((
+        outputBus: moduleProperties['outputBus'],
         origin: 0@0,
         init_done_callback: {
           me.modules[moduleName] = module;

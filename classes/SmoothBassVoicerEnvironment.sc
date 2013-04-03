@@ -13,7 +13,7 @@ SmoothBassVoicerEnvironment : VoicerEnvironmentComponent {
     params['instr'] = dubBass;
     params['inChannel'] = 3;
 
-    this.outputBus = 4;
+    this.outputBus = 12;
 
     super.init(params);
 
