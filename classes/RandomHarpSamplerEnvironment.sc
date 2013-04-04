@@ -72,7 +72,7 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
     this.voicer = nil;
 
-    this.probability = KrNumberEditor.new(0.5, ControlSpec(0.5, 1.0));
+    this.probability = KrNumberEditor.new(0.0, ControlSpec(0.0, 1.0));
     this.waitTime = KrNumberEditor.new(2.5, ControlSpec(2.5, 0.1, \exp));
     this.reverseProbability = KrNumberEditor.new(0.0, \unipolar);
 
