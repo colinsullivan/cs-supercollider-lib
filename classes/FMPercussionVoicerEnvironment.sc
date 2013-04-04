@@ -27,6 +27,20 @@ FMPercussionVoicerEnvironment : VoicerEnvironmentComponent {
       spec: specs.at(instr.argsAndIndices().at(\freqSweepTargetMultiplier))
     );
     this.sock.addControl(16, \freqSweepTargetMultiplier);
+
+    this.voicer.mapGlobal(
+      \autoDurationOn,
+      value: 1,
+      spec: specs.at(instr.argsAndIndices().at(\autoDurationOn))
+    );
+    this.sock.addControl(17, \autoDurationOn);
+
+    this.voicer.mapGlobal(
+      \noteDuration,
+      value: 1.0,
+      spec: specs.at(instr.argsAndIndices().at(\noteDuration))
+    );
+    this.sock.addControl(18, \noteDuration);
   }
 
 }

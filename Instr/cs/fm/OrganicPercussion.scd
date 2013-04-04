@@ -6,7 +6,10 @@ Instr("cs.fm.OrganicPercussion", {
     modFreq = 2400,
     // silly sin pitch bend
     doFreqSweep = 0,
-    freqSweepTargetMultiplier = 1.0;
+    freqSweepTargetMultiplier = 1.0,
+    // duration of notes can be determined by velocity or set manually
+    autoDurationOn = 1,
+    noteDuration = 1.0;
 
   var carrier,
     modulator,
@@ -24,7 +27,10 @@ Instr("cs.fm.OrganicPercussion", {
 
   velocity = Latch.kr(gate, gate);
 
-  sustainTime = velocity.exprange(0.1, 1.5);
+  sustainTime = (
+    autoDurationOn * velocity.exprange(0.1, 1.5)
+    + ((1.0 - autoDurationOn) * noteDuration)
+  );
 
   freqSweepEnvShape = Env.new([freq, freq * freqSweepTargetMultiplier], [1.0], \exp);
   freqSweepEnv = EnvGen.kr(
@@ -84,5 +90,9 @@ Instr("cs.fm.OrganicPercussion", {
   // doFreqSweep
   \unipolar,
   // freqSweepTargetMultiplier
-  ControlSpec(0.01, 10, \exp)
+  ControlSpec(0.01, 10, \exp),
+  // autoDurationOn
+  \unipolar,
+  // noteDuration
+  ControlSpec(0.1, 10)
 ]);
