@@ -69,6 +69,10 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
       ArgNameLabel("hellFreq", layout, labelWidth);
       patch.hellFreq.gui(layout);
       layout.startRow();
+      
+      /*ArgNameLabel("hellAmp", layout, labelWidth);
+      patch.hellAmp.gui(layout);
+      layout.startRow();*/
 
     });
 
@@ -158,7 +162,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
 
     if (this.uc33Controller != nil, {
       //this.map_uc33_to_patch(\sl4, \amp);
-      this.map_uc33_to_patch(\knu4, [\hellMax, \hellFreq]);
+      this.map_uc33_to_patch(\knu4, [\hellMax]);
       //this.map_uc33_to_patch(\knm4, \hellMin);
       /*this.map_uc33_to_patch(\knu4, \hellFreq);*/
     });

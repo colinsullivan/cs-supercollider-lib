@@ -188,18 +188,6 @@ PerformanceEnvironmentComponent : Object {
       properties.do({
         arg property;
 
-        "property:".postln;
-        property.postln;
-
-        "property.spec:".postln;
-        property.spec.postln;
-
-        "(ccval / 127):".postln;
-        (ccval / 127).postln;
-
-        "property.spec.map(ccval / 127):".postln;
-        property.spec.map(ccval / 127).postln;
-
         property.value = property.spec.map(ccval / 127);
       });
 

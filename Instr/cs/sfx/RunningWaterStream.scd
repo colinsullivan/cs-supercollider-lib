@@ -72,6 +72,10 @@ Instr("cs.sfx.RunningWaterStream.RunningWaterStreamAutomated", {
      **/
     hellFreq = 0,
     /**
+     *  Amplitude at which it is oscillating
+     **/
+    /*hellAmp = 0.5,*/
+    /**
      *  Bus to return the hellValue on for display.
      **/
     hellValueBus,
@@ -85,7 +89,7 @@ Instr("cs.sfx.RunningWaterStream.RunningWaterStreamAutomated", {
   /**
    *  Actual hell value after oscillation
    **/
-  var hell = SinOsc.ar(hellFreq).range(hellMin, hellMax),
+  var hell = SinOsc.ar(hellFreq).range(/*hellAmp * */hellMin, /*hellAmp * */hellMax),
     runningWater = Instr("cs.sfx.RunningWaterStream.RunningWaterStream"),
     decimatorRateSpec = runningWater.specs.at(
       runningWater.argsAndIndices().at('decimatorRate')
@@ -122,7 +126,9 @@ Instr("cs.sfx.RunningWaterStream.RunningWaterStreamAutomated", {
   // hellMax
   ControlSpec(0.0, 1.0, \linear),
   // hellFreq
-  ControlSpec(0.0, 0.5, \exp),
+  ControlSpec(0.0, 10),
+  /*// hellAmp
+  ControlSpec(0.001, 0.25),*/
   \controlbus,
   \gate
 ]);

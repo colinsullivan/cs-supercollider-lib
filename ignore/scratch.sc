@@ -548,8 +548,24 @@ MIDISyncClock.tempo();
 
 Instr("synths.DubBass").argsAndIndices().at(\rateMultiplier)
 
-~test = NoLagControlSpec((1/64), 16, \lin, step: (1/32));
-~test.map((0..127).normalize);
+/* ControlSpec tests */
+(
+  var test;
+
+  test = NoLagControlSpec((1/64), 16, \lin, step: (1/32));
+  test.map((0..127).normalize);
+
+  test = ControlSpec(0.001, 1.0, \exponential);
+
+  "test:".postln;
+  test.postln;
+
+  "test.map(0.5):".postln;
+  test.map(0.5).postln;
+
+  nil
+
+)
 
 MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To SuperCollider"))
 
@@ -794,5 +810,7 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 
   testList.add(10);
 )
+
+
 
 
