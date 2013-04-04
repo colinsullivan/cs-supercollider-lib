@@ -6,8 +6,7 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
 
   init {
     arg params;
-    this.outputBus = 0;
-
+    
     super.init(params);
 
     /*"PatchEnvironmentComponent.init".postln;*/
@@ -16,7 +15,8 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
   }
 
   on_play {
-    this.patch.play(bus: Bus.audio(Server.default, this.outputBus));
+    //this.patch.play(bus: Bus.audio(Server.default, this.outputBus));
+    this.outputChannel.play(this.patch);
   }
 
   load_environment {

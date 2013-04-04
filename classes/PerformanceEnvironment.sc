@@ -23,9 +23,10 @@ PerformanceEnvironment : Object {
         class: RandomizedLazersEnvironment,
         outputBus: 10
       ),
-      /*runningWaterEnvironment: (
-        class: RunningWaterEnvironment
-      )  */
+      runningWaterEnvironment: (
+        class: RunningWaterEnvironment,
+        outputBus: 18
+      ),
       randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment,
         outputBus: 14

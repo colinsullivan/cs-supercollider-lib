@@ -1,4 +1,4 @@
-Instr("cs.sfx.RunningWaterStream", {
+Instr("cs.sfx.RunningWaterStream.RunningWaterStream", {
 
   arg buffer,
     gate = 0,
@@ -55,7 +55,7 @@ Instr("cs.sfx.RunningWaterStream", {
   ControlSpec(1000, 10000, \exponential)
 ]);
 
-Instr("cs.sfx.RunningWaterStreamAutomated", {
+Instr("cs.sfx.RunningWaterStream.RunningWaterStreamAutomated", {
 
   arg buffer,
     gate = 0,
@@ -86,7 +86,7 @@ Instr("cs.sfx.RunningWaterStreamAutomated", {
    *  Actual hell value after oscillation
    **/
   var hell = SinOsc.ar(hellFreq).range(hellMin, hellMax),
-    runningWater = Instr("cs.sfx.RunningWaterStream"),
+    runningWater = Instr("cs.sfx.RunningWaterStream.RunningWaterStream"),
     decimatorRateSpec = runningWater.specs.at(
       runningWater.argsAndIndices().at('decimatorRate')
     ),
@@ -103,7 +103,7 @@ Instr("cs.sfx.RunningWaterStreamAutomated", {
   
   Out.kr(hellValueBus, hell);
   
-  out = Instr.ar("cs.sfx.RunningWaterStream", (
+  out = Instr.ar("cs.sfx.RunningWaterStream.RunningWaterStream", (
     buffer: buffer,
     gate: gate,
     amp: amp,
