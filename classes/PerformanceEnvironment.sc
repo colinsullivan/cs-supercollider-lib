@@ -38,6 +38,10 @@ PerformanceEnvironment : Object {
       fmPercussionEnvironment: (
         class: FMPercussionVoicerEnvironment,
         outputBus: 16
+      ),
+      granularChaosEnvironment: (
+        class: GranularChaosEnvironment,
+        outputBus: 20
       )
     );
 

@@ -30,7 +30,7 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
 
     /*"GranularChaosEnvironment.load_patch".postln;*/
 
-    this.patch = Patch(Instr.at("sfx.GranularChaos"), (
+    this.patch = Patch(Instr.at("cs.sfx.GranularChaos"), (
       buffer: this.buf,
       envbuf: this.grainEnvBuf,
       gate: KrNumberEditor.new(0, \gate.asSpec())
@@ -38,8 +38,6 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
         "done!".postln;
       },*/
     ));
-    this.patch.prepareForPlay();
-
   }
 
   init_external_controller_mappings {
@@ -52,13 +50,13 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
      **/
     if (this.uc33Controller != nil, {
       /* slider 1 to amplitude */
-      this.map_uc33_to_patch('sl1', \amp);
+      /*this.map_uc33_to_patch('sl1', \amp);*/
 
       /* knob 25 to position */
-      this.map_uc33_to_patch('knu1', \pointer);
+      this.map_uc33_to_patch('knu5', \pointer);
 
       /* knob 17 to pitch */
-      this.map_uc33_to_patch('knm1', \pitch);
+      this.map_uc33_to_patch('knm5', \pitch);
     
     });
   }
