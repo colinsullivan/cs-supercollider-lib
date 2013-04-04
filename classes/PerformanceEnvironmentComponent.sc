@@ -9,6 +9,9 @@ PerformanceEnvironmentComponent : Object {
     <>interface,
     <>window,
     <>init_done_callback,
+    // MixerChannel instance
+    <>outputChannel,
+    // number
     <>outputBus;
 
   *new {
@@ -29,6 +32,13 @@ PerformanceEnvironmentComponent : Object {
     }, {
       this.outputBus = params['outputBus'];
     });
+
+    this.outputChannel = MixerChannel.new(
+      this.gui_window_title(),
+      Server.default,
+      2, 2,
+      outbus: this.outputBus
+    );
 
     this.origin = params['origin'];
     this.init_done_callback = params['init_done_callback'];

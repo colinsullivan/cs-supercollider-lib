@@ -16,7 +16,6 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
     // probability of playing pluck in reverse
     <>reverseProbability,
     <>willPlayNext,
-    <>outputChannel,
     <>playerRoutine;
 
   init {
@@ -120,13 +119,6 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
   load_environment {
     var me = this;
     super.load_environment();
-
-    this.outputChannel = MixerChannel.new(
-      "RandomHarpSamplerEnv",
-      Server.default,
-      2, 2,
-      outbus: this.outputBus
-    );
 
     this.voicer = Voicer.new(
       16,
