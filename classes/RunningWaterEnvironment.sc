@@ -37,7 +37,6 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
       useOscillator: KrNumberEditor.new(0, \gate.asSpec()),
       hellValueBus: this.hellValueBus
     ));
-    this.patch.prepareForPlay();
   }
 
   init_gui {
@@ -55,18 +54,17 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
     layout.flow({
       arg layout;
 
-      ArgNameLabel("amp", layout, labelWidth);
+      /*ArgNameLabel("amp", layout, labelWidth);
       patch.amp.gui(layout);
-      layout.startRow();
+      layout.startRow();*/
 
-      ArgNameLabel("hellMin", layout, labelWidth);
+      /*ArgNameLabel("hellMin", layout, labelWidth);
       patch.hellMin.gui(layout);
-      layout.startRow();
+      layout.startRow();*/
 
       ArgNameLabel("hellMax", layout, labelWidth);
       patch.hellMax.gui(layout);
       layout.startRow();
-
 
       ArgNameLabel("hellFreq", layout, labelWidth);
       patch.hellFreq.gui(layout);
@@ -159,10 +157,10 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
     super.init_external_controller_mappings();
 
     if (this.uc33Controller != nil, {
-      this.map_uc33_to_patch(\sl4, \amp);
-      this.map_uc33_to_patch(\knu4, \hellMax);
-      this.map_uc33_to_patch(\knm4, \hellMin);
-      this.map_uc33_to_patch(\knl4, \hellFreq);
+      //this.map_uc33_to_patch(\sl4, \amp);
+      this.map_uc33_to_patch(\knu4, [\hellMax, \hellFreq]);
+      //this.map_uc33_to_patch(\knm4, \hellMin);
+      /*this.map_uc33_to_patch(\knu4, \hellFreq);*/
     });
 
   }

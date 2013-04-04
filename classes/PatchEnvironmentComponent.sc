@@ -17,6 +17,7 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
   on_play {
     //this.patch.play(bus: Bus.audio(Server.default, this.outputBus));
     this.outputChannel.play(this.patch);
+    //this.patch.playToMixer(this.outputChannel);
   }
 
   load_environment {
@@ -33,22 +34,15 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
    *
    *  @param  String  A string containing a key used to identify the
    *  knob or slider on the controller.  Ex: 'sl1'.
-   *  @param  Symbol  Used as a key to identify the property of the patch
-   *  to control with the aforementioned controller knob.  Ex: \amp.
+   *  @param  Symbol|Array  Used as a key or keys to identify the property of
+   *  the patch to control with the aforementioned controller knob.  Ex: \amp.
    **/
   map_uc33_to_patch {
-    arg controllerComponent, patchPropertyKey, patch = this.patch;
-    var patchProperty;
+    // mapTo has a different default than in parent class
+    arg controllerComponent, propertyKeys, mapTo = this.patch;
 
-    /*"PatchEnvironmentComponent.map_uc33_to_patch".postln;*/
-    
-    patchProperty = patch.performMsg([patchPropertyKey]);
+    this.map_uc33_to_property(controllerComponent, propertyKeys, mapTo);
 
-    this.uc33Controller.mapCCS(1, controllerComponent, {
-      arg ccval;
-
-      patchProperty.value = patchProperty.spec.map(ccval / 127);
-    });
   }
 
   map_softStep_to_patch {

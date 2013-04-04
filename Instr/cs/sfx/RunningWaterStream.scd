@@ -114,12 +114,15 @@ Instr("cs.sfx.RunningWaterStream.RunningWaterStreamAutomated", {
   out;
 
 }, [
-  \buffer.asSpec(),
-  \gate.asSpec(),
-  \amp.asSpec(),
+  \buffer,
+  \gate,
+  \amp,
+  // hellMin
   ControlSpec(0.0, 1.0, \linear),
+  // hellMax
   ControlSpec(0.0, 1.0, \linear),
-  \beats.asSpec(),
-  \controlbus.asSpec(),
-  \gate.asSpec()
+  // hellFreq
+  ControlSpec(0.0, 0.5, \exp),
+  \controlbus,
+  \gate
 ]);
