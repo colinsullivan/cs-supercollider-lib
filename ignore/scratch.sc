@@ -1,7 +1,7 @@
 ({
   s.quit();
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  s.options.outDevice= "Soundflower (64ch)";
+  //s.options.outDevice= "Soundflower (64ch)";
   /*s.options.sampleRate = 48000;*/
   s.boot();
   //s.meter();
@@ -245,11 +245,11 @@ SynthDef(\test, { | out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |
     [0.0,   2.5,      -2.5,     2.5,      -2.5,   -5.5  ]
   ).plot();*/
 
-  Env.new(
+  /*Env.new(
     [1.0,   0.0,    0.0 ],
     [   0.25,    0.75    ],
     [   -3.0,    0.00    ]
-  ).plot();
+  ).plot();*/
 
 )
 
@@ -812,5 +812,19 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 )
 
 
+({
+  s.quit();
+  /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
+  //s.options.outDevice= "Soundflower (64ch)";
+  /*s.options.sampleRate = 48000;*/
+  s.boot();
+  s.meter();
+  //FreqScope.new(400, 200);
 
+  s.doWhenBooted({
+    Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
+    Instr.loadAll();
 
+    Instr("cs.fm.NewVoice").miditest();
+  });
+}.value());
