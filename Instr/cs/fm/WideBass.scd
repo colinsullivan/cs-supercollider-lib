@@ -39,7 +39,7 @@ Instr("cs.fm.WideBass", {
   carrierEnvShape = Env.new(
     //initial attack             peak          exp. decay
     [0.0,   0.75,     0.9,      1.0,      0.9,      0.0 ],
-    [   0.001,    0.1,     0.05,      0.05,   0.79      ],
+    [   0.001,    0.2,     0.05,      0.05,   0.89      ],
     [0.0,   2.5,      -2.5,     2.5,      -2.5,   -5.5  ],
     releaseNode: 3
   );
@@ -47,7 +47,7 @@ Instr("cs.fm.WideBass", {
   attackModEnv = EnvGen.kr(
     envelope: attackModEnvShape,
     gate: gate,
-    timeScale: 0.08
+    timeScale: 0.25
   );
 
   attackModulator = attackModEnv * (attackModulatorGain * SinOsc.ar(attackModFreq));
@@ -69,14 +69,15 @@ Instr("cs.fm.WideBass", {
   );
 
   // second channel is slightly delayed for width
-  out = [outL, DelayC.ar(outL, 0.01, 0.01)];
+  out = [outL, DelayC.ar(outL, 0.03, 0.03)];
 
   // bass resonances
   /*out = RLPF.ar(out, freq / 0.33, 1.2);*/
   /*out = RLPF.ar(out, freq / 0.66, 1.2);*/
   /*out = RLPF.ar(out, freq / 1.33, 0.9);*/
   /*out = RLPF.ar(out, freq / 1.66, 0.9);*/
-  out = RLPF.ar(out, 100, 0.5);
+  out = (-12.0.dbamp()) * out;
+  out = RLPF.ar(out, 100, 0.5, 4.0.dbamp());
 
   // free synth when both carrier and modulator envelopes are done
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(attackModEnv) - 1);
