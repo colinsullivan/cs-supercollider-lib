@@ -1,13 +1,12 @@
 FMPercussionVoicerEnvironment : VoicerEnvironmentComponent {
   
   init {
-    arg params,
-      instr = Instr("cs.fm.OrganicPercussion"),
+    arg params;
+    var instr = Instr("cs.fm.OrganicPercussion"),
       specs = instr.specs;
 
     params['numVoices'] = 8;
     params['instr'] = instr;
-    params['inChannel'] = 4;
 
     super.init(params);
 

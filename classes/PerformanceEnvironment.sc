@@ -17,31 +17,48 @@ PerformanceEnvironment : Object {
 
     modulesToLoad = (
       clockEnvironment: (
-        class: ClockEnvironment
+        class: ClockEnvironment,
+        initParams: (
+        )
       ),
       randomizedLazersEnvironment: (
         class: RandomizedLazersEnvironment,
-        outputBus: 10
+        initParams: (
+          inChannel: 2,
+          outputBus: 10
+        )
       ),
       runningWaterEnvironment: (
         class: RunningWaterEnvironment,
-        outputBus: 18
+        initParams: (
+          outputBus: 18
+        )
       ),
       randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment,
-        outputBus: 14
+        initParams: (
+          outputBus: 14
+        )
       ),
      smoothbassEnvironment: (
         class: SmoothBassVoicerEnvironment,
-        outputBus: 12
+        initParams: (
+          inChannel: 3,
+          outputBus: 12
+        )
       ),
       fmPercussionEnvironment: (
         class: FMPercussionVoicerEnvironment,
-        outputBus: 16
+        initParams: (
+          inChannel: 4,
+          outputBus: 16
+        )
       ),
       granularChaosEnvironment: (
         class: GranularChaosEnvironment,
-        outputBus: 20
+        initParams: (
+          outputBus: 20
+        )
       )
     );
 
@@ -54,19 +71,20 @@ PerformanceEnvironment : Object {
 
     modulesToLoad.keysValuesDo({
       arg moduleName, moduleProperties;
-      var module;
-      
-      module = moduleProperties['class'].new((
-        outputBus: moduleProperties['outputBus'],
-        origin: 0@0,
-        init_done_callback: {
-          me.modules[moduleName] = module;
+      var module, initParams;
 
-          if (me.modules.size == modulesToLoad.size, {
-            me.modules_all_loaded();    
-          });
-        }
-      ));
+      initParams = moduleProperties['initParams'];
+
+      initParams['origin'] = 0@0;
+      initParams['init_done_callback'] = {
+        me.modules[moduleName] = module;
+
+        if (me.modules.size == modulesToLoad.size, {
+          me.modules_all_loaded();
+        });
+      };
+      
+      module = moduleProperties['class'].new(initParams);
     });
   }
 
