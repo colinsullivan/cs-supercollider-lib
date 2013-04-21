@@ -61,16 +61,22 @@ Instr("cs.fm.WideBass", {
 
   carrierGain = velocity.exprange(0.25, 1.0);
 
+  // FM tone
   outL = carrierEnv * carrierGain * SinOsc.ar(freq + attackModulator + toneModulator);
-  outR = carrierEnv * carrierGain * SinOsc.ar(0.1 + freq + attackModulator + toneModulator);
+  // second FM tone slightly detuned
+  outL = outL + (
+    carrierEnv * carrierGain * SinOsc.ar(0.1 + freq + attackModulator + toneModulator)
+  );
 
-  out = [outL, outR];
+  // second channel is slightly delayed for width
+  out = [outL, DelayC.ar(outL, 0.01, 0.01)];
 
   // bass resonances
   /*out = RLPF.ar(out, freq / 0.33, 1.2);*/
   /*out = RLPF.ar(out, freq / 0.66, 1.2);*/
   /*out = RLPF.ar(out, freq / 1.33, 0.9);*/
-  out = RLPF.ar(out, freq / 1.66, 0.9);
+  /*out = RLPF.ar(out, freq / 1.66, 0.9);*/
+  out = RLPF.ar(out, 100, 0.5);
 
   // free synth when both carrier and modulator envelopes are done
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(attackModEnv) - 1);

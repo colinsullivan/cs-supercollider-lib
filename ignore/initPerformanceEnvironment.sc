@@ -10,6 +10,7 @@
   /*s.options.inDevice = "Soundflower (64ch)";*/
 
   /*s.options.outDevice = "Soundflower (64ch)";*/
+  s.options.inDevice = "JackRouter";
   s.options.outDevice = "JackRouter";
   s.options.numOutputBusChannels = 32;
   //s.options.sampleRate = 48000;

@@ -825,6 +825,6 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
     Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
     Instr.loadAll();
 
-    Instr("cs.fm.NewVoice").miditest();
+    Instr("cs.fm.WideBass").miditest();
   });
 }.value());
