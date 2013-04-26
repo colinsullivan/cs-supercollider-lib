@@ -33,7 +33,7 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
     this.patch = Patch(Instr.at("cs.sfx.GranularChaos"), (
       buffer: this.buf,
       envbuf: this.grainEnvBuf,
-      gate: KrNumberEditor.new(0, \gate.asSpec())
+      gate: KrNumberEditor.new(1, \gate.asSpec())
       /*done_callback: {
         "done!".postln;
       },*/
@@ -95,7 +95,7 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
       /*windowHeight*/
     /*));*/
 
-    layout.flow({
+    /*layout.flow({
       arg layout;
       granularButton = Button(layout, Rect(10, 10, 100, 30)).states_([
         ["on"],
@@ -111,6 +111,6 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
 
       });
 
-    });
+    });*/
   }
 }

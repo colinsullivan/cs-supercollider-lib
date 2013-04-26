@@ -33,7 +33,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
 
     this.patch = Patch(Instr.at("cs.sfx.RunningWaterStream.RunningWaterStreamAutomated"), (
       buffer: this.buf,
-      gate: KrNumberEditor.new(0, \gate.asSpec()),
+      gate: KrNumberEditor.new(1, \gate.asSpec()),
       useOscillator: KrNumberEditor.new(0, \gate.asSpec()),
       hellValueBus: this.hellValueBus
     ));
@@ -76,7 +76,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
 
     });
 
-    layout.flow({
+    /*layout.flow({
       arg layout;
 
       toggleButton = Button(layout, Rect(10, 10, 100, 30))
@@ -91,7 +91,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
         });
 
     });
-
+*/
     layout.flow({
       arg layout;
 
