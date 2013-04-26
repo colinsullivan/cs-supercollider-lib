@@ -33,7 +33,7 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
     this.patch = Patch(Instr.at("cs.sfx.GranularChaos"), (
       buffer: this.buf,
       envbuf: this.grainEnvBuf,
-      gate: KrNumberEditor.new(1, \gate.asSpec())
+      gate: KrNumberEditor.new(1, \gate)
       /*done_callback: {
         "done!".postln;
       },*/

@@ -17,7 +17,7 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
   on_play {
     //this.patch.play(bus: Bus.audio(Server.default, this.outputBus));
     this.outputChannel.play(this.patch);
-    //this.patch.playToMixer(this.outputChannel);
+    /*this.patch.playToMixer(this.outputChannel);*/
   }
 
   load_environment {

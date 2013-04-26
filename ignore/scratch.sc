@@ -828,3 +828,5 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
     Instr("cs.fm.WideBass").miditest();
   });
 }.value());
+
+(s.numGroups();)

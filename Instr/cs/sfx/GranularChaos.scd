@@ -4,9 +4,7 @@ Instr("cs.sfx.GranularChaos", {
     gate = 0,
     amp = 0.75, // this instrument is loud
     pitch = 1.0,
-    pointer = 0.0,
-    // called when release envelope is done and synth will be freed
-    done_callback = {};
+    pointer = 0.0;
     
     var out, filelength, env, dir, envShape, theGate;
 
@@ -21,7 +19,6 @@ Instr("cs.sfx.GranularChaos", {
       gate,
       doneAction: 2
     );
-    /*Done.kr(env).onTrig(done_callback);*/
     out = Warp1.ar(
       numChannels: buffer.numChannels,
       bufnum: buffer,
@@ -40,10 +37,10 @@ Instr("cs.sfx.GranularChaos", {
 
     /*out = TGrains3.ar(2, Dust.ar(0.5), buffer, pitch, pointer, window: envbuf);*/
 }, [
-  \buffer.asSpec(),
-  \buffer.asSpec(),
-  \gate.asSpec(),
-  \amp.asSpec(),
+  \buffer,
+  \buffer,
+  \gate,
+  \amp,
   ControlSpec(-1.5, 1.5),
   ControlSpec(0.0, 1.0)
 ]);
