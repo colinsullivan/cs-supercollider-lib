@@ -1,5 +1,6 @@
 Instr("cs.fm.WideBass", {
   arg freq = 440,
+    freqlag,
     amp = 0.9,
     gate = 0,
     // attack resonance
@@ -22,6 +23,9 @@ Instr("cs.fm.WideBass", {
     outPreFiltered,
     out;
 
+  //portamento
+  freq = Lag.kr(freq, freqlag);
+  
   velocity = Latch.kr(gate, gate);
 
   // amount of FM synthesis depends on velocity (percussive)
@@ -39,7 +43,7 @@ Instr("cs.fm.WideBass", {
   carrierEnvShape = Env.new(
     //initial attack             peak          exp. decay
     [0.0,   0.75,     0.9,      1.0,      0.9,      0.0 ],
-    [   0.001,    0.2,     0.05,      0.05,   0.89      ],
+    [   0.001,    0.2,     0.05,      0.05,   0.3      ],
     [0.0,   2.5,      -2.5,     2.5,      -2.5,   -5.5  ],
     releaseNode: 3
   );
@@ -64,9 +68,9 @@ Instr("cs.fm.WideBass", {
   // FM tone
   outL = carrierEnv * carrierGain * SinOsc.ar(freq + attackModulator + toneModulator);
   // second FM tone slightly detuned
-  outL = outL + (
-    carrierEnv * carrierGain * SinOsc.ar(0.1 + freq + attackModulator + toneModulator)
-  );
+  /*outL = outL + (
+    carrierEnv * carrierGain * SinOsc.ar(0.01 + freq + attackModulator + toneModulator)
+  );*/
 
   // second channel is slightly delayed for width
   out = [outL, DelayC.ar(outL, 0.03, 0.03)];
@@ -76,8 +80,8 @@ Instr("cs.fm.WideBass", {
   /*out = RLPF.ar(out, freq / 0.66, 1.2);*/
   /*out = RLPF.ar(out, freq / 1.33, 0.9);*/
   /*out = RLPF.ar(out, freq / 1.66, 0.9);*/
-  out = (-12.0.dbamp()) * out;
-  out = RLPF.ar(out, 100, 0.5, 4.0.dbamp());
+  /*out = (-6.0.dbamp()) * out;*/
+  /*out = RLPF.ar(out, 250, 0.5, 4.0.dbamp());*/
 
   // free synth when both carrier and modulator envelopes are done
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(attackModEnv) - 1);
@@ -85,6 +89,7 @@ Instr("cs.fm.WideBass", {
   out = amp * out;
 }, [
   \freq,
+  [0, 2],
   \amp,
   \gate,
   // attackModFreq

@@ -59,6 +59,13 @@ PerformanceEnvironment : Object {
         initParams: (
           outputBus: 20
         )
+      ),
+      wideBassEnvironment: (
+        class: WideBassVoicerEnvironment,
+        initParams: (
+          inChannel: 5,
+          outputBus: 22
+        )
       )
     );
 
