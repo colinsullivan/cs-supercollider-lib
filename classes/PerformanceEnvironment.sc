@@ -16,11 +16,11 @@ PerformanceEnvironment : Object {
     this.modules = ();
 
     modulesToLoad = (
-      clockEnvironment: (
+      /*clockEnvironment: (
         class: ClockEnvironment,
         initParams: (
         )
-      ),
+      ),*/
       randomizedLazersEnvironment: (
         class: RandomizedLazersEnvironment,
         initParams: (
@@ -91,6 +91,9 @@ PerformanceEnvironment : Object {
         });
       };
       
+      ("  * Loading " + moduleName).postln;
+      ("----------------------------------------").postln;
+
       module = moduleProperties['class'].new(initParams);
     });
   }

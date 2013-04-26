@@ -44,6 +44,7 @@
   Instr.loadAll();
 
   s.doWhenBooted({
+
     MIDIClient.init();
     MIDIPort.init();
     MIDIIn.connectAll();

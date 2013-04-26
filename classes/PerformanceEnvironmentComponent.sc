@@ -24,9 +24,6 @@ PerformanceEnvironmentComponent : Object {
     arg params;
     var me = this;
 
-    ("  * Starting " + this.gui_window_title()).postln;
-    ("----------------------------------------").postln;
-
     if (params['outputBus'] == nil, {
       this.outputBus = 0;
     }, {
@@ -111,7 +108,6 @@ PerformanceEnvironmentComponent : Object {
    *  Called when the stop button is pressed on the interface.
    **/
   on_stop {
-  
   }
 
   init_external_controller_mappings {

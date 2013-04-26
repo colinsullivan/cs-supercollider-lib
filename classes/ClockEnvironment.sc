@@ -1,15 +1,13 @@
 ClockEnvironment : PerformanceEnvironmentComponent {
 
-  var <>interface, <>clockFace, <>midiClockOut;
+  var <>interface, <>clockFace, <>midiClockOut, <>window, <>origin;
 
   start {
     clockFace.play();
-    /*this.midiClockOut.play();*/
   }
 
   stop {
     clockFace.stop();
-    /*this.midiClockOut.stop();*/
   }
 
   handle_reset_button_pressed {
@@ -32,17 +30,9 @@ ClockEnvironment : PerformanceEnvironmentComponent {
       me = this,
       tempoResponder;
 
-    super.init(params);
+    this.origin = params['origin'];
 
-    /*MIDIIn.connect(0, MIDIClient.sources[1]);*/
-    // TODO: Figure out how to explicitly declare which MIDI port sync clock is using
-    /*MIDISyncClock.init();*/
-
-    /*MIDISyncClock.sched(10, {
-      Tempo.tempo = MIDISyncClock.tempo.round();
-      10;
-    });*/
-    /*this.midiClockOut = MIDIClockOut.new("(in) To Ableton Tempo", "(in) To Ableton Tempo");*/
+    //super.init(params);
 
     tempoResponder = OSCdef.new('clockTempoResponder', {
       arg msg;
@@ -86,9 +76,9 @@ ClockEnvironment : PerformanceEnvironmentComponent {
         me.handle_reset_button_pressed(resetButton);
       });
 
-    this.init_gui((
-      window: window
-    ));
+    window.bounds = window.bounds.moveToPoint(this.origin);
+
+    this.window = window;
 
     {this.init_done_callback.value()}.defer(2);
   }
