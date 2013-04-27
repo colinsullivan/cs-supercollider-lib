@@ -105,7 +105,7 @@ Instr("cs.sfx.RunningWaterStream.RunningWaterStreamAutomated", {
 
   inverseHell = 1.0 - hell;
   
-  Out.kr(hellValueBus, hell);
+  //Out.kr(hellValueBus, hell);
   
   out = Instr.ar("cs.sfx.RunningWaterStream.RunningWaterStream", (
     buffer: buffer,

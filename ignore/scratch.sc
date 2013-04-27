@@ -829,4 +829,4 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
   });
 }.value());
 
-(s.numGroups();)
+(s.queryAllNodes();)

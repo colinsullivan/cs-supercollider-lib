@@ -11,7 +11,7 @@ FMPercussionVoicerEnvironment : VoicerEnvironmentComponent {
     super.init(params);
 
     this.voicer.mapGlobal(\amp, value: (1.0 / params['numVoices']), spec: \amp);
-    this.sock.addControl(7, \amp);
+    /*this.sock.addControl(7, \amp);*/
 
     this.voicer.mapGlobal(
       \doFreqSweep,

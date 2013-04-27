@@ -5,12 +5,12 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
     <>hellValueUpdater,
     <>hellFreqLabel;
 
-  init {
+  /*init {
     arg params;
     super.init(params);
     
     this.hellValueBus = Bus.control(numChannels: 1);
-  }
+  }*/
 
   load_samples {
     arg callback;
@@ -35,7 +35,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
       buffer: this.buf,
       gate: KrNumberEditor.new(1, \gate.asSpec()),
       useOscillator: KrNumberEditor.new(0, \gate.asSpec()),
-      hellValueBus: this.hellValueBus
+      //hellValueBus: this.hellValueBus
     ));
   }
 
@@ -92,7 +92,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
 
     });
 */
-    layout.flow({
+    /*layout.flow({
       arg layout;
 
       ArgNameLabel("hellValue", layout, labelWidth);
@@ -152,7 +152,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
 
     this.hellValueUpdater.play();
 
-    this.window.onClose = { me.hellValueUpdater.stop(); };
+    this.window.onClose = { me.hellValueUpdater.stop(); };*/
 
   }
 
