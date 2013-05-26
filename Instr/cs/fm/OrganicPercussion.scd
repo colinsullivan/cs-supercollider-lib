@@ -9,7 +9,8 @@ Instr("cs.fm.OrganicPercussion", {
     freqSweepTargetMultiplier = 1.0,
     // duration of notes can be determined by velocity or set manually
     autoDurationOn = 1,
-    noteDuration = 1.0;
+    noteDuration = 1.0,
+    toneModulatorGainMultiplier = 0.0;
 
   var carrier,
     modulator,
@@ -23,7 +24,9 @@ Instr("cs.fm.OrganicPercussion", {
     out,
     freqSweepEnvShape,
     freqSweepEnv,
-    sustainTime;
+    sustainTime,
+    toneModulatorGain,
+    toneModulator;
 
   velocity = Latch.kr(gate, gate);
 
@@ -67,6 +70,11 @@ Instr("cs.fm.OrganicPercussion", {
 
   modulator = modEnv * (modulatorGain * SinOsc.ar(modFreq));
   
+  toneModulatorGain = toneModulatorGainMultiplier * freq;
+  toneModulator = toneModulatorGain * (
+    SinOsc.ar(freq * 2.0)/* + SinOsc.ar(freq * 2.0)*/
+  );
+  
   carrierEnv = EnvGen.kr(
     envelope: carrierEnvShape,
     gate: gate,
@@ -75,7 +83,7 @@ Instr("cs.fm.OrganicPercussion", {
 
   carrierGain = velocity.exprange(0.25, 1.0);
 
-  carrier = carrierEnv * carrierGain * SinOsc.ar(freq + modulator);
+  carrier = carrierEnv * carrierGain * SinOsc.ar(freq + modulator + toneModulator);
 
   // free synth when both carrier and modulator envelopes are done
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) - 1);
@@ -94,5 +102,7 @@ Instr("cs.fm.OrganicPercussion", {
   // autoDurationOn
   \unipolar,
   // noteDuration
-  ControlSpec(0.1, 10)
+  ControlSpec(0.1, 10),
+  // toneModulatorGainMultiplier
+  ControlSpec(0.0, 20.0)
 ]);

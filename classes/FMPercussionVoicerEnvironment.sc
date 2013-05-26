@@ -40,6 +40,13 @@ FMPercussionVoicerEnvironment : VoicerEnvironmentComponent {
       spec: specs.at(instr.argsAndIndices().at(\noteDuration))
     );
     this.sock.addControl(18, \noteDuration);
+    
+    this.voicer.mapGlobal(
+      \toneModulatorGainMultiplier,
+      value: 0.0,
+      spec: specs.at(instr.argsAndIndices().at(\toneModulatorGainMultiplier))
+    );
+    this.sock.addControl(19, \toneModulatorGainMultiplier);
   }
 
 }
