@@ -245,10 +245,16 @@ SynthDef(\test, { | out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |
     [0.0,   2.5,      -2.5,     2.5,      -2.5,   -5.5  ]
   ).plot();*/
 
-  /*Env.new(
-    [1.0,   0.0,    0.0 ],
-    [   0.25,    0.75    ],
-    [   -3.0,    0.00    ]
+  Env.new(
+      [0.0,     1.0,    0.0 ],
+      [   0.5,      0.5    ],
+      [   3.0,     -3.00    ],
+  ).plot();
+
+  /*Env.perc(
+    attackTime: 0.01,
+    releaseTime: 1.0,
+    curve: -6
   ).plot();*/
 
 )
@@ -815,7 +821,7 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 ({
   s.quit();
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  //s.options.outDevice= "Soundflower (64ch)";
+  s.options.outDevice= "JackRouter";
   /*s.options.sampleRate = 48000;*/
   s.boot();
   s.meter();
@@ -825,7 +831,7 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
     Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
     Instr.loadAll();
 
-    Instr("cs.fm.WideBass").miditest();
+    Instr("cs.percussion.Kick").miditest();
   });
 }.value());
 

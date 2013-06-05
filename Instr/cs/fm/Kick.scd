@@ -1,3 +1,6 @@
+/**
+ *  This is actually more like a pad.
+ **/
 Instr("cs.fm.Kick.SoftKick", {
   arg freq = 55,
     amp = 1.0,
@@ -66,4 +69,8 @@ Instr("cs.fm.Kick.SoftKick", {
 
   [out, out];
 
-});
+}, [
+  \freq,
+  \amp,
+  \gate
+]);
