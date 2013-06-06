@@ -1,4 +1,4 @@
-Instr("cs.percussion.Impulsive", {
+Instr("cs.percussion.Noisy.NoisyMono", {
 
   arg freq = 440,
     amp = 0.9,
@@ -15,7 +15,7 @@ Instr("cs.percussion.Impulsive", {
     inverseVelocity;
 
   velocity = Latch.kr(gate, gate);
-  inverseVelocity = 1.0 - velocity;
+  inverseVelocity = (1.0 - velocity);
 
   /*outEnvShape = Env.adsr(
     attackTime: 0.1,
@@ -26,8 +26,8 @@ Instr("cs.percussion.Impulsive", {
   );
   outEnvShape.releaseNode = 2;*/
   outEnvShape = Env.perc(
-    attackTime: 0,
-    releaseTime: 1.25
+    attackTime: inverseVelocity.exprange(0.001, 1.1),
+    releaseTime: velocity.range(0.2, 1.25)
   );
   
   outEnv = EnvGen.ar(
@@ -45,28 +45,54 @@ Instr("cs.percussion.Impulsive", {
     dustDensityEnvShape,
     gate,
     0,
-    levelScale: velocity.exprange(1000, 20000),
-    timeScale: velocity.exprange(0.1, 1.0)
+    levelScale: velocity.exprange(7000, 20000),
+    timeScale: velocity.range(0.01, 1.0)
   );
   //out = Impulse.ar(0);
   out = Dust.ar(dustDensityEnv);
 
   //out = BPF.ar(out, freq, 0.01);
   resonanceMin = 0.05;
-  resonanceMax = 0.2;
+  resonanceMax = 0.1;
   out = RLPF.ar(
     out,
     freq * 4.0,
     inverseVelocity.exprange(resonanceMin, resonanceMax)
   );
 
-  out = [out, DelayC.ar(out, delaytime: 0.005)];
-
   //out = MantissaMask.ar(out, 23);
 
   //out = MembraneCircle.ar(out, MouseX.kr(0.01, 0.1), MouseY.kr(0.999999, 0.999, 1));
 
   out = amp * (outEnv * out);
+}, [
+  \freq,
+  \amp,
+  \gate
+]);
+
+
+// just double for different randomized noise effect in each channel
+Instr("cs.percussion.Noisy.NoisyStereo", {
+  arg freq = 440,
+    amp = 0.9,
+    gate = 0;
+
+  var out;
+
+  out = [
+    Instr.ar("cs.percussion.Noisy.NoisyMono", (
+      freq: freq,
+      amp: amp,
+      gate: gate
+    )),
+    Instr.ar("cs.percussion.Noisy.NoisyMono", (
+      freq: freq,
+      amp: amp,
+      gate: gate
+    ))
+  ];
+
 }, [
   \freq,
   \amp,

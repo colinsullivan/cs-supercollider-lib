@@ -1,4 +1,4 @@
-Instr("cs.percussion.Kick", {
+Instr("cs.percussion.VileKick", {
   arg freq = 110,
     amp = 0.9,
     gate = 0;
@@ -8,11 +8,11 @@ Instr("cs.percussion.Kick", {
     toneModulator,
     out;
 
-  freq = freq * 0.5;
+  //freq = freq * 0.5;
 
   attackModulator = Instr.ar("cs.fm.Oscillator", (
     amp: 50 * freq,
-    freq: 4.3 * freq,
+    freq: 7.3 * freq,
     gate: gate,
     envShape: Env.new(
       [1.0,   0.0,    0.0 ],
@@ -26,7 +26,7 @@ Instr("cs.percussion.Kick", {
 
   toneModulator = Instr.ar("cs.fm.Oscillator", (
     amp: 40 * freq,
-    freq: 1.6 * freq,
+    freq: 0.5 * freq,
     gate: gate,
     envShape: Env.new(
       [0.0,     0.2,    0.0 ],

@@ -66,6 +66,20 @@ PerformanceEnvironment : Object {
           inChannel: 5,
           outputBus: 22
         )
+      ),
+      vileKickEnvironment: (
+        class: VileKickEnvironment,
+        initParams: (
+          inChannel: 6,
+          outputBus: 24
+        )
+      ),
+      noisyVoicer: (
+        class: NoisyVoicer,
+        initParams: (
+          inChannel: 6,
+          outputBus: 26
+        )
       )
     );
 
