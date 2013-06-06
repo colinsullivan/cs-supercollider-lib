@@ -1,7 +1,7 @@
 /**
  *  This is actually more like a pad.
  **/
-Instr("cs.fm.Kick.SoftKick", {
+Instr("cs.fm.Pad.SoftKick", {
   arg freq = 55,
     amp = 1.0,
     gate = 0;
