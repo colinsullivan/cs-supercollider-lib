@@ -246,9 +246,9 @@ SynthDef(\test, { | out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |
   ).plot();*/
 
   Env.new(
-      [0.0,     1.0,    0.0 ],
-      [   0.5,      0.5    ],
-      [   3.0,     -3.00    ],
+    [1.0,    1.0,     0.0],
+    [     1.0,    0.1],
+    releaseNode: nil
   ).plot();
 
   /*Env.perc(

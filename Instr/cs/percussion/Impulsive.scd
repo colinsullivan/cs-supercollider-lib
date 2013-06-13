@@ -5,6 +5,7 @@ Instr("cs.percussion.Impulsive", {
 
   var out,
     imp,
+    env,
     harms = [
       (
         ratio: 4.875,
@@ -43,7 +44,13 @@ Instr("cs.percussion.Impulsive", {
     out = RLPF.ar(out, freq*harm['ratio'], harm['rq']);
   });
 
-  out = amp * out;
+  env = EnvGen.kr(Env.new(
+    [1.0,    1.0,     0.0],
+    [     1.0,    0.1],
+    releaseNode: nil
+  ), doneAction: 2);
+
+  out = amp * (env * out);
 
 }, [
   \freq,

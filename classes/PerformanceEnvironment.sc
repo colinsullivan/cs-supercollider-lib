@@ -15,7 +15,7 @@ PerformanceEnvironment : Object {
       percussionOutputBus = 10,
       synthsOutputBus = 12,
       ambienceOutputBus = 18,
-      freeOutputBusses = [16];
+      freeOutputBusses = [16, 14];
 
     this.modules = ();
 
@@ -41,7 +41,7 @@ PerformanceEnvironment : Object {
       randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment,
         initParams: (
-          outputBus: 14
+          outputBus: ambienceOutputBus
         )
       ),
      smoothbassEnvironment: (
@@ -75,21 +75,21 @@ PerformanceEnvironment : Object {
         class: VileKickEnvironment,
         initParams: (
           inChannel: 6,
-          outputBus: 24
+          outputBus: percussionOutputBus
         )
       ),
       noisyVoicer: (
         class: NoisyVoicer,
         initParams: (
           inChannel: 6,
-          outputBus: 26
+          outputBus: percussionOutputBus
         )
       ),
       impulsiveVoicer: (
         class: ImpulsiveVoicer,
         initParams: (
           inChannel: 7,
-          outputBus: 28
+          outputBus: percussionOutputBus
         )
       )
     );
