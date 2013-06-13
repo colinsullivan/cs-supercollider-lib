@@ -18,5 +18,8 @@ WideBassVoicerEnvironment : VoicerEnvironmentComponent {
     this.sock.addControl(15, \toneModulatorGainMultiplier);
     
     this.voicer.portaTime = 0.2;
+
+    // pitch bend one octave in either direction
+    this.sock.addControl(\pb, \pb, 1, 12);
   }
 }

@@ -15,7 +15,7 @@ PerformanceEnvironment : Object {
       percussionOutputBus = 10,
       synthsOutputBus = 12,
       ambienceOutputBus = 18,
-      freeOutputBusses = [16, 14];
+      freeOutputBusses = [14];
 
     this.modules = ();
 
@@ -75,7 +75,7 @@ PerformanceEnvironment : Object {
         class: VileKickEnvironment,
         initParams: (
           inChannel: 6,
-          outputBus: percussionOutputBus
+          outputBus: 16
         )
       ),
       noisyVoicer: (

@@ -1,6 +1,7 @@
 Instr("cs.fm.WideBass", {
   arg freq = 440,
     freqlag,
+    pb = 1,
     amp = 0.9,
     gate = 0,
     // attack resonance
@@ -25,6 +26,9 @@ Instr("cs.fm.WideBass", {
 
   //portamento
   freq = Lag.kr(freq, freqlag);
+
+  // pitch bend
+  freq = pb * freq;
   
   velocity = Latch.kr(gate, gate);
 
@@ -90,6 +94,7 @@ Instr("cs.fm.WideBass", {
 }, [
   \freq,
   [0, 2],
+  \nil,
   \amp,
   \gate,
   // attackModFreq
