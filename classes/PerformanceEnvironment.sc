@@ -4,7 +4,10 @@ PerformanceEnvironment : Object {
     /**
      *  Dictionary storing all loaded modules indexed by name.
      **/
-    <>modules;
+    <>modules,
+    percussionOutputBus = 10,
+    synthsOutputBus = 12,
+    ambienceOutputBus = 18;
 
   *new {
     ^super.new.init();
@@ -25,13 +28,13 @@ PerformanceEnvironment : Object {
         class: RandomizedLazersEnvironment,
         initParams: (
           inChannel: 2,
-          outputBus: 10
+          outputBus: percussionOutputBus
         )
       ),
       runningWaterEnvironment: (
         class: RunningWaterEnvironment,
         initParams: (
-          outputBus: 18
+          outputBus: ambienceOutputBus
         )
       ),
       randomHarpEnvironment: (
@@ -44,7 +47,7 @@ PerformanceEnvironment : Object {
         class: SmoothBassVoicerEnvironment,
         initParams: (
           inChannel: 3,
-          outputBus: 12
+          outputBus: synthsOutputBus
         )
       ),
       fmPercussionEnvironment: (
@@ -79,6 +82,13 @@ PerformanceEnvironment : Object {
         initParams: (
           inChannel: 6,
           outputBus: 26
+        )
+      ),
+      impulsiveVoicer: (
+        class: ImpulsiveVoicer,
+        initParams: (
+          inChannel: 7,
+          outputBus: 28
         )
       )
     );

@@ -831,7 +831,7 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
     Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
     Instr.loadAll();
 
-    Instr("cs.percussion.Kick").miditest();
+    Instr("cs.percussion.Impulsive").miditest();
   });
 }.value());
 

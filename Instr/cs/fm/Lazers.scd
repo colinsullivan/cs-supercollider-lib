@@ -113,7 +113,7 @@ Instr("cs.fm.Lazers", {
 
   carrier = carrierEnv * SinOsc.ar(freq + (mod2 * freq * 100));
 
-  out = amp * carrier * velocity.exprange(0.1, 1.0);
+  out = carrier * velocity.exprange(0.1, 1.0);
 
   // take out some of that piercing.
   out = BPeakEQ.ar(out,
@@ -121,10 +121,13 @@ Instr("cs.fm.Lazers", {
     rq: 5,
     db: -16
   );
+  
+  out = amp * out;
 
   //out = LPF.ar(out, velocity.exprange(5000, 12000));
 
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) + Done.kr(mod2Env) - 2);
+
 
   [out, out];
 

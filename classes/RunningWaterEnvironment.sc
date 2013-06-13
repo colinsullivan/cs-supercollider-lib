@@ -54,9 +54,9 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
     layout.flow({
       arg layout;
 
-      /*ArgNameLabel("amp", layout, labelWidth);
+      ArgNameLabel("amp", layout, labelWidth);
       patch.amp.gui(layout);
-      layout.startRow();*/
+      layout.startRow();
 
       /*ArgNameLabel("hellMin", layout, labelWidth);
       patch.hellMin.gui(layout);
@@ -161,7 +161,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
     super.init_external_controller_mappings();
 
     if (this.uc33Controller != nil, {
-      //this.map_uc33_to_patch(\sl4, \amp);
+      this.map_uc33_to_patch(\sl4, \amp);
       this.map_uc33_to_patch(\knu4, [\hellMax]);
       //this.map_uc33_to_patch(\knm4, \hellMin);
       /*this.map_uc33_to_patch(\knu4, \hellFreq);*/

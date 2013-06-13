@@ -12,7 +12,7 @@
   /*s.options.outDevice = "Soundflower (64ch)";*/
   s.options.inDevice = "JackRouter";
   s.options.outDevice = "JackRouter";
-  s.options.numOutputBusChannels = 32;
+  s.options.numOutputBusChannels = 24;
   /*s.options.numInputBusChannels = 32;*/
   /*s.options.maxNodes = 2048;
   s.options.maxSynthDefs = 2048;
