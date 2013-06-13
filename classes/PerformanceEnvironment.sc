@@ -4,17 +4,18 @@ PerformanceEnvironment : Object {
     /**
      *  Dictionary storing all loaded modules indexed by name.
      **/
-    <>modules,
-    percussionOutputBus = 10,
-    synthsOutputBus = 12,
-    ambienceOutputBus = 18;
+    <>modules;
 
   *new {
     ^super.new.init();
   }
 
   init {
-    var modulesToLoad;
+    var modulesToLoad,
+      percussionOutputBus = 10,
+      synthsOutputBus = 12,
+      ambienceOutputBus = 18,
+      freeOutputBusses = [16];
 
     this.modules = ();
 
@@ -54,7 +55,7 @@ PerformanceEnvironment : Object {
         class: FMPercussionVoicerEnvironment,
         initParams: (
           inChannel: 4,
-          outputBus: 16
+          outputBus: percussionOutputBus
         )
       ),
       granularChaosEnvironment: (

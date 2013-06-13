@@ -12,11 +12,8 @@ SmoothBassVoicerEnvironment : VoicerEnvironmentComponent {
     params['numVoices'] = 1;
     params['instr'] = dubBass;
 
-    this.outputBus = 12;
-
     super.init(params);
 
-    this.voicer.mapGlobal(\amp, value: 1.0);
     this.voicer.mapGlobal(
       \rateMultiplier,
       spec: dubBassSpecs.at(dubBass.argsAndIndices().at(\rateMultiplier)),
@@ -25,7 +22,8 @@ SmoothBassVoicerEnvironment : VoicerEnvironmentComponent {
 
     this.voicer.portaTime = 0;
 
-    this.sock.addControl(7, \amp, 1.0);
+    this.voicer.mapGlobal(\amp, value: 0.0);
+    this.sock.addControl(7, \amp);
     this.sock.addControl(15, \rateMultiplier, 2.0);
 
   }

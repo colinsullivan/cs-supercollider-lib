@@ -17,16 +17,16 @@ DubbassVoicerEnvironment : VoicerEnvironmentComponent {
 
     super.init(params);
 
-    this.voicer.mapGlobal(\amp);
     this.voicer.mapGlobal(
       \rateMultiplier,
       spec: dubBassSpecs.at(dubBass.argsAndIndices().at(\rateMultiplier))
     );
+    this.sock.addControl(15, \rateMultiplier);
 
     this.voicer.portaTime = 0;
 
+    this.voicer.mapGlobal(\amp, value: 0.0);
     this.sock.addControl(7, \amp);
-    this.sock.addControl(15, \rateMultiplier);
 
   }
 
