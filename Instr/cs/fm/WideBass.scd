@@ -6,7 +6,9 @@ Instr("cs.fm.WideBass", {
     gate = 0,
     // attack resonance
     attackModFreq = 100,
-    toneModulatorGainMultiplier = 0.0;
+    toneModulatorGainMultiplier = 0.0,
+    toneModulatorLFOAmount = 0.0,
+    toneModulatorLFORate = 0.0;
 
   var carrier,
     attackModulator,
@@ -22,7 +24,8 @@ Instr("cs.fm.WideBass", {
     outL,
     outR,
     outPreFiltered,
-    out;
+    out,
+    toneModulatorLFO;
 
   //portamento
   freq = Lag.kr(freq, freqlag);
@@ -59,6 +62,10 @@ Instr("cs.fm.WideBass", {
   );
 
   attackModulator = attackModEnv * (attackModulatorGain * SinOsc.ar(attackModFreq));
+
+  toneModulatorLFO = SinOsc.ar(toneModulatorLFORate, mul: toneModulatorLFOAmount);
+
+  toneModulatorGain = toneModulatorGain + toneModulatorLFO;
 
   toneModulator = toneModulatorGain * (SinOsc.ar(freq * 2.0) + SinOsc.ar(freq * 4.0));
   
@@ -100,5 +107,9 @@ Instr("cs.fm.WideBass", {
   // attackModFreq
   \freq,
   // toneModulatorGainMultiplier
-  ControlSpec(0.1, 20.0)
+  ControlSpec(0.1, 20.0),
+  // tone modulator LFO amount
+  \freq,
+  // tone modulator LFO rate
+  \beats
 ]);

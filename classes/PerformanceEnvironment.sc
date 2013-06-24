@@ -15,7 +15,7 @@ PerformanceEnvironment : Object {
       percussionOutputBus = 10,
       synthsOutputBus = 12,
       ambienceOutputBus = 18,
-      freeOutputBusses = [28, 30];
+      freeOutputBusses = [];
 
     this.modules = ();
 
@@ -29,7 +29,7 @@ PerformanceEnvironment : Object {
         class: RandomizedLazersEnvironment,
         initParams: (
           inChannel: 2,
-          outputBus: percussionOutputBus
+          outputBus: 28
         )
       ),
       runningWaterEnvironment: (
@@ -55,7 +55,7 @@ PerformanceEnvironment : Object {
         class: FMPercussionVoicerEnvironment,
         initParams: (
           inChannel: 4,
-          outputBus: percussionOutputBus
+          outputBus: 30
         )
       ),
       granularChaosEnvironment: (
