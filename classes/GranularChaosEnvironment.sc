@@ -49,8 +49,8 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
      *  UC-33 Mappings
      **/
     if (this.uc33Controller != nil, {
-      /* slider 1 to amplitude */
-      /*this.map_uc33_to_patch('sl1', \amp);*/
+      /* slider to amplitude */
+      this.map_uc33_to_patch('sl5', \amp);
 
       /* knob 25 to position */
       this.map_uc33_to_patch('knu5', \pointer);
