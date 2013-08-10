@@ -1,16 +1,16 @@
 Instr("cs.fx.Reverb.reverberator", {
-  arg bus, numChan, mix = 1.0;
+  arg bus, numChan, mix = 1.0, revTime = 9.0;
 
   var in, out;
 
   in = In.ar(bus, numChan);
 
-  out = LPF.ar(in, 360);
+  //out = LPF.ar(in, 360);
 
   out = Instr.ar("cs.fx.Reverb.reverberator3", (
     audio: in,
     revBalance: mix,
-	 	revTime: 9.0,
+	 	revTime: revTime,
 	 	taps: 10,
 	 	combs: 10,
 	 	allpasses: 0,
