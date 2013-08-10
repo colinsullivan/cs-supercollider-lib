@@ -4,7 +4,8 @@
   //s.options.outDevice= "Soundflower (64ch)";
   /*s.options.sampleRate = 48000;*/
   s.boot();
-  //s.meter();
+  s.meter();
+  s.scope();
   //FreqScope.new(400, 200);
 
   s.doWhenBooted({
@@ -12,6 +13,42 @@
     Instr.loadAll();
   });
 }.value());
+
+({FBSineC.ar(800, 1.0, 1.0);}.play();)
+
+
+(
+{
+  var out,
+    trig,
+    modIndex,
+    modIndexLow = 40,
+    modIndexHigh = 80,
+    feedbackModulator;
+
+  feedbackModulator = MouseY.kr(0.0, 1.0);
+
+  trig = GaussTrig.ar(SinOscFB.kr(0.05, feedbackModulator).range(8, 12));
+
+  //modIndex = SinOscFB.kr(SinOscFB.kr(0.05, 1.0).range(0.5, 0.8), 1.0).range(0.1, 50);
+  modIndex = SinOscFB.kr(FBSineC.ar(20, 1.0, feedbackModulator), feedbackModulator).exprange(modIndexLow, modIndexHigh);
+
+  out = GrainFM.ar(
+    2,
+    //trigger: Dust2.kr(10),
+    //trigger: Impulse.kr(10),
+    trigger: trig,
+    dur: SinOscFB.kr(0.05, feedbackModulator).range(0.1, 1.0),
+    carfreq: 440,
+    modfreq: 200,
+    index: modIndex,
+    pan: 0,
+    envbufnum: -1,
+    maxGrains: 512
+  );
+
+}.play();
+)
 
 ({Help.gui;}.value());
 
