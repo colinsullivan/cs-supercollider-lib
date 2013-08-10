@@ -4,7 +4,8 @@ Instr("cs.fm.Oscillator", {
     gate = 0,
     envShape,
     envTimeScale = 1.0,
-    envDoneAction = 0;
+    envDoneAction = 0,
+    oscType = SinOsc;
 
   var out,
     env;
@@ -15,7 +16,7 @@ Instr("cs.fm.Oscillator", {
     timeScale: envTimeScale,
     doneAction: envDoneAction
   );
-  out = amp * (env * SinOsc.ar(freq));
+  out = amp * (env * oscType.ar(freq));
 
 }, [
   \freq,
