@@ -161,8 +161,8 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
     super.init_external_controller_mappings();
 
     if (this.uc33Controller != nil, {
-      this.map_uc33_to_patch(\sl4, \amp);
-      this.map_uc33_to_patch(\knu4, [\hellMax]);
+      this.map_uc33_to_patch(\sl7, \amp);
+      this.map_uc33_to_patch(\knu7, [\hellMax]);
       //this.map_uc33_to_patch(\knm4, \hellMin);
       /*this.map_uc33_to_patch(\knu4, \hellFreq);*/
     });
