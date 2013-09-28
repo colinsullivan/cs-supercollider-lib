@@ -12,10 +12,7 @@ PerformanceEnvironment : Object {
 
   init {
     var modulesToLoad,
-      percussionOutputBus = 10,
-      synthsOutputBus = 12,
-      ambienceOutputBus = 18,
-      freeOutputBusses = [];
+      freeOutputBusses = [12, 32, 34, 36, 38, 40, 42, 44, 46];
 
     this.modules = ();
 
@@ -25,37 +22,31 @@ PerformanceEnvironment : Object {
         initParams: (
         )
       ),
-      randomizedLazersEnvironment: (
-        class: RandomizedLazersEnvironment,
+      noisyVoicer: (
+        class: NoisyVoicer,
         initParams: (
-          inChannel: 2,
-          outputBus: 28
+          inChannel: 6,
+          outputBus: 10
+        )
+      ),
+      impulsiveVoicer: (
+        class: ImpulsiveVoicer,
+        initParams: (
+          inChannel: 7,
+          outputBus: 14
+        )
+      ),
+      vileKickEnvironment: (
+        class: VileKickEnvironment,
+        initParams: (
+          inChannel: 6,
+          outputBus: 16
         )
       ),
       runningWaterEnvironment: (
         class: RunningWaterEnvironment,
         initParams: (
-          outputBus: ambienceOutputBus
-        )
-      ),
-      randomHarpEnvironment: (
-        class: RandomHarpSamplerEnvironment,
-        initParams: (
-          outputBus: 26
-        )
-      ),
-     smoothbassEnvironment: (
-        class: SmoothBassVoicerEnvironment,
-        initParams: (
-          inChannel: 3,
-          outputBus: 24
-        )
-      ),
-      fmPercussionEnvironment: (
-        class: FMPercussionVoicerEnvironment,
-        initParams: (
-          inChannel: 4,
-          outputBus: 30
+          outputBus: 18
         )
       ),
       granularChaosEnvironment: (
@@ -71,27 +62,33 @@ PerformanceEnvironment : Object {
           outputBus: 22
         )
       ),
-      vileKickEnvironment: (
-        class: VileKickEnvironment,
+     smoothbassEnvironment: (
+        class: SmoothBassVoicerEnvironment,
         initParams: (
-          inChannel: 6,
-          outputBus: 16
+          inChannel: 3,
+          outputBus: 24
         )
       ),
-      noisyVoicer: (
-        class: NoisyVoicer,
+      randomHarpEnvironment: (
+        class: RandomHarpSamplerEnvironment,
         initParams: (
-          inChannel: 6,
-          outputBus: percussionOutputBus
+          outputBus: 26
         )
       ),
-      impulsiveVoicer: (
-        class: ImpulsiveVoicer,
+      randomizedLazersEnvironment: (
+        class: RandomizedLazersEnvironment,
         initParams: (
-          inChannel: 7,
-          outputBus: 14
+          inChannel: 2,
+          outputBus: 28
         )
-      )
+      ),
+      fmPercussionEnvironment: (
+        class: FMPercussionVoicerEnvironment,
+        initParams: (
+          inChannel: 4,
+          outputBus: 30
+        )
+      ),
     );
 
     this.load_modules(modulesToLoad);
