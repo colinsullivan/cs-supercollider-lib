@@ -1,11 +1,11 @@
 ({
   s.quit();
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  //s.options.outDevice= "Soundflower (64ch)";
+  s.options.outDevice= "JackRouter";
   /*s.options.sampleRate = 48000;*/
   s.boot();
   s.meter();
-  s.scope();
+  //s.scope();
   //FreqScope.new(400, 200);
 
   s.doWhenBooted({
@@ -16,7 +16,31 @@
 
 ({FBSineC.ar(800, 1.0, 1.0);}.play();)
 
+// can we make some soft tones
+(
+  Instr(\softtest, {
+    arg freq = 440, gate = 0, amp;
 
+    var out,
+      outEnvShape;
+
+    out = SinOsc.ar(freq);
+
+    outEnvShape = Env.adsr(2.0, 0.0, 1.0, 2.0, 1.0, [2, -2, -5]);
+    outEnvShape.plot();
+    out = EnvGen.kr(outEnvShape, gate, doneAction: 2) * out;
+
+    out;
+
+  }, [
+    \freq,
+    \gate,
+    \amp
+  ]).miditest([3, 0]);
+)
+
+
+// awesome synthetic harsh ambience
 (
 {
   var out,
