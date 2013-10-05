@@ -20,6 +20,8 @@ SoundscapeElement : Object {
     <>key,
     // reference to Soundscape instance
     <>soundscape,
+    // a reference to the BufferManager instance
+    <>bufManager,
     // instrument we are triggering
     <>instr,
     // transition on and off envelope duration
@@ -40,6 +42,7 @@ SoundscapeElement : Object {
 
     this.key = args[\key];
     this.soundscape = args[\soundscape];
+    this.bufManager = args[\bufManager];
 
     this.outChannel = MixerChannel.new(
       this.key,
