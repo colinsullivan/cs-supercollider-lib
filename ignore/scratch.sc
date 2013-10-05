@@ -26,9 +26,9 @@
 
     out = SinOsc.ar(freq);
 
-    outEnvShape = Env.adsr(2.0, 0.0, 1.0, 2.0, 1.0, [2, -2, -5]);
+    outEnvShape = Env.adsr(1.0, 0.0, 1.0, 2.0, 1.0, [2, -2, -5]);
     outEnvShape.plot();
-    out = EnvGen.kr(outEnvShape, gate, doneAction: 2) * out;
+    out = amp * EnvGen.kr(outEnvShape, gate, doneAction: 2) * out;
 
     out;
 
@@ -878,6 +878,13 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
   testList.add(10);
 )
 
+(
+  var testDict = ();
+
+  "testDict[\nothere]:".postln;
+  testDict[\nothere].postln;
+)
+
 
 ({
   s.quit();
@@ -897,3 +904,5 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 }.value());
 
 (s.queryAllNodes();)
+
+
