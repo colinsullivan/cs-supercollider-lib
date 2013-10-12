@@ -17,12 +17,15 @@ Soundscape : Object {
     });
     this.outbus = params[\outbus];
 
+    1.0.wait();
     "Soundscape: initializing channels...".postln(); 
     this.init_channels();
 
+    1.0.wait();
     "Soundscape: initializing elements...".postln();
     this.init_elements();
-
+    
+    1.0.wait();
     // initialize all elements
     this.elements.keysValuesDo({
       arg key, element;
@@ -33,7 +36,6 @@ Soundscape : Object {
         key: key
       ));
     });
-
   }
 
   init_channels {
@@ -45,6 +47,7 @@ Soundscape : Object {
       1.0,
       outbus: this.outbus
     );
+    0.5.wait();
   }
 
   init_elements {
