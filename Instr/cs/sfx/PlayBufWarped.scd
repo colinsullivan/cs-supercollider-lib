@@ -8,10 +8,20 @@ Instr("cs.sfx.PlayBufWarped", {
     releaseTime,
     convertToStereo = 0,
     warpAmp = 0.5,
-    warpFreq = 0.5;
+    warpFreq = 0.5,
+    /**
+     *  When set, will take a dive when gate is turned off.  Value
+     *  is used as a multiplier to the playback rate.
+     *
+     *  ex. 0.5 will dive to 50% speed
+     *      1.5 will dive to 150% speed
+     */
+    pitchDive = 1;
 
   var out,
-    rateModulator;
+    rateModulator,
+    pitchDiveEnvelope,
+    pitchDiveEnvelopeShape;
 
 
   rateModulator = SinOsc.ar(warpFreq).range(
@@ -19,10 +29,20 @@ Instr("cs.sfx.PlayBufWarped", {
     playbackRate + warpAmp
   );
 
+  pitchDiveEnvelopeShape = Env.new(
+    [1.0,       1.0,              pitchDive ],
+    [   attackTime,   releaseTime           ],
+    \exp,
+    releaseNode: 1
+  );
+
+  pitchDiveEnvelope = EnvGen.kr(pitchDiveEnvelopeShape, gate);
+
+
   out = Instr.ar("cs.sfx.PlayBuf", (
     buf: buf,
     gate: gate,
-    playbackRate: rateModulator,
+    playbackRate: rateModulator * pitchDiveEnvelope,
     startTime: startTime,
     attackTime: attackTime,
     releaseTime: releaseTime,
@@ -36,6 +56,8 @@ Instr("cs.sfx.PlayBufWarped", {
   ObjectSpec(0.0),
   ObjectSpec(1.0),
   ObjectSpec(1.0),
+  ObjectSpec(0.0),
   \amp,
-  \beats
+  \beats,
+  ObjectSpec(1.0)
 ]);
