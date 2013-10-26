@@ -2,7 +2,7 @@ SoftSynthComponent : VoicerEnvironmentComponent {
   init {
     arg params;
 
-    var instr = Instr("cs.synths.Soft"),
+    var instr = Instr("cs.synths.Soft.SoftSynth"),
       specs = instr.specs;
 
     params['numVoices'] = 8;

@@ -12,7 +12,7 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     this.outputChannel = MixerChannel.new(
       nil,
       Server.default,
-      1, 
+      2, 
       2,
       outbus: this.outputBus
     );

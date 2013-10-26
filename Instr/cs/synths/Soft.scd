@@ -1,4 +1,4 @@
-Instr("cs.synths.Soft", {
+Instr("cs.synths.Soft.SoftMono", {
   arg freq = 440, gate = 0, amp;
 
   var carrier,
@@ -8,7 +8,9 @@ Instr("cs.synths.Soft", {
     modulatorEnvShape,
     attackTime = 0.75,
     releaseTime = 3.5,
-    outEnvShape;
+    outEnvShape,
+    driftMax,
+    flutterMax;
 
   outEnvShape = Env.adsr(
     1.0 * attackTime,
@@ -26,6 +28,14 @@ Instr("cs.synths.Soft", {
     1.0,
     [2, -2, -5]
   );
+
+  // subtle analog "drift"
+  driftMax = 0.1;
+  freq = Rand.new(-1.0 * driftMax, driftMax) + freq;
+
+  // subtle analog "flutter"
+  flutterMax = 3;
+  freq = SinOsc.ar(Rand.new(10, 100)).range(-1 * flutterMax, flutterMax) + freq;
 
   // fundamental is at modulator freq and only odd harmonics are present
   //ratio = (1.0 / 2.0);
@@ -45,11 +55,41 @@ Instr("cs.synths.Soft", {
     envShape: outEnvShape
   ));
 
-  
   out = amp * EnvGen.kr(outEnvShape, gate, doneAction: 2) * carrier;
+}, [
+  \freq,
+  \gate,
+  \amp
+]);
+
+Instr("cs.synths.Soft.SoftSynth", {
+  arg freq = 440, gate = 0, amp;
+
+  var out,
+    soft,
+    softDetuned,
+    softDelayed,
+    panAmt;
+
+  panAmt = 0.9;
+
+  soft = Instr.ar("cs.synths.Soft.SoftMono", (
+    freq: freq,
+    gate: gate,
+    amp: amp
+  ));
+  softDetuned = Instr.ar("cs.synths.Soft.SoftMono", (
+    freq: freq + Rand.new(-1.0, 1.0),
+    gate: gate,
+    amp: amp
+  ));
+
+  softDelayed = DelayC.ar(soft, 0.1, 0.1);
+  
+  //out = Pan2.ar(soft, panAmt) + Pan2.ar(softDetuned, 1.0 - panAmt);
+  out = Pan2.ar(soft, panAmt) + Pan2.ar(softDelayed, 1.0 - panAmt);
 
   out;
-
 }, [
   \freq,
   \gate,
