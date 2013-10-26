@@ -1,7 +1,8 @@
 ({
   s.quit();
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  s.options.outDevice= "JackRouter";
+  //s.options.outDevice= "JackRouter";
+  //s.options.numOutputBusChannels = 48;
   /*s.options.sampleRate = 48000;*/
   s.boot();
   s.meter();
@@ -21,14 +22,36 @@
   Instr(\softtest, {
     arg freq = 440, gate = 0, amp;
 
-    var out,
+    var carrier,
+      modulator,
+      ratio,
+      out,
+      modulatorEnvShape,
       outEnvShape;
 
-    out = SinOsc.ar(freq);
-
     outEnvShape = Env.adsr(1.0, 0.0, 1.0, 2.0, 1.0, [2, -2, -5]);
-    outEnvShape.plot();
-    out = amp * EnvGen.kr(outEnvShape, gate, doneAction: 2) * out;
+    modulatorEnvShape = Env.adsr(0.2, 0.8, 1.0, 2.0, 1.0, [2, -2, -5]);
+
+    // fundamental is at modulator freq and only odd harmonics are present
+    //ratio = (1.0 / 2.0);
+    // every third harmonic is missing
+    ratio = (1.0 / 3.0);
+    
+    modulator = Instr.ar("cs.fm.Oscillator", (
+      freq: freq,
+      gate: gate,
+      envShape: modulatorEnvShape
+    ));
+
+    carrier = Instr.ar("cs.fm.Oscillator", (
+      //freq: freq + (modulator * freq),
+      freq: ratio * freq * modulator,
+      gate: gate,
+      envShape: outEnvShape
+    ));
+
+    
+    out = amp * EnvGen.kr(outEnvShape, gate, doneAction: 2) * carrier;
 
     out;
 
@@ -36,7 +59,7 @@
     \freq,
     \gate,
     \amp
-  ]).miditest([3, 0]);
+  ]).miditest([4, 0], [\amp, (1.0/5.0)]);
 )
 
 
@@ -77,6 +100,10 @@
 ({Help.gui;}.value());
 
 Quarks.gui;
+
+Quarks.installed();
+
+GUI.current;
 
 (s.meter;)
 
@@ -306,17 +333,17 @@ SynthDef(\test, { | out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |
     [0.0,   2.5,      -2.5,     2.5,      -2.5,   -5.5  ]
   ).plot();*/
 
-  Env.new(
+  /*Env.new(
     [1.0,    1.0,     0.0],
     [     1.0,    0.1],
     releaseNode: nil
-  ).plot();
+  ).plot();*/
 
-  /*Env.perc(
+  Env.perc(
     attackTime: 0.01,
     releaseTime: 1.0,
-    curve: -6
-  ).plot();*/
+    curve: 3
+  ).plot();
 
 )
 
