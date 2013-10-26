@@ -12,7 +12,7 @@ PerformanceEnvironment : Object {
 
   init {
     var modulesToLoad,
-      freeOutputBusses = [12, 32, 34, 36, 38, 40, 42, 44, 46];
+      freeOutputBusses = [32, 34, 36, 38, 40, 42, 44, 46];
 
     this.modules = ();
 
@@ -27,6 +27,13 @@ PerformanceEnvironment : Object {
         initParams: (
           inChannel: 6,
           outputBus: 10
+        )
+      ),
+      softSynth: (
+        class: SoftSynthComponent,
+        initParams: (
+          inChannel: 8,
+          outputBus: 12
         )
       ),
       impulsiveVoicer: (
