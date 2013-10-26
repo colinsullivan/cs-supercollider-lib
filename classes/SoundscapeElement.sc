@@ -71,6 +71,20 @@ SoundscapeElement : Object {
   }
 
   /**
+   *  Called when element should start playing.  The amount of time it will
+   *  play for (plus `this.transitionTime`) is passed as an argument.
+   *
+   *  @param  onTime  The amount of time the voice will be on for is this
+   *  argument plus `this.transitionTime`.
+   **/
+  element_on {
+    arg onTime;
+
+    // turn sound on
+    this.instr.set(\gate, 1);
+  }
+
+  /**
    *  Called from soundscape when it starts up.
    **/
   play {
@@ -83,23 +97,24 @@ SoundscapeElement : Object {
     {
 
       while({ true }, {
-
-        // prepare instrument
+        // prepare instrument (and maybe onTime / offTime constraints)
         this.instr = this.create_next_patch();
         this.outChannel.play(this.instr);
+       
+        // calculate how long to wait before playing 
+        offTime = rrand(this.offTimeMin, this.offTimeMax);
+        // calculate how long to play before stopping
+        onTime = rrand(this.onTimeMin, this.onTimeMax) - (2.0 * this.transitionTime);
 
         // wait for the desired off time
-        offTime = rrand(this.offTimeMin, this.offTimeMax);
         offTime.wait();
-
-        // turn sound on
-        this.instr.set(\gate, 1);
+        
+        this.element_on(onTime);
 
         // wait for transition time
         this.transitionTime.wait();
         
         // wait for on time
-        onTime = rrand(this.onTimeMin, this.onTimeMax) - (2.0 * this.transitionTime);
         onTime.wait();
 
         // turn sound off

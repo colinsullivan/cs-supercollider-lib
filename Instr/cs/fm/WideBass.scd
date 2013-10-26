@@ -1,6 +1,6 @@
 Instr("cs.fm.WideBass", {
   arg freq = 440,
-    freqlag,
+    freqlag = 0,
     pb = 1,
     amp = 0.9,
     gate = 0,
