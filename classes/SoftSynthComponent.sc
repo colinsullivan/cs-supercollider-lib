@@ -10,7 +10,11 @@ SoftSynthComponent : VoicerEnvironmentComponent {
 
     super.init(params);
 
-    this.voicer.mapGlobal(\amp, value: 1.0 / params['numVoices'], spec: ControlSpec(0.0, 2.0));
+    this.voicer.mapGlobal(
+      \amp,
+      value: 1.0 / params['numVoices'],
+      spec: ControlSpec(0.0, 2.0)
+    );
     this.sock.addControl(7, \amp);
   }
 }
