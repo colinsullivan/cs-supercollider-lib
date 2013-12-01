@@ -21,7 +21,7 @@ PerformanceEnvironmentComponent : Object {
   }
 
   create_output_channel {
-    MixerChannel.new(
+    ^MixerChannel.new(
       this.gui_window_title(),
       Server.default,
       2, 2,
