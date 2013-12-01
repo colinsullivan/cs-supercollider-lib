@@ -7,17 +7,14 @@ Instr("cs.utility.AbletonPanner", {
   inL = SoundIn.ar(bus);
   inR = SoundIn.ar(bus + 1);
 
-  /*components = BiPanB2.ar(inL, inR, azimuth);
+  components = PanB2.ar(inL, azimuth);
 
-  out = FoaDecode.ar(components, decoder);*/
-
-  out = [inL, inR];
-
+  out = FoaDecode.ar(components, decoder);
+  //out = DecodeB2.ar(4, components[0], components[1], components[2]);
 }, [
 
   \audiobus,
   \bipolar,
   \unipolar,
   ObjectSpec(0)
-
 ]);
