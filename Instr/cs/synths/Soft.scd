@@ -6,19 +6,29 @@ Instr("cs.synths.Soft.SoftMono", {
     ratio,
     out,
     modulatorEnvShape,
-    attackTime = 0.75,
+    minAttackTime = 0.5,
+    maxAttackTime = 2.0,
+    attackTime,
     releaseTime = 3.5,
     outEnvShape,
     driftMax,
-    flutterMax;
+    flutterMax,
+    velocity,
+    attackCurve;
 
+  velocity = Latch.kr(gate, gate);
+
+  attackCurve = velocity.range(3.0, 1.0);
+
+  attackTime = velocity.range(maxAttackTime, minAttackTime);
+  
   outEnvShape = Env.adsr(
     1.0 * attackTime,
     0.0,
     1.0,
     1.0 * releaseTime,
     1.0,
-    [2, -2, -5]
+    [attackCurve, -2, -5]
   );
   modulatorEnvShape = Env.adsr(
     0.2 * attackTime,
@@ -26,7 +36,7 @@ Instr("cs.synths.Soft.SoftMono", {
     1.0,
     0.8 * releaseTime,
     1.0,
-    [2, -2, -5]
+    [attackCurve, -2, -5]
   );
 
   // subtle analog "drift"
