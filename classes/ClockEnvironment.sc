@@ -28,7 +28,8 @@ ClockEnvironment : PerformanceEnvironmentComponent {
       resetButton,
       clockFace,
       me = this,
-      tempoResponder;
+      tempoResponder,
+      serverStatusButton;
 
     this.origin = params['origin'];
 
@@ -77,6 +78,14 @@ ClockEnvironment : PerformanceEnvironmentComponent {
       });
 
     window.bounds = window.bounds.moveToPoint(this.origin);
+
+    serverStatusButton = Button(window, Rect(250, 80, 50, 30))
+      .states_([
+        ["status"]
+      ])
+      .action_({
+        Server.default().plotTree();
+      });
 
     this.window = window;
 
