@@ -4,8 +4,8 @@ Instr("cs.utility.AbletonPanner", {
 
   var out, inL, inR, components;
 
-  inL = In.ar(bus, 1);
-  inR = In.ar(bus, 2);
+  inL = SoundIn.ar(bus);
+  inR = SoundIn.ar(bus + 1);
 
   /*components = BiPanB2.ar(inL, inR, azimuth);
 
