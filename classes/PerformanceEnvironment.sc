@@ -96,6 +96,10 @@ PerformanceEnvironment : Object {
           outputBus: 30
         )
       ),
+      pannerEnvironment: (
+        class: AbletonPannerEnvironment,
+        initParams: ()
+      )
     );
 
     this.load_modules(modulesToLoad);

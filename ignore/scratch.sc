@@ -888,4 +888,4 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 
 (s.queryAllNodes();)
 
-
+(s.status();)
