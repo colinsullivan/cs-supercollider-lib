@@ -20,6 +20,15 @@ PerformanceEnvironmentComponent : Object {
     ^super.new.init(params);
   }
 
+  create_output_channel {
+    MixerChannel.new(
+      this.gui_window_title(),
+      Server.default,
+      2, 2,
+      outbus: this.outputBus
+    );
+  }
+
   init {
     arg params;
     var me = this;
@@ -29,13 +38,8 @@ PerformanceEnvironmentComponent : Object {
     }, {
       this.outputBus = params['outputBus'];
     });
-
-    this.outputChannel = MixerChannel.new(
-      this.gui_window_title(),
-      Server.default,
-      2, 2,
-      outbus: this.outputBus
-    );
+    
+    this.outputChannel = this.create_output_channel();
 
     this.origin = params['origin'];
     this.init_done_callback = params['init_done_callback'];
