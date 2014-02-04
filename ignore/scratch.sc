@@ -1,7 +1,7 @@
 ({
   s.quit();
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  //s.options.outDevice= "JackRouter";
+  s.options.outDevice= "JackRouter";
   //s.options.numOutputBusChannels = 48;
   /*s.options.sampleRate = 48000;*/
   s.boot();
@@ -36,7 +36,7 @@
   //modIndex = SinOscFB.kr(SinOscFB.kr(0.05, 1.0).range(0.5, 0.8), 1.0).range(0.1, 50);
   modIndex = SinOscFB.kr(FBSineC.ar(20, 1.0, feedbackModulator), feedbackModulator).exprange(modIndexLow, modIndexHigh);
 
-  out = GrainFM.ar(
+  out = 0.4 * GrainFM.ar(
     2,
     //trigger: Dust2.kr(10),
     //trigger: Impulse.kr(10),
@@ -889,3 +889,39 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 (s.queryAllNodes();)
 
 (s.status();)
+
+/**
+ *  Noisy dark synth descending modulation into metallic rings
+ */
+(
+  ~test = {
+
+  var out,
+    carrier,
+    modulator,
+    freq = 440,
+    modulationAmt,
+    modulationIndex,
+    envShape,
+    env;
+
+  envShape = Env.linen(
+    attackTime: 0.0,
+    sustainTime: 10,
+    releaseTime: 3.0,
+    curve: \cub
+  );
+  env = EnvGen.ar(envShape, doneAction: 2);
+
+  modulationAmt = 1.0;
+  modulationIndex = XLine.kr(1000.0, 5.0, 9, doneAction: 0);
+
+  modulator = Pulse.ar(2.0 * freq, mul: modulationAmt);
+
+  carrier = SinOsc.ar(freq + (modulator * modulationIndex * freq));
+
+  out = 0.2 * env * [carrier, AllpassC.ar(carrier, delaytime: 0.01)];
+
+}.play();)
+
+(~test.free();)
