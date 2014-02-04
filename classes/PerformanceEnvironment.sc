@@ -22,34 +22,34 @@ PerformanceEnvironment : Object {
         initParams: (
         )
       ),
-      noisyVoicer: (
+      /*noisyVoicer: (
         class: NoisyVoicer,
         initParams: (
           inChannel: 6,
           outputBus: 10
         )
-      ),
-      softSynth: (
+      ),*/
+      /*softSynth: (
         class: SoftSynthComponent,
         initParams: (
           inChannel: 8,
           outputBus: 12
         )
-      ),
-      impulsiveVoicer: (
+      ),*/
+      /*impulsiveVoicer: (
         class: ImpulsiveVoicer,
         initParams: (
           inChannel: 7,
           outputBus: 14
         )
-      ),
-      vileKickEnvironment: (
+      ),*/
+      /*vileKickEnvironment: (
         class: VileKickEnvironment,
         initParams: (
           inChannel: 6,
           outputBus: 16
         )
-      ),
+      ),*/
       runningWaterEnvironment: (
         class: RunningWaterEnvironment,
         initParams: (
@@ -62,44 +62,44 @@ PerformanceEnvironment : Object {
           outputBus: 20
         )
       ),
-      wideBassEnvironment: (
+      /*wideBassEnvironment: (
         class: WideBassVoicerEnvironment,
         initParams: (
           inChannel: 5,
           outputBus: 22
         )
-      ),
-     smoothbassEnvironment: (
+      ),*/
+     /*smoothbassEnvironment: (
         class: SmoothBassVoicerEnvironment,
         initParams: (
           inChannel: 3,
           outputBus: 24
         )
-      ),
+      ),*/
       randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment,
         initParams: (
           outputBus: 26
         )
       ),
-      randomizedLazersEnvironment: (
+      /*randomizedLazersEnvironment: (
         class: RandomizedLazersEnvironment,
         initParams: (
           inChannel: 2,
           outputBus: 28
         )
-      ),
-      fmPercussionEnvironment: (
+      ),*/
+      /*fmPercussionEnvironment: (
         class: FMPercussionVoicerEnvironment,
         initParams: (
           inChannel: 4,
           outputBus: 30
         )
-      ),
-      pannerEnvironment: (
+      ),*/
+      /*pannerEnvironment: (
         class: AbletonPannerEnvironment,
         initParams: ()
-      )
+      )*/
     );
 
     this.load_modules(modulesToLoad);
