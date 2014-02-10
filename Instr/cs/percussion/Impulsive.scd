@@ -1,7 +1,8 @@
 Instr("cs.percussion.Impulsive", {
   arg freq = 440,
     amp = 0.9,
-    gate = 0;
+    gate = 0,
+    doneAction = 2;
 
   var out,
     imp,
@@ -48,7 +49,7 @@ Instr("cs.percussion.Impulsive", {
     [1.0,    1.0,     0.0],
     [     1.0,    0.1],
     releaseNode: nil
-  ), doneAction: 2);
+  ), doneAction: doneAction);
 
   out = amp * (env * out);
 

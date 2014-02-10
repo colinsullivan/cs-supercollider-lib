@@ -12,7 +12,7 @@ PerformanceEnvironment : Object {
 
   init {
     var modulesToLoad,
-      freeOutputBusses = [32, 34, 36, 38, 40, 42, 44, 46];
+      freeOutputBusses = [34, 36, 38, 40, 42, 44, 46];
 
     this.modules = ();
 
@@ -99,7 +99,13 @@ PerformanceEnvironment : Object {
       /*pannerEnvironment: (
         class: AbletonPannerEnvironment,
         initParams: ()
-      )*/
+      ),*/
+      synkopater: (
+        class: Synkopater,
+        initParams: (
+          outputBus: 32
+        )
+      )
     );
 
     this.load_modules(modulesToLoad);
