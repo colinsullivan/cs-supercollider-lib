@@ -1,6 +1,7 @@
 Synkopater : PerformanceEnvironmentComponent {
   var <>playerRoutine,
-    <>synkopatedVoiceOne;
+    <>synkopatedVoiceOne,
+    <>synkopatedVoiceTwo;
 
   init {
     arg params;
@@ -32,10 +33,16 @@ Synkopater : PerformanceEnvironmentComponent {
     });
 
     this.synkopatedVoiceOne = Patch(synkopaterVoiceInstr, (
-      //delayAmt: KrNumberEditor.new(0.0, specsByName["delayAmt"]),
-      //gate: BeatClockPlayer(4),
-      //triggerFreq: Tempo.,
-      tempoBus: TempoBus.new()
+      delayAmt: KrNumberEditor.new(0.0, specsByName["delayAmt"]),
+      tempoBus: TempoBus.new(),
+      multiplier: 0.5
+    ));
+
+    this.synkopatedVoiceTwo = Patch(synkopaterVoiceInstr, (
+      delayAmt: KrNumberEditor.new(0.0, specsByName["delayAmt"]),
+      phase: 0.5,
+      tempoBus: TempoBus.new(),
+      multiplier: 0.5
     ));
   }
 
@@ -46,11 +53,33 @@ Synkopater : PerformanceEnvironmentComponent {
 
     TempoClock.default.playNextBar({
       me.outputChannel.play(me.synkopatedVoiceOne);
+      me.outputChannel.play(me.synkopatedVoiceTwo);
     });
 
   }
 
   on_stop {
     this.playerRoutine.stop();
+  }
+
+  init_gui {
+    arg params;
+    var labelWidth = 75,
+      layout = params['layout'];
+
+    super.init_gui(params);
+
+    layout.flow({
+      arg layout;
+
+      ArgNameLabel("one", layout, labelWidth);
+      this.synkopatedVoiceOne.delayAmt.gui(layout);
+      layout.startRow();
+
+      ArgNameLabel("two", layout, labelWidth);
+      this.synkopatedVoiceTwo.delayAmt.gui(layout);
+      layout.startRow();
+
+    });
   }
 }

@@ -105,12 +105,6 @@ PerformanceEnvironment : Object {
         initParams: (
           outputBus: 32
         )
-      ),
-      synkopaterTest: (
-        class: Synkopater,
-        initParams: (
-          outputBus: 34
-        )
       )
     );
 
