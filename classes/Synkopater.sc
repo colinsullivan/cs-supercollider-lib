@@ -7,7 +7,6 @@ Synkopater : PerformanceEnvironmentComponent {
 
     super.init(params);
 
-
   }
 
   load_environment {
@@ -33,14 +32,22 @@ Synkopater : PerformanceEnvironmentComponent {
     });
 
     this.synkopatedVoiceOne = Patch(synkopaterVoiceInstr, (
-      delayAmt: KrNumberEditor.new(0.0, specsByName["delayAmt"]),
-      gate: BeatClockPlayer(4)
+      //delayAmt: KrNumberEditor.new(0.0, specsByName["delayAmt"]),
+      //gate: BeatClockPlayer(4),
+      //triggerFreq: Tempo.,
+      tempoBus: TempoBus.new()
     ));
   }
 
   on_play {
     //this.playerRoutine.play();
-    this.outputChannel.play(this.synkopatedVoiceOne);
+    var me = this;
+
+
+    TempoClock.default.playNextBar({
+      me.outputChannel.play(me.synkopatedVoiceOne);
+    });
+
   }
 
   on_stop {
