@@ -1,8 +1,7 @@
 Instr("cs.percussion.Impulsive", {
   arg freq = 440,
     amp = 0.9,
-    gate = 0,
-    doneAction = 2;
+    gate = 0;
 
   var out,
     imp,
@@ -45,11 +44,12 @@ Instr("cs.percussion.Impulsive", {
     out = RLPF.ar(out, freq*harm['ratio'], harm['rq']);
   });
 
-  env = EnvGen.kr(Env.new(
-    [1.0,    1.0,     0.0],
-    [     1.0,    0.1],
-    releaseNode: nil
-  ), doneAction: doneAction);
+  //env = EnvGen.kr(Env.new(
+    //[1.0,    1.0,     0.0],
+    //[     1.0,    0.1],
+    //releaseNode: nil
+  //), doneAction: doneAction);
+  env = EnvGen.kr(Env.perc(0.001), doneAction: 2);
 
   out = amp * (env * out);
 

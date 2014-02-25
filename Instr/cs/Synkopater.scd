@@ -1,30 +1,21 @@
-Instr("cs.Synkopater.SynkopaterVoice", {
-  arg gate,
-    delayAmt = 0,
-    tempoBus,
-    phase = 0,
-    multiplier = 1;
+Instr("cs.Synkopater.SynkopaterDelay", {
+  arg bus, numChan, delaySecs = 0;
 
-  var out;
+  var in, out, localFB;
 
-  /*out = Instr.ar("cs.percussion.Impulsive", (
-    gate: gate,
-    doneAction: 0
-  ));*/
+  in = In.ar(bus, numChan);
 
-  var tempo,trig,amp;
-  tempo = In.kr(tempoBus);
-  trig = Impulse.kr(tempo * multiplier, phase);
-  amp = Decay2.kr(trig,0.01,0.1).clip2(1.0);
-  out = amp * SinOsc.ar(300);
+  localFB = LocalIn.ar(numChan);
 
-  out = DelayC.ar(out, 5.0, delayAmt);
+  out = in + DelayC.ar(localFB, 8.0, delaySecs);
 
+  // feed back in
+  LocalOut.ar(0.6 * out);
+
+  // send to out
   out;
 }, [
-  \gate,
-  ControlSpec(0.0, 10.0),
-  \bus,
-  \unipolar,
+  \audiobus,
+  ObjectSpec(1),
   ControlSpec(0.0, 8.0)
 ]);

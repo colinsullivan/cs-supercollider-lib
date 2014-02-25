@@ -14,9 +14,9 @@
   s.options.outDevice = "JackRouter";
   s.options.numOutputBusChannels = 48;
   s.options.numInputBusChannels = 48;
+  s.options.memSize = 8192 * 2 * 2;
   /*s.options.maxNodes = 2048;
   s.options.maxSynthDefs = 2048;
-  s.options.memSize = 16384;
   s.options.numAudioBusChannels = 256;
   s.options.numBuffers = 2048;
   s.options.numControlBusChannels = 8192;

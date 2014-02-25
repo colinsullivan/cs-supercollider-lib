@@ -36,13 +36,13 @@ PerformanceEnvironment : Object {
           outputBus: 12
         )
       ),*/
-      /*impulsiveVoicer: (
+      impulsiveVoicer: (
         class: ImpulsiveVoicer,
         initParams: (
           inChannel: 7,
           outputBus: 14
         )
-      ),*/
+      ),
       /*vileKickEnvironment: (
         class: VileKickEnvironment,
         initParams: (
