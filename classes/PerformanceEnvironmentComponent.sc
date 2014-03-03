@@ -12,7 +12,8 @@ PerformanceEnvironmentComponent : Object {
     // MixerChannel instance
     <>outputChannel,
     // number
-    <>outputBus;
+    <>outputBus,
+    <>playing;
 
   *new {
     arg params;
@@ -32,6 +33,8 @@ PerformanceEnvironmentComponent : Object {
   init {
     arg params;
     var me = this;
+
+    this.playing = false;
 
     if (params['outputBus'] == nil, {
       this.outputBus = 0;
@@ -106,12 +109,14 @@ PerformanceEnvironmentComponent : Object {
    *  Called when the play button is pressed on the interface.
    **/
   on_play {
+    this.playing = true;
   }
 
   /**
    *  Called when the stop button is pressed on the interface.
    **/
   on_stop {
+    this.playing = false;
   }
 
   init_external_controller_mappings {

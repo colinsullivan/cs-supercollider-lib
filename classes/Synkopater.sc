@@ -83,12 +83,14 @@ Synkopater : PerformanceEnvironmentComponent {
 
     this.synkopatedDelayOne = FxPatch("cs.Synkopater.SynkopaterDelay", (
       numChan: 2,
-      delaySecs: KrNumberEditor.new(0.0, ControlSpec(0.0, 8.0))
+      delaySecs: KrNumberEditor.new(0.0, ControlSpec(0.0, 8.0)),
+      feedbackCoefficient: 0.5
     ));
 
     this.synkopatedDelayTwo = FxPatch("cs.Synkopater.SynkopaterDelay", (
       numChan: 2,
-      delaySecs: KrNumberEditor.new(0.0, ControlSpec(0.0, 8.0))
+      delaySecs: KrNumberEditor.new(0.0, ControlSpec(0.0, 8.0)),
+      feedbackCoefficient: 0.5
     ));
 
     this.synkopationControlOne = KrNumberEditor.new(0.0, \unipolar);
@@ -114,13 +116,17 @@ Synkopater : PerformanceEnvironmentComponent {
       me.synkopatedVoiceOne.trigger1(440, lat: me.triggerDelayOne);
       me.synkopatedVoiceTwo.trigger1(880, lat: me.triggerDelayTwo);
 
-      TempoClock.default.sched(1, me.playTask);
+      if (me.playing, {
+        TempoClock.default.sched(1, me.playTask);
+      });
     };
   }
 
   on_play {
     //this.playerRoutine.play();
     var me = this;
+
+    super.on_play();
 
     this.submixOne.playfx(this.synkopatedDelayOne);
     this.submixTwo.playfx(this.synkopatedDelayTwo);
@@ -132,10 +138,6 @@ Synkopater : PerformanceEnvironmentComponent {
 
     TempoClock.default.playNextBar(this.playTask);
 
-  }
-
-  on_stop {
-    this.playerRoutine.stop();
   }
 
   init_gui {
@@ -157,5 +159,10 @@ Synkopater : PerformanceEnvironmentComponent {
       layout.startRow();
 
     });
+  }
+  
+  init_uc33_mappings {
+    this.map_uc33_to_property(\knu6, \synkopationControlOne);
+    this.map_uc33_to_property(\knm6, \synkopationControlTwo);
   }
 }

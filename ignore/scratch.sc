@@ -21,7 +21,7 @@
 
 // awesome synthetic harsh ambience
 (
-{
+~test = {
   var out,
     trig,
     modIndex,
@@ -52,6 +52,8 @@
 
 }.play();
 )
+
+(~test.free();)
 
 ({Help.gui;}.value());
 
@@ -899,7 +901,7 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
   var out,
     carrier,
     modulator,
-    freq = 440,
+    freq = 880,
     modulationAmt,
     modulationIndex,
     envShape,
@@ -925,3 +927,39 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 }.play();)
 
 (~test.free();)
+
+(
+~test = {
+  var freq = 440,
+    lfoModulationIndex = 3000,
+    freqModulationIndex = 4000,
+    filtFreqModulationIndex = 10000,
+    out,
+    envShape,
+    env,
+    carrier,
+    frequencyModulator,
+    filtFreqModulator,
+    osc,
+    osc2,
+    osc3,
+    lfo;
+
+  envShape = Env.perc(0.01, 0.3, curve: -4);
+  env = EnvGen.ar(envShape, doneAction: 2);
+
+  lfo = SinOsc.kr(2.0);
+  osc = Saw.ar(
+    freq + (lfoModulationIndex * LFO)
+  );
+
+  osc3 = SinOsc.kr(2000);
+  osc2 = Saw.ar(
+    freq + (freqModulationIndex * osc3)
+  );
+  
+  out = LPF.ar(osc, freq + (filtFreqModulationIndex * env));
+
+  out = out * env;
+}.play();
+)
