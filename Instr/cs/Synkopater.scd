@@ -1,5 +1,5 @@
 Instr("cs.Synkopater.SynkopaterDelay", {
-  arg bus, numChan, delaySecs = 0, feedbackCoefficient = 0.6;
+  arg bus, numChan, delaySecs = 0, feedbackCoefficient = 0.6, amp = 0.5;
 
   var in, out, localFB;
 
@@ -7,15 +7,17 @@ Instr("cs.Synkopater.SynkopaterDelay", {
 
   localFB = LocalIn.ar(numChan);
 
-  out = in + DelayN.ar(localFB, 8.0, delaySecs);
+  out = DelayC.ar(in + localFB, 8.0, delaySecs);
 
-  // feed back in
+  // input signal plus feedback
   LocalOut.ar(feedbackCoefficient * out);
 
   // send to out
-  out;
+  out = amp * out;
 }, [
   \audiobus,
   ObjectSpec(1),
-  ControlSpec(0.0, 8.0)
+  ControlSpec(0.0, 8.0),
+  \unipolar,
+  \amp
 ]);

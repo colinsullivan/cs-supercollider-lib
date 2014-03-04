@@ -91,8 +91,24 @@ PerformanceEnvironmentComponent : Object {
     callback.value();
   }
 
-  load_environment {
+  init_tracks {
   
+  }
+
+  init_patches {
+  
+  }
+
+  play_patches_on_tracks {
+  
+  }
+
+  load_environment {
+    this.init_tracks();
+    this.init_patches();
+    {
+      this.play_patches_on_tracks();
+    }.defer(1);
   }
 
 
@@ -193,7 +209,7 @@ PerformanceEnvironmentComponent : Object {
       properties.do({
         arg property;
 
-        property.value = property.spec.map(ccval / 127);
+        property.set(property.spec.map(ccval / 127));
       });
 
     });
