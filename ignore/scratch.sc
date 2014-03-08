@@ -931,9 +931,11 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 (
 ~test = {
   var freq = 440,
-    lfoModulationIndex = 3000,
-    freqModulationIndex = 4000,
-    filtFreqModulationIndex = 10000,
+    dur = Rand.new(0.01, 0.5),
+    freqSweeperModulationIndex = freq * [IRand.new(2, 10), (1.0 / IRand.new(2.0, 8.0))].choose(),
+    freqModulationIndex = freq * IRand.new(2, 100),
+    filtFreqModulationIndex = Rand.new(5000, 15000),
+    lowerOscOctave = [(1.0 / 8.0), 0.25, 0.5].choose(),
     out,
     envShape,
     env,
@@ -943,23 +945,32 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
     osc,
     osc2,
     osc3,
-    lfo;
+    freqSweeper;
 
-  envShape = Env.perc(0.01, 0.3, curve: -4);
+  envShape = Env.perc(0.01, dur - 0.01, curve: -4);
   env = EnvGen.ar(envShape, doneAction: 2);
 
-  lfo = SinOsc.kr(2.0);
+  // this freqSweeper does the fundamental frequency sweep
+  freqSweeper = XLine.kr(0.01, 1.0, dur);
+  freq = freq + (freqSweeperModulationIndex * freqSweeper);
   osc = Saw.ar(
-    freq + (lfoModulationIndex * LFO)
+    freq
   );
 
-  osc3 = SinOsc.kr(2000);
+  // adding harmonics
+  osc3 = SinOsc.kr(10000);
   osc2 = Saw.ar(
-    freq + (freqModulationIndex * osc3)
+    lowerOscOctave * freq + (freqModulationIndex * osc3)
   );
+
+  out = osc + osc2;
   
-  out = LPF.ar(osc, freq + (filtFreqModulationIndex * env));
+  out = RLPF.ar(out, 2000 + (filtFreqModulationIndex * freqSweeper), freqSweeper * 0.6);
 
   out = out * env;
 }.play();
+)
+
+(
+
 )
