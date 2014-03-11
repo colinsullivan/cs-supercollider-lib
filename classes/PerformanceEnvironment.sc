@@ -12,7 +12,7 @@ PerformanceEnvironment : Object {
 
   init {
     var modulesToLoad,
-      freeOutputBusses = [34, 36, 38, 40, 42, 44, 46];
+      freeOutputBusses = [36, 38, 40, 42, 44, 46];
 
     this.modules = ();
 
@@ -104,6 +104,12 @@ PerformanceEnvironment : Object {
         class: Synkopater,
         initParams: (
           outputBus: 32
+        )
+      ),
+      synkopaterTwo: (
+        class: SecondSynkopater,
+        initParams: (
+          outputBus: 34
         )
       )
     );

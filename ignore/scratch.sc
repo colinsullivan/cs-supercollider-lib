@@ -972,5 +972,18 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 )
 
 (
+~test = {
+  var freq = 16000,
+    envShape = Env.new(
+      [ 0,    1,    1,    0 ],
+      [ 0.001, 1.0,  0.001    ]
+    ),
+    env = EnvGen.ar(envShape),
+    out;
 
+  out = SinOsc.ar(freq) * env;
+
+}.play();
 )
+
+(~test.free();)
