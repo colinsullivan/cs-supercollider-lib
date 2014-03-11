@@ -1,5 +1,5 @@
 SecondSynkopater : PerformanceEnvironmentComponent {
-  var <>playTask,
+  var <>schedulerTask,
     <>hardSineVoicer;
 
   init {
@@ -25,19 +25,30 @@ SecondSynkopater : PerformanceEnvironmentComponent {
   play_patches_on_tracks {
     super.play_patches_on_tracks();
     
-    this.hardSineVoicer.target(this.outputChannel);
+    this.hardSineVoicer.target_(this.outputChannel);
   }
 
   load_environment {
     var me = this;
     super.load_environment();
 
+    this.schedulerTask = {
+      me.hardSineVoicer.trigger1(440, lat: 0);
 
+      if (me.playing, {
+        TempoClock.default.sched(1, me.schedulerTask);    
+      });
+    }
   }
 
   on_play {
+    var clock = TempoClock.default(),
+      nextBar = clock.nextTimeOnGrid(clock.beatsPerBar);
+
     super.on_play();
 
+    // start scheduler task next bar
+    clock.schedAbs(nextBar, this.schedulerTask);    
   }
 
   init_gui {

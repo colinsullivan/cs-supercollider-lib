@@ -7,7 +7,7 @@ Instr("cs.synths.HardSine", {
       [ 0,    1,    1,    0 ],
       [ 0.001, 1.0,  0.001    ]
     ),
-    env = EnvGen.ar(envShape, gate, amp),
+    env = EnvGen.ar(envShape, gate, amp, doneAction: 2),
     out;
 
   out = SinOsc.ar(freq) * env;
