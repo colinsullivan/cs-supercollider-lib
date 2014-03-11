@@ -136,10 +136,13 @@ PerformanceEnvironment : Object {
         });
       };
       
-      ("  * Loading " + moduleName).postln;
-      ("----------------------------------------").postln;
+      ("  * Loading" + moduleName ++ "...").postln;
 
       module = moduleProperties['class'].new(initParams);
+      
+      ("  * Loaded.").postln();
+      ("  * Output channel:" + initParams[\outputBus]).postln();
+      ("----------------------------------------").postln;
     });
   }
 
