@@ -1,11 +1,14 @@
 SecondSynkopater : PerformanceEnvironmentComponent {
   var <>schedulerTask,
-    <>hardSineVoicer;
+    <>hardSineVoicer,
+    <>quantizationStep;
 
   init {
     arg params;
 
     super.init(params);
+
+    this.quantizationStep = KrNumberEditor(1, ControlSpec(1, 8, step: 1));
   }
 
   init_tracks {
@@ -33,10 +36,38 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     super.load_environment();
 
     this.schedulerTask = {
-      me.hardSineVoicer.trigger1(440, lat: 0);
+      var nextTriggerTime,
+        t = TempoClock.default,
+        notePhase,
+        noteBeat,
+        noteLatency;
 
+      //"--------------".postln();
+      //"scheduler task".postln();
+
+      // schedule notes
+      for (0, this.quantizationStep.value - 1, {
+        arg i;
+
+        notePhase = (i / this.quantizationStep.value) * t.beatsPerBar;
+        noteBeat = t.beatsPerBar + t.nextTimeOnGrid(
+          t.beatsPerBar,
+          notePhase
+        );
+        noteLatency = t.beats2secs(noteBeat) - t.seconds;
+        
+        me.hardSineVoicer.trigger1(
+          440 * 16,
+          lat: noteLatency
+        );
+
+      });
+
+      // return value, schedule notes again next bar
       if (me.playing, {
-        TempoClock.default.sched(1, me.schedulerTask);    
+        TempoClock.default.beatsPerBar;
+      }, {
+        nil;
       });
     }
   }
@@ -48,14 +79,27 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     super.on_play();
 
     // start scheduler task next bar
+    "calling schedAbs to start scheduler task".postln();
     clock.schedAbs(nextBar, this.schedulerTask);    
   }
 
   init_gui {
     arg params;
+    
+    var layout = params['layout'],
+      labelWidth = 80,
+      me = this;
 
     super.init_gui(params);
 
+    layout.flow({
+      arg layout;
+
+      ArgNameLabel("quantizationStep", layout, labelWidth);
+      me.quantizationStep.gui(layout);
+      layout.startRow();
+
+    });
 
   }
 
