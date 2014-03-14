@@ -23,6 +23,12 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     super.init_tracks();
   }
 
+  load_samples {
+    arg callback;
+
+    
+  }
+
   init_patches {
     super.init_patches();
 
@@ -39,20 +45,47 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     this.hardSineVoicer.target_(this.outputChannel);
   }
 
+  /**
+   *  Update the grid on the envelope display
+   **/
+  //sync_grid_with_numNotes {
+    //this.phaseEnvView.grid.x = this.numNotes.value;
+  //}
+
+  /**
+   *  Update note phase envelope to change rhythm of notes, as well as
+   *  the GUI to reflect.
+   **/
+  modulate_note_phase {
+    arg val;
+
+    var envelopeDisplayVal = (val * 0.5) + 0.5;
+
+    this.phaseEnv.levels = [val, -1.0 * val];
+    this.phaseEnvView.value_([[0, 1], [envelopeDisplayVal, 1.0 - envelopeDisplayVal]]);
+  }
+
   load_environment {
-    var me = this;
+    var me = this,
+      envelopeDisplayVal;
     super.load_environment();
+
+    /**
+     *  When `numNotes` is changed, modify drawing.
+     **/
+    //this.numNotes.action = {
+      //{
+        //me.sync_grid_with_numNotes();
+      //}.defer();
+    //};
 
     /**
      *  When synkopation curve is changed, modify envelope.
      **/
     this.phaseEnvModulator.action = {
       arg val;
-
-      me.phaseEnv.levels = [val, -1.0 * val];
-
       {
-        me.phaseEnvView.setEnv(me.phaseEnv);
+        me.modulate_note_phase(val);
       }.defer(); // TODO: Might need delay here for performance
     };
 
@@ -145,7 +178,8 @@ SecondSynkopater : PerformanceEnvironmentComponent {
         Rect(0, 0, labelWidth, labelWidth)
       );
       me.phaseEnvView.editable = false;
-      me.phaseEnvView.setEnv(me.phaseEnv);
+      //me.phaseEnvView.gridOn = true;
+      //me.phaseEnvView.grid = Point.new(4);
       layout.startRow();
 
       ArgNameLabel("phaseEnvModulator", layout, labelWidth);

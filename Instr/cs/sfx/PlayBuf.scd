@@ -17,7 +17,7 @@ Instr("cs.sfx.PlayBuf", {
     gate,
     startTime * buf.sampleRate * buf.numChannels
   );
-  out = out * Linen.kr(gate, attackTime, 1.0, releaseTime, 2);
+  out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
 
   if (convertToStereo == 1, {
     out = [out, out];    
