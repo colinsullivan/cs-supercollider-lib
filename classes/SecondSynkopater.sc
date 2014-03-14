@@ -1,14 +1,22 @@
 SecondSynkopater : PerformanceEnvironmentComponent {
   var <>schedulerTask,
     <>hardSineVoicer,
-    <>quantizationStep;
+    <>numNotes,
+    <>phaseEnv,
+    <>phaseEnvView,
+    <>phaseEnvModulator,
+    <>phaseQuantizationBeats;
 
   init {
     arg params;
 
-    super.init(params);
+    this.numNotes = KrNumberEditor.new(1, ControlSpec(1, 8, step: 1));
+    this.phaseEnv = Env.new([-1.0, 1.0], [1.0], [0, 0]);
+    this.phaseEnvModulator = KrNumberEditor.new(1.0, \bipolar);
 
-    this.quantizationStep = KrNumberEditor(1, ControlSpec(1, 8, step: 1));
+    this.phaseQuantizationBeats = 1.0;
+    
+    super.init(params);
   }
 
   init_tracks {
@@ -35,21 +43,51 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     var me = this;
     super.load_environment();
 
+    /**
+     *  When synkopation curve is changed, modify envelope.
+     **/
+    this.phaseEnvModulator.action = {
+      arg val;
+
+      me.phaseEnv.levels = [val, -1.0 * val];
+
+      {
+        me.phaseEnvView.setEnv(me.phaseEnv);
+      }.defer(); // TODO: Might need delay here for performance
+    };
+
     this.schedulerTask = {
       var nextTriggerTime,
         t = TempoClock.default,
+        numNotes = me.numNotes.value,
         notePhase,
+        notePhaseModulation,
         noteBeat,
-        noteLatency;
+        noteLatency,
+        quantizedPhaseEnv = me.phaseEnv.asSignal(numNotes);
 
-      //"--------------".postln();
-      //"scheduler task".postln();
+      "--------------".postln();
+      "scheduler task".postln();
 
       // schedule notes
-      for (0, this.quantizationStep.value - 1, {
+      for (0, numNotes - 1, {
         arg i;
+        
+        "i:".postln;
+        i.postln;
 
-        notePhase = (i / this.quantizationStep.value) * t.beatsPerBar;
+        // amount note is shifted due to envelope curve
+        notePhaseModulation = (
+          quantizedPhaseEnv[i] * me.phaseQuantizationBeats
+        );
+
+        "notePhaseModulation:".postln;
+        notePhaseModulation.postln;
+
+        // phase of note (which beat it sits on)
+        notePhase = (i / numNotes) * t.beatsPerBar + notePhaseModulation;
+
+        // offset from the next bar
         noteBeat = t.beatsPerBar + t.nextTimeOnGrid(
           t.beatsPerBar,
           notePhase
@@ -57,7 +95,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
         noteLatency = t.beats2secs(noteBeat) - t.seconds;
         
         me.hardSineVoicer.trigger1(
-          440 * 16,
+          440 * 32,
           lat: noteLatency
         );
 
@@ -95,8 +133,23 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     layout.flow({
       arg layout;
 
-      ArgNameLabel("quantizationStep", layout, labelWidth);
-      me.quantizationStep.gui(layout);
+      ArgNameLabel("numNotes", layout, labelWidth);
+      me.numNotes.gui(layout);
+      layout.startRow();
+      
+      //ArgNameLabel("phaseEnv", layout, labelWidth);
+      //me.phaseEnvEditor.gui(layout);
+      //layout.startRow();
+      me.phaseEnvView = EnvelopeView(
+        layout,
+        Rect(0, 0, labelWidth, labelWidth)
+      );
+      me.phaseEnvView.editable = false;
+      me.phaseEnvView.setEnv(me.phaseEnv);
+      layout.startRow();
+
+      ArgNameLabel("phaseEnvModulator", layout, labelWidth);
+      me.phaseEnvModulator.gui(layout);
       layout.startRow();
 
     });
@@ -105,6 +158,8 @@ SecondSynkopater : PerformanceEnvironmentComponent {
 
   init_uc33_mappings {
     super.init_uc33_mappings();
+
+    this.map_uc33_to_property(\knu5, \phaseEnvModulator);
   }
 
 }
