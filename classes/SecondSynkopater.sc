@@ -15,7 +15,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     this.phaseEnvModulator = KrNumberEditor.new(1.0, \bipolar);
 
     this.phaseQuantizationBeats = 1.0;
-    
+
     super.init(params);
   }
 
@@ -26,7 +26,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
   load_samples {
     arg callback;
 
-    
+    super.load_samples(callback);
   }
 
   init_patches {
@@ -161,6 +161,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       labelWidth = 80,
       me = this;
 
+    "SecondSynkopater.init_gui()".postln();
     super.init_gui(params);
 
     layout.flow({
