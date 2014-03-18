@@ -8,7 +8,8 @@ Instr("cs.sfx.PlayBuf", {
     releaseTime,
     convertToStereo = 0;
 
-  var out;
+  var out,
+    sustainTime = buf.duration - attackTime - releaseTime;
 
   out = PlayBuf.ar(
     buf.numChannels,
@@ -17,7 +18,11 @@ Instr("cs.sfx.PlayBuf", {
     gate,
     startTime * buf.sampleRate * buf.numChannels
   );
-  out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
+  //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
+  out = out * Env.new(
+    [ 0.0,        1.0,            1.0,            0.0 ],
+    [   attackTime,   sustainTime,    releaseTime     ]
+  ).ar(doneAction: 2);
 
   if (convertToStereo == 1, {
     out = [out, out];    
