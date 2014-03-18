@@ -62,9 +62,26 @@ SecondSynkopater : PerformanceEnvironmentComponent {
         buf: this.bufManager.bufs[\low],
         gate: 1,
         attackTime: 0.01,
-        releaseTime: 0.01,
-        sustainTime: this.bufManager.bufs[\low].duration - 0.02
-      ));
+        releaseTime: 0.01
+      )),
+      Patch("cs.sfx.PlayBuf", (
+        buf: this.bufManager.bufs[\snare01],
+        gate: 1,
+        attackTime: 0.01,
+        releaseTime: 0.01
+      )),
+      Patch("cs.sfx.PlayBuf", (
+        buf: this.bufManager.bufs[\crunchy],
+        gate: 1,
+        attackTime: 0.01,
+        releaseTime: 0.01
+      )),
+      Patch("cs.sfx.PlayBuf", (
+        buf: this.bufManager.bufs[\snare02],
+        gate: 1,
+        attackTime: 0.01,
+        releaseTime: 0.01
+      ))
     ];
 
   }
@@ -98,7 +115,9 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     var envelopeDisplayVal = (val * 0.5) + 0.5;
 
     this.phaseEnv.levels = [val, -1.0 * val];
+    //this.phaseEnv.curves = [-4.0 * val];
     this.phaseEnvView.value_([[0, 1], [envelopeDisplayVal, 1.0 - envelopeDisplayVal]]);
+    //this.phaseEnvView.curves = [-4.0 * val];
   }
 
   load_environment {
@@ -157,7 +176,8 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       noteLatency,
       quantizedPhaseEnv = this.phaseEnv.asSignal(numNotes),
       outputChannel = this.outputChannel,
-      percPatches = this.percPatches;
+      percPatches = this.percPatches,
+      phaseQuantizationBeats = this.phaseQuantizationBeats;
 
     //"--------------".postln();
     //"scheduler task".postln();
@@ -168,7 +188,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       
       // amount note is shifted due to envelope curve
       notePhaseModulation = (
-        quantizedPhaseEnv[i] * this.phaseQuantizationBeats
+        quantizedPhaseEnv[i] * phaseQuantizationBeats
       );
 
       // phase of note (which beat it sits on)
@@ -264,7 +284,8 @@ SecondSynkopater : PerformanceEnvironmentComponent {
   init_uc33_mappings {
     super.init_uc33_mappings();
 
-    this.map_uc33_to_property(\knu5, \phaseEnvModulator);
+    this.map_uc33_to_property(\knu5, \numNotes);
+    this.map_uc33_to_property(\knm5, \phaseEnvModulator);
     this.map_uc33_to_property(\sl5, \ampAndToggleSlider);
   }
 

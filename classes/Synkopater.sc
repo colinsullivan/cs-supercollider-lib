@@ -138,14 +138,15 @@ Synkopater : PerformanceEnvironmentComponent {
       me.impulsePatchOne.trigger1(440, lat: me.triggerDelayOne.value);
 
       if (me.playing, {
-        TempoClock.default.sched(2, me.playTaskOne);
+        2
       });
     };
 
     this.playTaskTwo = {
       me.impulsePatchTwo.trigger1(880, lat: me.triggerDelayTwo.value);
+      
       if (me.playing, {
-        TempoClock.default.sched(2, me.playTaskTwo);    
+        2
       });
     };
 
@@ -175,12 +176,15 @@ Synkopater : PerformanceEnvironmentComponent {
       oneBeatIntoNextBar,
       tempoClock = TempoClock.default;
 
+    if (this.playing == false, {
+      nextBar = tempoClock.nextTimeOnGrid(tempoClock.beatsPerBar);
+
+      tempoClock.schedAbs(nextBar, this.playTaskOne);
+      tempoClock.schedAbs(nextBar + 1, this.playTaskTwo);
+    });
+
     super.on_play();
 
-    nextBar = tempoClock.nextTimeOnGrid(tempoClock.beatsPerBar);
-
-    tempoClock.schedAbs(nextBar, this.playTaskOne);
-    tempoClock.schedAbs(nextBar + 1, this.playTaskTwo);
   }
 
   init_gui {
