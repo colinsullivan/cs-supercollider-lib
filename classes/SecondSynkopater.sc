@@ -7,11 +7,14 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     <>phaseEnvModulator,
     <>phaseQuantizationBeats,
     <>bufManager,
-    <>percPatches;
+    <>percPatches,
+    <>ampAndToggleSlider;
 
   init {
     arg params;
 
+    this.ampAndToggleSlider = KrNumberEditor.new(0.0, \amp);
+    
     this.numNotes = KrNumberEditor.new(1, ControlSpec(1, 8, step: 1));
     this.phaseEnv = Env.new([-1.0, 1.0], [1.0], [0, 0]);
     this.phaseEnvModulator = KrNumberEditor.new(1.0, \bipolar);
@@ -111,6 +114,24 @@ SecondSynkopater : PerformanceEnvironmentComponent {
         //me.sync_grid_with_numNotes();
       //}.defer();
     //};
+    
+    // when amplitude and toggle slider is changed
+    this.ampAndToggleSlider.action = {
+      arg val;
+
+      // set volume of output
+      me.outputChannel.level = val;
+
+      // if slider is zero, and patch is playing, stop patch
+      if (me.playing && val == 0, {
+        me.interface.stop();
+      }, {
+        // if slider is non-zero and patch is stopped, start patch
+        if (me.playing == false && val != 0, {
+          me.interface.play();
+        });
+      });
+    };
 
     /**
      *  When synkopation curve is changed, modify envelope.
@@ -138,8 +159,8 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       outputChannel = this.outputChannel,
       percPatches = this.percPatches;
 
-    "--------------".postln();
-    "scheduler task".postln();
+    //"--------------".postln();
+    //"scheduler task".postln();
 
     // schedule notes
     for (0, numNotes - 1, {
@@ -186,13 +207,18 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       nextBar = clock.nextTimeOnGrid(clock.beatsPerBar),
       me = this;
 
+    // had to do this if block because on_play is called
+    // multiple times when mapped to the amp slider.
+    if (this.playing == false, {
+      // start scheduler task next bar
+      "calling schedAbs to start scheduler task".postln();
+      clock.schedAbs(nextBar, {
+        me.schedule_notes();
+      });
+    });
+    
     super.on_play();
 
-    // start scheduler task next bar
-    "calling schedAbs to start scheduler task".postln();
-    clock.schedAbs(nextBar, {
-      me.schedule_notes();
-    });
   }
 
   init_gui {
@@ -226,6 +252,10 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       ArgNameLabel("phaseEnvModulator", layout, labelWidth);
       me.phaseEnvModulator.gui(layout);
       layout.startRow();
+      
+      ArgNameLabel("amp", layout, labelWidth);
+      this.ampAndToggleSlider.gui(layout);
+      layout.startRow();
 
     });
 
@@ -235,6 +265,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     super.init_uc33_mappings();
 
     this.map_uc33_to_property(\knu5, \phaseEnvModulator);
+    this.map_uc33_to_property(\sl5, \ampAndToggleSlider);
   }
 
 }
