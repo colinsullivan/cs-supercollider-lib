@@ -5,7 +5,9 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     <>phaseEnv,
     <>phaseEnvView,
     <>phaseEnvModulator,
-    <>phaseQuantizationBeats;
+    <>phaseQuantizationBeats,
+    <>bufManager,
+    <>percPatches;
 
   init {
     arg params;
@@ -15,6 +17,12 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     this.phaseEnvModulator = KrNumberEditor.new(1.0, \bipolar);
 
     this.phaseQuantizationBeats = 1.0;
+
+    //  create the buffer manager that will load the samples we need for this
+    //  patch.
+    this.bufManager = BufferManager.new().init((
+      rootDir: "/Volumes/Secondary/Samples/Recorded Sounds/Sound Effects/"
+    ));
 
     super.init(params);
   }
@@ -26,7 +34,16 @@ SecondSynkopater : PerformanceEnvironmentComponent {
   load_samples {
     arg callback;
 
-    super.load_samples(callback);
+    this.bufManager.load_bufs([
+      ["susans_coffee_hits/crunchy.wav", \crunchy],
+      ["susans_coffee_hits/low.wav", \low],
+      ["susans_coffee_hits/pitched-01.wav", \pitched01],
+      ["susans_coffee_hits/pitched-02.wav", \pitched02],
+      ["susans_coffee_hits/pitched-03.wav", \pitched03],
+      ["susans_coffee_hits/snare-01.wav", \snare01],
+      ["susans_coffee_hits/snare-02.wav", \snare02]
+    ], callback);
+
   }
 
   init_patches {
@@ -37,12 +54,28 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       Instr("cs.synths.HardSine")
     );
 
+    this.percPatches = [
+      Patch("cs.sfx.PlayBuf", (
+        buf: this.bufManager.bufs[\low],
+        gate: 1,
+        attackTime: 0.01,
+        releaseTime: 0.01,
+        sustainTime: this.bufManager.bufs[\low].duration - 0.02
+      ));
+    ];
+
   }
 
   play_patches_on_tracks {
     super.play_patches_on_tracks();
     
     this.hardSineVoicer.target_(this.outputChannel);
+
+    this.percPatches.do({
+      arg percPatch;
+
+      this.outputChannel.addPatch(percPatch);
+    });
   }
 
   /**
@@ -66,8 +99,8 @@ SecondSynkopater : PerformanceEnvironmentComponent {
   }
 
   load_environment {
-    var me = this,
-      envelopeDisplayVal;
+    var me = this;
+
     super.load_environment();
 
     /**
@@ -88,70 +121,78 @@ SecondSynkopater : PerformanceEnvironmentComponent {
         me.modulate_note_phase(val);
       }.defer(); // TODO: Might need delay here for performance
     };
+  }
 
-    this.schedulerTask = {
-      var nextTriggerTime,
-        t = TempoClock.default,
-        numNotes = me.numNotes.value,
-        notePhase,
-        notePhaseModulation,
-        noteBeat,
-        noteLatency,
-        quantizedPhaseEnv = me.phaseEnv.asSignal(numNotes);
+  /**
+   *  On each bar, run this method to prepare all notes for the next bar.
+   **/
+  schedule_notes {
+    var nextTriggerTime,
+      t = TempoClock.default,
+      numNotes = this.numNotes.value,
+      notePhase,
+      notePhaseModulation,
+      noteBeat,
+      noteLatency,
+      quantizedPhaseEnv = this.phaseEnv.asSignal(numNotes),
+      outputChannel = this.outputChannel,
+      percPatches = this.percPatches;
 
-      "--------------".postln();
-      "scheduler task".postln();
+    "--------------".postln();
+    "scheduler task".postln();
 
-      // schedule notes
-      for (0, numNotes - 1, {
-        arg i;
-        
-        "i:".postln;
-        i.postln;
+    // schedule notes
+    for (0, numNotes - 1, {
+      arg i;
+      
+      // amount note is shifted due to envelope curve
+      notePhaseModulation = (
+        quantizedPhaseEnv[i] * this.phaseQuantizationBeats
+      );
 
-        // amount note is shifted due to envelope curve
-        notePhaseModulation = (
-          quantizedPhaseEnv[i] * me.phaseQuantizationBeats
-        );
+      // phase of note (which beat it sits on)
+      notePhase = (i / numNotes) * t.beatsPerBar + notePhaseModulation;
 
-        "notePhaseModulation:".postln;
-        notePhaseModulation.postln;
+      // offset from the next bar
+      noteBeat = t.beatsPerBar + t.nextTimeOnGrid(
+        t.beatsPerBar,
+        notePhase
+      );
+      noteLatency = t.beats2secs(noteBeat) - t.seconds;
 
-        // phase of note (which beat it sits on)
-        notePhase = (i / numNotes) * t.beatsPerBar + notePhaseModulation;
+      percPatches[i % percPatches.size()].playToMixer(
+        outputChannel,
+        atTime: noteLatency
+      );
 
-        // offset from the next bar
-        noteBeat = t.beatsPerBar + t.nextTimeOnGrid(
-          t.beatsPerBar,
-          notePhase
-        );
-        noteLatency = t.beats2secs(noteBeat) - t.seconds;
-        
-        me.hardSineVoicer.trigger1(
-          440 * 32,
-          lat: noteLatency
-        );
+      /*this.hardSineVoicer.trigger1(
+        440 * 32,
+        lat: noteLatency
+      );*/
 
-      });
+    });
 
-      // return value, schedule notes again next bar
-      if (me.playing, {
-        TempoClock.default.beatsPerBar;
-      }, {
-        nil;
-      });
-    }
+    // return value, schedule notes again next bar
+    if (this.playing, {
+      ^TempoClock.default.beatsPerBar;
+    }, {
+      ^nil;
+    });
+  
   }
 
   on_play {
     var clock = TempoClock.default(),
-      nextBar = clock.nextTimeOnGrid(clock.beatsPerBar);
+      nextBar = clock.nextTimeOnGrid(clock.beatsPerBar),
+      me = this;
 
     super.on_play();
 
     // start scheduler task next bar
     "calling schedAbs to start scheduler task".postln();
-    clock.schedAbs(nextBar, this.schedulerTask);    
+    clock.schedAbs(nextBar, {
+      me.schedule_notes();
+    });
   }
 
   init_gui {
@@ -161,7 +202,6 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       labelWidth = 80,
       me = this;
 
-    "SecondSynkopater.init_gui()".postln();
     super.init_gui(params);
 
     layout.flow({

@@ -17,18 +17,34 @@ BufferManager : Object {
     <>doneLoadingCallback,
     <>rootDir;
 
+  /**
+   *  Initialize
+   *
+   *  @param  {String}    params.rootDir - The root directory we will look
+   *          for samples in.
+   *  @param  {Function}  params.doneLoadingCallback - Callback to fire when
+   *          samples are done loading.
+   */
   init {
     arg params;
 
     this.rootDir = params[\rootDir];
+    this.doneLoadingCallback = params[\doneLoadingCallback];
+    
     this.bufs = ();
 
-    this.doneLoadingCallback = params[\doneLoadingCallback];
   }
 
   load_bufs {
-    arg bufList;
+    arg bufList,
+      aCallback;
+
     var me = this;
+
+    // if a callback was passed in, use that as the done loading callback
+    if (aCallback != nil, {
+      this.doneLoadingCallback = aCallback;    
+    });
 
     // first we need to know about all the buffers we are trying to load
     bufList.do({
@@ -88,8 +104,6 @@ BufferManager : Object {
 
   bufs_all_loaded {
 
-    "bufs_all_loaded".postln;
-    
     this.doneLoadingCallback.value();
 
   }
