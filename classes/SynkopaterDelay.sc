@@ -137,7 +137,8 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
   }
 
   load_environment {
-    var me = this;
+    var me = this,
+      t = TempoClock.default;
     
     super.load_environment();
     
@@ -157,7 +158,7 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     };
 
     this.playTaskOne = {
-      me.impulsePatchOne.trigger1(440, lat: me.triggerDelayOne.value);
+      me.impulsePatchOne.trigger1(440, lat: me.triggerDelayOne.value + t.beats2secs(2));
 
       if (me.playing, {
         2
@@ -165,7 +166,7 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     };
 
     this.playTaskTwo = {
-      me.impulsePatchTwo.trigger1(880, lat: me.triggerDelayTwo.value);
+      me.impulsePatchTwo.trigger1(880, lat: me.triggerDelayTwo.value + t.beats2secs(2));
       
       if (me.playing, {
         2
