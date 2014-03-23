@@ -29,12 +29,12 @@
   /*s.options.hardwareBufferSize = 128;*/
   s.boot();
 
-  /*m = s.meter();
+  m = s.meter();
   // move level meter to bottom right of screen
   mBounds = m.window.bounds;
   mBounds.left = 1440;
   mBounds.top = 900;
-  m.window.setTopLeftBounds(mBounds);*/
+  m.window.setTopLeftBounds(mBounds);
   
   GUI.qt;
   Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";

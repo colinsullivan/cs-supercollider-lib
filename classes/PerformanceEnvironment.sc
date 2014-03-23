@@ -101,7 +101,7 @@ PerformanceEnvironment : Object {
         initParams: ()
       ),*/
       synkopater: (
-        class: Synkopater,
+        class: SynkopaterDelay,
         initParams: (
           outputBus: 32
         )
