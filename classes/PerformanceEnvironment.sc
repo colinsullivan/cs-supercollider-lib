@@ -76,12 +76,12 @@ PerformanceEnvironment : Object {
           outputBus: 24
         )
       ),*/
-      randomHarpEnvironment: (
+      /*randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment,
         initParams: (
           outputBus: 26
         )
-      ),
+      ),*/
       /*randomizedLazersEnvironment: (
         class: RandomizedLazersEnvironment,
         initParams: (

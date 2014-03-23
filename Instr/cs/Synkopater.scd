@@ -1,16 +1,24 @@
 Instr("cs.SynkopaterDelay.SynkopaterDelay", {
-  arg bus, numChan, delaySecs = 0, feedbackCoefficient = 0.6, amp = 0.5;
+  arg bus,
+    numChan,
+    delaySecs = 0,
+    feedbackCoefficient = 0.6,
+    amp = 0.5;
 
-  var in, out, localFB;
+  var in, delayOut, out, localFB;
 
   in = In.ar(bus, numChan);
 
+  // feedback loop output
   localFB = LocalIn.ar(numChan);
 
-  out = DelayC.ar(in + localFB, 8.0, delaySecs);
-
-  // input signal plus feedback
-  LocalOut.ar(feedbackCoefficient * out);
+  // output of delay
+  delayOut = DelayC.ar(feedbackCoefficient * localFB, 16.0, delaySecs);
+  
+  out = in + delayOut;
+  
+  // feedback loop input 
+  LocalOut.ar(out);
 
   // send to out
   out = amp * out;

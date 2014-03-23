@@ -9,6 +9,8 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     <>delayPatchTwo,
     <>synkopationControlOne,
     <>synkopationControlTwo,
+    <>delayFactorControl,
+    <>delayFeedbackControl,
     <>triggerDelayOne,
     <>triggerDelayTwo,
     <>playTaskOne,
@@ -23,8 +25,10 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     
     //  these are the controls that will map to the parameters of the two
     //  delays and input sources
-    this.synkopationControlOne = KrNumberEditor.new(0.0, \unipolar);
-    this.synkopationControlTwo = KrNumberEditor.new(0.0, \unipolar);
+    this.synkopationControlOne = KrNumberEditor.new(0.0, ControlSpec(0.0, 1.0, \linear, (1.0/16.0)));
+    this.synkopationControlTwo = KrNumberEditor.new(0.0, ControlSpec(0.0, 1.0, \linear, (1.0/16.0)));
+    this.delayFactorControl = KrNumberEditor.new(1, ControlSpec(0, 2, \linear, (1.0 / 4.0)));
+    this.delayFeedbackControl = KrNumberEditor.new(0.5, \unipolar);
 
     this.ampAndToggleSlider = KrNumberEditor.new(0.0, \amp);
 
@@ -54,13 +58,13 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     this.delayPatchOne = FxPatch("cs.SynkopaterDelay.SynkopaterDelay", (
       numChan: 2,
       delaySecs: KrNumberEditor.new(0.0, ControlSpec(0.0, 8.0)),
-      feedbackCoefficient: 0.8
+      feedbackCoefficient: this.delayFeedbackControl
     ));
 
     this.delayPatchTwo = FxPatch("cs.SynkopaterDelay.SynkopaterDelay", (
       numChan: 2,
       delaySecs: KrNumberEditor.new(0.0, ControlSpec(0.0, 8.0)),
-      feedbackCoefficient: 0.8
+      feedbackCoefficient: this.delayFeedbackControl
     ));
     
     //  these tracks will route the input to the delay and directly to the
@@ -106,32 +110,50 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
   }
 
   handle_synkopation_control_changed {
-    arg whichControl,
-      val;
+    var currentBeatsPerSecond = Tempo.tempo;
 
-    var currentBeatsPerSecond = Tempo.tempo,
-      newDelayTime,
-      newTriggerRate;
+    this.delayPatchOne.delaySecs.value = (
+      this.delayFactorControl.value() * (
+        currentBeatsPerSecond + (
+          currentBeatsPerSecond * this.synkopationControlOne.value()
+        )
+      )
+    );
+    this.delayPatchTwo.delaySecs.value = (
+      this.delayFactorControl.value() * (
+        currentBeatsPerSecond + (
+          currentBeatsPerSecond * this.synkopationControlTwo.value()
+        )
+      )
+    );
 
-    newDelayTime = currentBeatsPerSecond + (currentBeatsPerSecond * val);
-    newTriggerRate = currentBeatsPerSecond * val;
+    this.triggerDelayOne.value = (
+      currentBeatsPerSecond * this.synkopationControlOne.value()
+    );
 
-    this.performMsg([("delayPatch"++whichControl).asSymbol()]).delaySecs.value = newDelayTime;
-    this.performMsg([("triggerDelay"++whichControl).asSymbol()]).value = newTriggerRate;
-
+    this.triggerDelayTwo.value = (
+      currentBeatsPerSecond * this.synkopationControlTwo.value()
+    );
   }
 
   load_environment {
     var me = this;
+    
     super.load_environment();
+    
     this.synkopationControlOne.action = {
       arg val;
-      me.handle_synkopation_control_changed("One", val);
+      me.handle_synkopation_control_changed();
     };
 
     this.synkopationControlTwo.action = {
       arg val;
-      me.handle_synkopation_control_changed("Two", val);
+      me.handle_synkopation_control_changed();
+    };
+
+    this.delayFactorControl.action = {
+      arg val;
+      me.handle_synkopation_control_changed();
     };
 
     this.playTaskOne = {
@@ -204,6 +226,14 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
       ArgNameLabel("two", layout, labelWidth);
       this.synkopationControlTwo.gui(layout);
       layout.startRow();
+      
+      ArgNameLabel("delayFactor", layout, labelWidth);
+      this.delayFactorControl.gui(layout);
+      layout.startRow();
+      
+      ArgNameLabel("delayFeedback", layout, labelWidth);
+      this.delayFeedbackControl.gui(layout);
+      layout.startRow();
 
       ArgNameLabel("amp", layout, labelWidth);
       this.ampAndToggleSlider.gui(layout);
@@ -213,8 +243,10 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
   }
   
   init_uc33_mappings {
-    this.map_uc33_to_property(\knu6, \synkopationControlOne);
-    this.map_uc33_to_property(\knm6, \synkopationControlTwo);
-    this.map_uc33_to_property(\sl6, \ampAndToggleSlider);
+    this.map_uc33_to_property(\knu1, \synkopationControlOne);
+    this.map_uc33_to_property(\knm1, \synkopationControlTwo);
+    this.map_uc33_to_property(\knl1, \delayFactorControl);
+    this.map_uc33_to_property(\knu2, \delayFeedbackControl);
+    this.map_uc33_to_property(\sl1, \ampAndToggleSlider);
   }
 }
