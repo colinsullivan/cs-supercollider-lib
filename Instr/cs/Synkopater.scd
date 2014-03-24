@@ -15,13 +15,11 @@ Instr("cs.SynkopaterDelay.SynkopaterDelay", {
   // output of delay
   delayOut = DelayC.ar(feedbackCoefficient * localFB, 16.0, delaySecs);
   
-  out = in + delayOut;
-  
   // feedback loop input 
-  LocalOut.ar(out);
+  LocalOut.ar(in + delayOut);
 
   // send to out
-  out = amp * out;
+  out = amp * delayOut;
 }, [
   \audiobus,
   ObjectSpec(1),

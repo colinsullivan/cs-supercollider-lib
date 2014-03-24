@@ -13,8 +13,6 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     <>delayFeedbackControl,
     <>triggerDelayOne,
     <>triggerDelayTwo,
-    <>playTaskOne,
-    <>playTaskTwo,
     <>ampAndToggleSlider;
 
   init {
@@ -157,22 +155,6 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
       me.handle_synkopation_control_changed();
     };
 
-    this.playTaskOne = {
-      me.impulsePatchOne.trigger1(440, lat: me.triggerDelayOne.value + t.beats2secs(2));
-
-      if (me.playing, {
-        2
-      });
-    };
-
-    this.playTaskTwo = {
-      me.impulsePatchTwo.trigger1(880, lat: me.triggerDelayTwo.value + t.beats2secs(2));
-      
-      if (me.playing, {
-        2
-      });
-    };
-
     // when amplitude and toggle slider is changed
     this.ampAndToggleSlider.action = {
       arg val;
@@ -193,17 +175,48 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
 
   }
 
+  /**
+   *  On the last quarter note of each bar, schedule notes for the start of
+   *  the next bar.
+   **/
+  schedule_notes {
+    var nextOne,
+      nextThree,
+      t = TempoClock.default;
+
+    nextOne = t.nextTimeOnGrid(t.beatsPerBar, 0);
+    nextThree = t.nextTimeOnGrid(t.beatsPerBar, 2);
+
+    this.impulsePatchOne.trigger1(
+      440,
+      lat: this.triggerDelayOne.value + (t.beats2secs(nextOne) - t.seconds)
+    );
+    this.impulsePatchTwo.trigger1(
+      880,
+      lat: this.triggerDelayTwo.value + (t.beats2secs(nextThree) - t.seconds)
+    );
+
+    if (this.playing, {
+      ^t.beatsPerBar;
+    }, {
+      ^nil;
+    });
+  }
+
   on_play {
     var me = this,
-      nextBar,
-      oneBeatIntoNextBar,
+      nextPickupNote,
       tempoClock = TempoClock.default;
 
     if (this.playing == false, {
-      nextBar = tempoClock.nextTimeOnGrid(tempoClock.beatsPerBar);
+      nextPickupNote = tempoClock.nextTimeOnGrid(
+        tempoClock.beatsPerBar,
+        tempoClock.beatsPerBar - 1
+      );
 
-      tempoClock.schedAbs(nextBar, this.playTaskOne);
-      tempoClock.schedAbs(nextBar + 1, this.playTaskTwo);
+      tempoClock.schedAbs(nextPickupNote, {
+        me.schedule_notes();
+      });
     });
 
     super.on_play();
