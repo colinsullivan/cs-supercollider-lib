@@ -9,14 +9,6 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
 
     this.inChannel = params['inChannel'];
 
-    this.outputChannel = MixerChannel.new(
-      nil,
-      Server.default,
-      2, 
-      2,
-      outbus: this.outputBus
-    );
-
     if (params['numVoices'] == 1, {
       this.voicer = MonoPortaVoicer.new(
         1,
