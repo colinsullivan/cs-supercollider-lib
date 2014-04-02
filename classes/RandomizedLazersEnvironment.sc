@@ -6,7 +6,7 @@ RandomizedLazersEnvironment : VoicerEnvironmentComponent {
     params['numVoices'] = 4;
     params['instr'] = Instr("cs.fm.Lazers");
 
-    this.outputBus = 10;
+    //this.outputBus = 10;
 
     super.init(params);
     

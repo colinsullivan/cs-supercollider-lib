@@ -82,13 +82,13 @@ PerformanceEnvironment : Object {
           outputBus: 26
         )
       ),*/
-      /*randomizedLazersEnvironment: (
+      randomizedLazersEnvironment: (
         class: RandomizedLazersEnvironment,
         initParams: (
           inChannel: 2,
           outputBus: 28
         )
-      ),*/
+      ),
       /*fmPercussionEnvironment: (
         class: FMPercussionVoicerEnvironment,
         initParams: (
