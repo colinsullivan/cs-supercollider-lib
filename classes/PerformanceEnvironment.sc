@@ -12,7 +12,7 @@ PerformanceEnvironment : Object {
 
   init {
     var modulesToLoad,
-      freeOutputBusses = [36, 38, 40, 42, 44, 46];
+      freeOutputBusses = [38, 40, 42, 44, 46];
 
     this.modules = ();
 
@@ -87,6 +87,13 @@ PerformanceEnvironment : Object {
         initParams: (
           inChannel: 2,
           outputBus: 28
+        )
+      ),
+      hardSineVoicer: (
+        class: HardSineVoicerComponent,
+        initParams: (
+          inChannel: 9,
+          outputBus: 36
         )
       ),
       /*fmPercussionEnvironment: (
