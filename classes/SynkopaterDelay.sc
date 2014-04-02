@@ -26,7 +26,7 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     this.synkopationControlOne = KrNumberEditor.new(0.0, ControlSpec(0.0, 1.0, \linear, (1.0/16.0)));
     this.synkopationControlTwo = KrNumberEditor.new(0.0, ControlSpec(0.0, 1.0, \linear, (1.0/16.0)));
     this.delayFactorControl = KrNumberEditor.new(1, ControlSpec(0, 2, \linear, (1.0 / 4.0)));
-    this.delayFeedbackControl = KrNumberEditor.new(0.5, \unipolar);
+    this.delayFeedbackControl = KrNumberEditor.new(0.5, ControlSpec(0.0, 0.999999, \linear));
 
     this.ampAndToggleSlider = KrNumberEditor.new(0.0, \amp);
 
@@ -182,10 +182,14 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
   schedule_notes {
     var nextOne,
       nextThree,
+      nextTwo,
+      nextFour,
       t = TempoClock.default;
 
     nextOne = t.nextTimeOnGrid(t.beatsPerBar, 0);
+    nextTwo = t.nextTimeOnGrid(t.beatsPerBar, 1);
     nextThree = t.nextTimeOnGrid(t.beatsPerBar, 2);
+    nextFour = t.nextTimeOnGrid(t.beatsPerBar, 3);
 
     this.impulsePatchOne.trigger1(
       440,
@@ -193,7 +197,15 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     );
     this.impulsePatchTwo.trigger1(
       880,
-      lat: this.triggerDelayTwo.value + (t.beats2secs(nextThree) - t.seconds)
+      lat: this.triggerDelayTwo.value + (t.beats2secs(nextTwo) - t.seconds)
+    );
+    this.impulsePatchOne.trigger1(
+      440,
+      lat: this.triggerDelayOne.value + (t.beats2secs(nextThree) - t.seconds)
+    );
+    this.impulsePatchTwo.trigger1(
+      880,
+      lat: this.triggerDelayTwo.value + (t.beats2secs(nextFour) - t.seconds)
     );
 
     if (this.playing, {

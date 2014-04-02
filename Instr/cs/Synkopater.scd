@@ -3,7 +3,7 @@ Instr("cs.SynkopaterDelay.SynkopaterDelay", {
     numChan,
     delaySecs = 0,
     feedbackCoefficient = 0.6,
-    amp = 0.5;
+    amp = 1.0;
 
   var in, delayOut, out, localFB;
 
