@@ -6,6 +6,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     <>phaseEnvView,
     <>phaseEnvModulator,
     <>phaseQuantizationBeats,
+    <>phaseQuantizationSpec,
     <>bufManager,
     <>percPatches,
     <>ampAndToggleSlider;
@@ -16,10 +17,12 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     this.ampAndToggleSlider = KrNumberEditor.new(0.0, \amp);
     
     this.numNotes = KrNumberEditor.new(1, ControlSpec(1, 8, step: 1));
-    this.phaseEnv = Env.new([-1.0, 1.0], [1.0], [0, 0]);
-    this.phaseEnvModulator = KrNumberEditor.new(1.0, \bipolar);
+    //this.phaseEnv = Env.new([-1.0, 1.0], [1.0], [0, 0]);
+    this.phaseEnv = Env.new([0.5, 0.5], [1.0], [0, 0]);
+    this.phaseEnvModulator = KrNumberEditor.new(1.0, \unipolar);
 
     this.phaseQuantizationBeats = 1.0;
+    this.phaseQuantizationSpec = ControlSpec.new(-1.0, 1.0, \lin, 1.0/16.0);
 
     //  create the buffer manager that will load the samples we need for this
     //  patch.
@@ -44,7 +47,8 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       ["susans_coffee_hits/pitched-02.wav", \pitched02],
       ["susans_coffee_hits/pitched-03.wav", \pitched03],
       ["susans_coffee_hits/snare-01.wav", \snare01],
-      ["susans_coffee_hits/snare-02.wav", \snare02]
+      ["susans_coffee_hits/snare-02.wav", \snare02],
+      ["susans_coffee_hits/kick.wav", \kick]
     ], callback);
 
   }
@@ -59,28 +63,46 @@ SecondSynkopater : PerformanceEnvironmentComponent {
 
     this.percPatches = [
       Patch("cs.sfx.PlayBuf", (
-        buf: this.bufManager.bufs[\low],
+        buf: this.bufManager.bufs[\kick],
         gate: 1,
-        attackTime: 0.01,
-        releaseTime: 0.01
+        attackTime: 0,
+        releaseTime: 0
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\snare01],
         gate: 1,
-        attackTime: 0.01,
-        releaseTime: 0.01
+        attackTime: 0,
+        releaseTime: 0
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\crunchy],
         gate: 1,
-        attackTime: 0.01,
-        releaseTime: 0.01
+        attackTime: 0,
+        releaseTime: 0
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\snare02],
         gate: 1,
-        attackTime: 0.01,
-        releaseTime: 0.01
+        attackTime: 0,
+        releaseTime: 0
+      )),
+      Patch("cs.sfx.PlayBuf", (
+        buf: this.bufManager.bufs[\pitched01],
+        gate: 1,
+        attackTime: 0,
+        releaseTime: 0
+      )),
+      Patch("cs.sfx.PlayBuf", (
+        buf: this.bufManager.bufs[\pitched02],
+        gate: 1,
+        attackTime: 0,
+        releaseTime: 0
+      )),
+      Patch("cs.sfx.PlayBuf", (
+        buf: this.bufManager.bufs[\pitched03],
+        gate: 1,
+        attackTime: 0,
+        releaseTime: 0
       ))
     ];
 
@@ -114,9 +136,10 @@ SecondSynkopater : PerformanceEnvironmentComponent {
 
     var envelopeDisplayVal = (val * 0.5) + 0.5;
 
-    this.phaseEnv.levels = [val, -1.0 * val];
+    this.phaseEnv.levels = [val, 1.0 - val];
     //this.phaseEnv.curves = [-4.0 * val];
-    this.phaseEnvView.value_([[0, 1], [envelopeDisplayVal, 1.0 - envelopeDisplayVal]]);
+    //this.phaseEnvView.value_([[0, 1], [envelopeDisplayVal, 1.0 - envelopeDisplayVal]]);
+    this.phaseEnvView.setEnv(this.phaseEnv);
     //this.phaseEnvView.curves = [-4.0 * val];
   }
 
@@ -177,7 +200,8 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       quantizedPhaseEnv = this.phaseEnv.asSignal(numNotes),
       outputChannel = this.outputChannel,
       percPatches = this.percPatches,
-      phaseQuantizationBeats = this.phaseQuantizationBeats;
+      phaseQuantizationBeats = this.phaseQuantizationBeats,
+      phaseQuantizationSpec = this.phaseQuantizationSpec;
 
     //"--------------".postln();
     //"scheduler task".postln();
@@ -188,7 +212,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       
       // amount note is shifted due to envelope curve
       notePhaseModulation = (
-        quantizedPhaseEnv[i] * phaseQuantizationBeats
+        this.phaseQuantizationSpec.map(quantizedPhaseEnv[i]) * phaseQuantizationBeats
       );
 
       // phase of note (which beat it sits on)
@@ -257,16 +281,12 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       me.numNotes.gui(layout);
       layout.startRow();
       
-      //ArgNameLabel("phaseEnv", layout, labelWidth);
-      //me.phaseEnvEditor.gui(layout);
-      //layout.startRow();
       me.phaseEnvView = EnvelopeView(
         layout,
         Rect(0, 0, labelWidth, labelWidth)
       );
       me.phaseEnvView.editable = false;
-      //me.phaseEnvView.gridOn = true;
-      //me.phaseEnvView.grid = Point.new(4);
+      me.phaseEnvView.setEnv(this.phaseEnv);
       layout.startRow();
 
       ArgNameLabel("phaseEnvModulator", layout, labelWidth);
