@@ -65,44 +65,44 @@ SecondSynkopater : PerformanceEnvironmentComponent {
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\kick],
         gate: 1,
-        attackTime: 0,
-        releaseTime: 0
+        attackTime: 0.01,
+        releaseTime: 0.01
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\snare01],
         gate: 1,
-        attackTime: 0,
-        releaseTime: 0
+        attackTime: 0.01,
+        releaseTime: 0.01
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\crunchy],
         gate: 1,
-        attackTime: 0,
-        releaseTime: 0
+        attackTime: 0.01,
+        releaseTime: 0.01
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\snare02],
         gate: 1,
-        attackTime: 0,
-        releaseTime: 0
+        attackTime: 0.01,
+        releaseTime: 0.01
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\pitched01],
         gate: 1,
-        attackTime: 0,
-        releaseTime: 0
+        attackTime: 0.01,
+        releaseTime: 0.01
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\pitched02],
         gate: 1,
-        attackTime: 0,
-        releaseTime: 0
+        attackTime: 0.01,
+        releaseTime: 0.01
       )),
       Patch("cs.sfx.PlayBuf", (
         buf: this.bufManager.bufs[\pitched03],
         gate: 1,
-        attackTime: 0,
-        releaseTime: 0
+        attackTime: 0.01,
+        releaseTime: 0.01
       ))
     ];
 
