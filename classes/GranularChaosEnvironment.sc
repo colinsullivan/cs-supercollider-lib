@@ -25,15 +25,16 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
     });
   }
 
-  load_patch {
-    super.load_patch();
+  init_patches {
+    super.init_patches();
 
     /*"GranularChaosEnvironment.load_patch".postln;*/
 
     this.patch = Patch(Instr.at("cs.sfx.GranularChaos"), (
       buffer: this.buf,
       envbuf: this.grainEnvBuf,
-      gate: KrNumberEditor.new(1, \gate)
+      gate: KrNumberEditor.new(1, \gate),
+      amp: this.ampAndToggleSlider
       /*done_callback: {
         "done!".postln;
       },*/
@@ -49,9 +50,6 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
      *  UC-33 Mappings
      **/
     if (this.uc33Controller != nil, {
-      /* slider to amplitude */
-      this.map_uc33_to_patch('sl8', \amp);
-
       /* knob 25 to position */
       this.map_uc33_to_patch('knu8', \pointer);
 
@@ -59,6 +57,11 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
       this.map_uc33_to_patch('knm8', \pitch);
     
     });
+  }
+  init_uc33_mappings {
+    super.init_uc33_mappings();
+
+    this.map_uc33_to_property(\sl8, \ampAndToggleSlider);
   }
 
   init_gui {

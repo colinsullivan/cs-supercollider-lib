@@ -50,12 +50,12 @@ PerformanceEnvironment : Object {
           outputBus: 16
         )
       ),*/
-      runningWaterEnvironment: (
+      /*runningWaterEnvironment: (
         class: RunningWaterEnvironment,
         initParams: (
           outputBus: 18
         )
-      ),
+      ),*/
       granularChaosEnvironment: (
         class: GranularChaosEnvironment,
         initParams: (

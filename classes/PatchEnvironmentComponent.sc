@@ -1,7 +1,8 @@
 PatchEnvironmentComponent : PerformanceEnvironmentComponent {
 
   var <>buf,
-    <>patch;
+    <>patch,
+    <>ampAndToggleSlider;
 
 
   init {
@@ -9,25 +10,48 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
     
     super.init(params);
 
+    this.ampAndToggleSlider = KrNumberEditor.new(0.0, \amp);
+    
     /*"PatchEnvironmentComponent.init".postln;*/
 
     
   }
 
   on_play {
-    //this.patch.play(bus: Bus.audio(Server.default, this.outputBus));
-    this.outputChannel.play(this.patch);
-    /*this.patch.playToMixer(this.outputChannel);*/
+    //this.outputChannel.play(this.patch);
+    this.patch.play();
+  }
+
+  on_stop {
+    this.patch.stop();
+  }
+
+  play_patches_on_tracks {
+    this.outputChannel.addPatch(this.patch);
   }
 
   load_environment {
-    this.load_patch();
+    super.load_environment();
+
+    // when amplitude and toggle slider is changed
+    this.ampAndToggleSlider.action = {
+      arg val;
+
+      // set volume of output
+      this.outputChannel.level = val;
+
+      // if slider is zero, and patch is playing, stop patch
+      if (this.playing && val == 0, {
+        this.interface.stop();
+      }, {
+        // if slider is non-zero and patch is stopped, start patch
+        if (this.playing == false && val != 0, {
+          this.interface.play();
+        });
+      });
+    };
   }
 
-  load_patch {
-    /*"PatchEnvironmentComponent.load_samples".postln;*/
-    // subclasses should instantiate Patch objects here and call prepareForPlay
-  }
 
   /**
    *  Map a property of the patch to a UC-33 controller knob or slider.
