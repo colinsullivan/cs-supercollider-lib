@@ -37,8 +37,10 @@
   m.window.setTopLeftBounds(mBounds);
   
   GUI.qt;
-  /*Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
-  Instr.loadAll();*/
+
+  // these don't seem to do anything right now
+  //Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
+  //Instr.loadAll();
 
   s.doWhenBooted({
 
