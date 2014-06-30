@@ -80,7 +80,7 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
   }
   load_samples {
     arg callback;
-    var sfxRoot = "/Volumes/Secondary/Samples/Recorded Sounds/Sound Effects/",
+    var sfxRoot = "/Users/colin/Samples/Recorded Sounds/Sound Effects/",
       me = this;
 
     Buffer.read(Server.default, sfxRoot ++ "harp-plucks-04_long.aif", action: {

@@ -37,8 +37,8 @@
   m.window.setTopLeftBounds(mBounds);
   
   GUI.qt;
-  Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
-  Instr.loadAll();
+  /*Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
+  Instr.loadAll();*/
 
   s.doWhenBooted({
 
@@ -50,7 +50,7 @@
     "* Starting Performance Environment...".postln;
     "----------------------------------------".postln;
     
-    ~performanceEnvironment = PerformanceEnvironment.new();
+    ~performanceEnvironment = DeepForestLoungeEnvironment.new();
   });
 
 )

@@ -4,7 +4,7 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
 
   load_samples {
     arg callback;
-    var sfxRoot = "/Volumes/Secondary/Samples/Recorded Sounds/Sound Effects/",
+    var sfxRoot = "/Users/colin/Samples/Recorded Sounds/Sound Effects/",
       winenv = Env.sine(4.0),
       me = this;
 

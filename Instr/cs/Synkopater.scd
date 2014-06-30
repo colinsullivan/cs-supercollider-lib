@@ -1,4 +1,4 @@
-Instr("cs.SynkopaterDelay.SynkopaterDelay", {
+Instr("cs.Synkopater.SynkopaterDelay", {
   arg bus,
     numChan,
     delaySecs = 0,

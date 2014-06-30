@@ -53,13 +53,13 @@ SynkopaterDelay : PerformanceEnvironmentComponent {
     );
   
     // these are the patches for the delay effect 
-    this.delayPatchOne = FxPatch("cs.SynkopaterDelay.SynkopaterDelay", (
+    this.delayPatchOne = FxPatch("cs.Synkopater.SynkopaterDelay", (
       numChan: 2,
       delaySecs: KrNumberEditor.new(0.0, ControlSpec(0.0, 8.0)),
       feedbackCoefficient: this.delayFeedbackControl
     ));
 
-    this.delayPatchTwo = FxPatch("cs.SynkopaterDelay.SynkopaterDelay", (
+    this.delayPatchTwo = FxPatch("cs.Synkopater.SynkopaterDelay", (
       numChan: 2,
       delaySecs: KrNumberEditor.new(0.0, ControlSpec(0.0, 8.0)),
       feedbackCoefficient: this.delayFeedbackControl

@@ -27,7 +27,7 @@ SecondSynkopater : PerformanceEnvironmentComponent {
     //  create the buffer manager that will load the samples we need for this
     //  patch.
     this.bufManager = BufferManager.new().init((
-      rootDir: "/Volumes/Secondary/Samples/Recorded Sounds/Sound Effects/"
+      rootDir: "/Users/colin/Samples/Recorded Sounds/Sound Effects/"
     ));
 
     super.init(params);

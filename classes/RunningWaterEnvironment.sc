@@ -15,7 +15,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
   load_samples {
     arg callback;
 
-    var sfxRoot = "/Volumes/Secondary/Samples/Recorded Sounds/Sound Effects/",
+    var sfxRoot = "/Users/colin/Samples/Recorded Sounds/Sound Effects/",
       me = this;
 
 
