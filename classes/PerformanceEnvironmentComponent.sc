@@ -6,6 +6,7 @@ PerformanceEnvironmentComponent : Object {
   var <>origin,
     <>uc33Controller,
     <>softStepController,
+    <>abletonController,
     <>interface,
     <>window,
     <>init_done_callback,
@@ -137,11 +138,10 @@ PerformanceEnvironmentComponent : Object {
 
   init_external_controller_mappings {
     var uc33Port,
-      softStepPort;
+      softStepPort,
+      abletonPort;
     
     uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");
-    /*uc33Port = MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider");*/
-    softStepPort = MIDIIn.findPort("SoftStep Share", "SoftStep Share");
 
     if (uc33Port != nil, {
       // sub-classes should use this UC33Ktl instance to assign knobs and such.
@@ -156,11 +156,21 @@ PerformanceEnvironmentComponent : Object {
       this.uc33Controller = nil;
     });
 
+    softStepPort = MIDIIn.findPort("SoftStep Share", "SoftStep Share");
+    
     if (softStepPort != nil, {
       this.softStepController = SoftStepKtl.new(softStepPort.uid);
       this.init_softStep_mappings();
     }, {
       this.softStepController = nil;
+    });
+    
+    abletonPort = MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider");
+    if (abletonPort != nil, {
+      this.abletonController = AbletonKtl.new(abletonPort.uid);
+      this.init_ableton_mappings();
+    }, {
+      this.abletonController = nil;
     });
   }
 
@@ -172,6 +182,40 @@ PerformanceEnvironmentComponent : Object {
   }
 
   init_softStep_mappings {
+  
+  }
+
+  init_ableton_mappings {
+  
+  }
+
+  /**
+   *  Returns the member variables at the provided keys.
+   *
+   *  @private
+   *
+   *  @param  {Symbol|Array}  propertyKeys -  The keys at which to get the
+   *          properties.  i.e. this.<something>
+   *  @param  {Object}  from - The object to get properties from.  Optional,
+   *          defaults to `this`.
+   **/
+  pr_get_properties_from_keys {
+    arg propertyKeys, from = this;
+    var properties;
+
+    if (propertyKeys.class == Symbol, {
+      propertyKeys = [propertyKeys];    
+    });
+
+    properties = Array.new(propertyKeys.size());
+
+    propertyKeys.do({
+      arg propertyKey;
+
+      properties = properties.add(from.performMsg([propertyKey]));
+    });
+
+    ^properties;
   
   }
 
@@ -191,17 +235,7 @@ PerformanceEnvironmentComponent : Object {
     arg controllerComponent, propertyKeys, mapTo = this;
     var properties;
 
-    if (propertyKeys.class == Symbol, {
-      propertyKeys = [propertyKeys];    
-    });
-
-    properties = Array.new(propertyKeys.size());
-
-    propertyKeys.do({
-      arg propertyKey;
-
-      properties = properties.add(mapTo.performMsg([propertyKey]));
-    });
+    properties = this.pr_get_properties_from_keys(propertyKeys, mapTo);
 
     this.uc33Controller.mapCCS(1, controllerComponent, {
       arg ccval;
@@ -214,6 +248,32 @@ PerformanceEnvironmentComponent : Object {
 
     });
   
+  }
+
+  /**
+   *  Map an outgoing MIDI control from Ableton to a property on this
+   *  component.
+   *
+   *  @param  {Number}  abletonCCKey - The cc value in the Ableton track
+   *  @param  {Symbol|Array}  propertyKeys - The property we will assign these
+   *          cc messages to.
+   *  @param  {Object}  mapTo - Optional
+   **/
+  map_ableton_cc_to_property {
+    arg abletonCCKey, propertyKeys, mapTo = this;
+    var properties;
+
+    properties = this.pr_get_properties_from_keys(propertyKeys, mapTo);
+
+    this.abletonController.mapCC(abletonCCKey, {
+      arg ccval;
+
+      properties.do({
+        arg property;
+
+        property.set(property.spec.map(ccval / 127));
+      });
+    });
   }
 
   /**
