@@ -15,7 +15,10 @@ DeepForestLoungeEnvironment : PerformanceEnvironment {
       randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment,
         initParams: (
-          outputBus: 12
+          outputBus: 12,
+          specs: (
+            waitTime: ControlSpec(0.25, 10.0, \exp)
+          )
         )
       ),
     );

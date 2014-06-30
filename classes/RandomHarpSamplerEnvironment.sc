@@ -20,8 +20,11 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
   init {
     arg params;
+    var specs;
 
     super.init(params);
+
+    specs = params.atFail('specs', { Dictionary.new() });
 
     this.bufSegments = [
       (
@@ -71,9 +74,18 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
     this.voicer = nil;
 
-    this.probability = KrNumberEditor.new(0.0, ControlSpec(0.0, 1.0));
-    this.waitTime = KrNumberEditor.new(2.5, ControlSpec(2.5, 0.1, \exp));
-    this.reverseProbability = KrNumberEditor.new(0.0, \unipolar);
+    this.probability = KrNumberEditor.new(
+      0.0,
+      specs.atFail('probability', { ControlSpec(0.0, 1.0) })
+    );
+    this.waitTime = KrNumberEditor.new(
+      2.5,
+      specs.atFail('waitTime', { ControlSpec(2.5, 0.1, \exp) })
+    );
+    this.reverseProbability = KrNumberEditor.new(
+      0.0,
+      specs.atFail('reverseProbability', { \unipolar })
+    );
 
     this.willPlayNext = false;
 
@@ -186,7 +198,9 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
   init_ableton_mappings {
     super.init_ableton_mappings();
 
-    this.map_ableton_cc_to_property('0_20', \probability);
+    this.map_ableton_cc_to_property(0, 20, \probability);
+    this.map_ableton_cc_to_property(0, 21, \waitTime);
+    this.map_ableton_cc_to_property(0, 22, \reverseProbability);
 
   }
 

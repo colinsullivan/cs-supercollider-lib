@@ -254,16 +254,19 @@ PerformanceEnvironmentComponent : Object {
    *  Map an outgoing MIDI control from Ableton to a property on this
    *  component.
    *
-   *  @param  {Number}  abletonCCKey - The cc value in the Ableton track
+   *  @param  {Number}  channel - MIDI channel
+   *  @param  {Number}  cc - CC (as listed on the ableton interface)
    *  @param  {Symbol|Array}  propertyKeys - The property we will assign these
    *          cc messages to.
    *  @param  {Object}  mapTo - Optional
    **/
   map_ableton_cc_to_property {
-    arg abletonCCKey, propertyKeys, mapTo = this;
-    var properties;
+    arg channel, cc, propertyKeys, mapTo = this;
+    var properties, abletonCCKey;
 
     properties = this.pr_get_properties_from_keys(propertyKeys, mapTo);
+
+    abletonCCKey = this.abletonController.makeCCKey(channel, cc);
 
     this.abletonController.mapCC(abletonCCKey, {
       arg ccval;
