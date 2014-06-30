@@ -183,4 +183,7 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
     this.map_uc33_to_property(\knm2, \reverseProbability);
   }
 
+  // TODO: init from Ableton mappings
+
+
 }
