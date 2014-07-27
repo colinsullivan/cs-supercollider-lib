@@ -110,12 +110,13 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           outputBus: 32
         )
       ),
-      synkopaterTwo: (
-        class: SecondSynkopater,
+      synkopants: (
+        class: Synkopants,
         initParams: (
-          outputBus: 34
+          outputBus: 34,
+          bufKey: \kick
         )
-      )
+      ),
     );
 
   }

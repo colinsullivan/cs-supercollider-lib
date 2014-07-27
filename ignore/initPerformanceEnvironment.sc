@@ -52,7 +52,7 @@
     "* Starting Performance Environment...".postln;
     "----------------------------------------".postln;
     
-    ~performanceEnvironment = DeepForestLoungeEnvironment.new();
+    ~performanceEnvironment = MountainsInSpaceEnvironment.new();
   });
 
 )
