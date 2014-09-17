@@ -13,7 +13,11 @@ SynkopantsElement : Object {
     <>patch,
     <>phaseOffset,
     <>parent,
-    <>bufKey;
+    <>playbackRateVariationSlider,
+    /**
+     *  a human-readable textual representation of this element.
+     **/
+    <>name;
 
   *new {
     arg params;
@@ -25,12 +29,12 @@ SynkopantsElement : Object {
 
     this.parent = params['parent'];
 
-    this.bufKey = params['bufKey'];
+    this.name = params['name'];
     
     this.numNotes = KrNumberEditor.new(1, ControlSpec(1, 32, step: 1));
     //this.phaseEnv = Env.new([-1.0, 1.0], [1.0], [0, 0]);
     this.phaseEnv = Env.new([0.5, 0.5], [1.0], [0, 0]);
-    this.phaseEnvModulator = KrNumberEditor.new(1.0, \unipolar);
+    this.phaseEnvModulator = KrNumberEditor.new(0.5, \unipolar);
 
     this.phaseOffset = KrNumberEditor.new(0, ControlSpec(0, 4, step: 1.0 / 16.0));
 
@@ -41,13 +45,9 @@ SynkopantsElement : Object {
   }
 
   init_patch {
-    this.patch = Patch("cs.sfx.PlayBuf", (
-      buf: this.parent.bufManager.bufs[this.bufKey],
-      gate: 1,
-      attackTime: 0.01,
-      releaseTime: 0.01,
-      amp: this.ampSlider
-    ));
+    /**
+     * Override in subclasses to create the proper patch.
+     **/
   }
 
   load_environment {
@@ -93,8 +93,6 @@ SynkopantsElement : Object {
       noteBeat,
       noteLatency,
       quantizedPhaseEnv = this.phaseEnv.asSignal(numNotes),
-      outputChannel = this.parent.outputChannel,
-      patch = this.patch,
       phaseQuantizationBeats = this.phaseQuantizationBeats,
       phaseQuantizationSpec = this.phaseQuantizationSpec,
       phaseOffset = this.phaseOffset.value;
@@ -122,10 +120,7 @@ SynkopantsElement : Object {
       noteLatency = t.beats2secs(noteBeat) - t.seconds;
 
       //percPatches[i % percPatches.size()].playToMixer(
-      patch.playToMixer(
-        outputChannel,
-        atTime: noteLatency
-      );
+      this.schedule_play_event(noteLatency);
 
       /*this.hardSineVoicer.trigger1(
         440 * 32,
@@ -142,6 +137,16 @@ SynkopantsElement : Object {
     });
   
   }
+  
+  schedule_play_event {
+    arg noteLatency;
+
+    this.patch.playToMixer(
+      this.parent.outputChannel,
+      atTime: noteLatency
+    );
+  }
+
 
   on_play {
     var clock = TempoClock.default(),
@@ -157,6 +162,49 @@ SynkopantsElement : Object {
         me.schedule_notes();
       });
     });
+  }
+
+  init_gui {
+
+    arg params;
+
+    var layout,
+      labelWidth;
+
+    layout = params['layout'];
+    labelWidth = params['labelWidth'];
+  
+    CXLabel(layout, this.name, 400);
+    layout.startRow();
+
+    ArgNameLabel("numNotes", layout, labelWidth);
+    this.numNotes.gui(layout);
+    layout.startRow();
+    
+    this.phaseEnvView = EnvelopeView(
+      layout,
+      Rect(0, 0, labelWidth, labelWidth)
+    );
+    this.phaseEnvView.editable = false;
+    this.phaseEnvView.setEnv(this.phaseEnv);
+    layout.startRow();
+
+    ArgNameLabel("phaseEnvModulator", layout, labelWidth);
+    this.phaseEnvModulator.gui(layout);
+    layout.startRow();
+    
+    ArgNameLabel("phaseOffset", layout, labelWidth);
+    this.phaseOffset.gui(layout);
+    layout.startRow();
+
+    //ArgNameLabel("playbackRateVariation", layout, labelWidth);
+    //this.playbackRateVariationSlider = RangeSlider(layout);
+    //this.playbackRateVariationSlider.setSpan(-4, 4);
+    //layout.startRow();
+    
+    ArgNameLabel("amp", layout, labelWidth);
+    this.ampSlider.gui(layout);
+    layout.startRow();
   }
 
 }

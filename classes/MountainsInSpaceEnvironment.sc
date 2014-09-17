@@ -26,20 +26,20 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           outputBus: 10
         )
       ),*/
-      /*softSynth: (
+      softSynth: (
         class: SoftSynthComponent,
         initParams: (
           inChannel: 8,
           outputBus: 12
         )
-      ),*/
-      impulsiveVoicer: (
+      ),
+      /*impulsiveVoicer: (
         class: ImpulsiveVoicer,
         initParams: (
           inChannel: 7,
           outputBus: 14
         )
-      ),
+      ),*/
       /*vileKickEnvironment: (
         class: VileKickEnvironment,
         initParams: (
@@ -93,13 +93,13 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           outputBus: 36
         )
       ),
-      fmPercussionEnvironment: (
+      /*fmPercussionEnvironment: (
         class: FMPercussionVoicerEnvironment,
         initParams: (
           inChannel: 4,
           outputBus: 30
         )
-      ),
+      ),*/
       /*pannerEnvironment: (
         class: AbletonPannerEnvironment,
         initParams: ()
@@ -113,8 +113,7 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
       synkopants: (
         class: Synkopants,
         initParams: (
-          outputBus: 34,
-          bufKey: \kick
+          outputBus: 34
         )
       ),
     );

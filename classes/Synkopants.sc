@@ -8,15 +8,53 @@ Synkopants : PerformanceEnvironmentComponent {
 
     this.elements = [
 
-      SynkopantsElement.new((
+      SamplerSynkopantsElement.new((
         parent: this,
-        bufKey: \kick
+        bufKey: \kick,
+        name: "kick"
       )),
 
-      SynkopantsElement.new((
+      SamplerSynkopantsElement.new((
         parent: this,
-        bufKey: \snare01
+        bufKey: \snare01,
+        name: "snare 1"
       )),
+      
+      SamplerSynkopantsElement.new((
+        parent: this,
+        bufKey: \pitched01,
+        name: "pitched 1"
+      )),
+      
+      SamplerSynkopantsElement.new((
+        parent: this,
+        bufKey: \pitched02,
+        name: "pitched 2"
+      )),
+      
+      SamplerSynkopantsElement.new((
+        parent: this,
+        bufKey: \pitched03,
+        name: "pitched 3"
+      )),
+
+      OrganicPercussionSynkopantsElement.new((
+        parent: this,
+        name: "one",
+        freq: 220
+      )),
+
+      OrganicPercussionSynkopantsElement.new((
+        parent: this,
+        name: "two",
+        freq: 440
+      )),
+
+      OrganicPercussionSynkopantsElement.new((
+        parent: this,
+        name: "three",
+        freq: 880
+      ))
     
     ];
 
@@ -79,6 +117,7 @@ Synkopants : PerformanceEnvironmentComponent {
     var me = this;
 
     super.load_environment();
+
     
     // when amplitude and toggle slider is changed
     this.ampAndToggleSlider.action = {
@@ -142,32 +181,11 @@ Synkopants : PerformanceEnvironmentComponent {
       layout.flow({
         arg layout;
 
-        CXLabel(layout, element.bufKey.asString(), 400);
-        layout.startRow();
+        element.init_gui((
+          layout: layout,
+          labelWidth: labelWidth
+        ));
 
-        ArgNameLabel("numNotes", layout, labelWidth);
-        element.numNotes.gui(layout);
-        layout.startRow();
-        
-        element.phaseEnvView = EnvelopeView(
-          layout,
-          Rect(0, 0, labelWidth, labelWidth)
-        );
-        element.phaseEnvView.editable = false;
-        element.phaseEnvView.setEnv(element.phaseEnv);
-        layout.startRow();
-
-        ArgNameLabel("phaseEnvModulator", layout, labelWidth);
-        element.phaseEnvModulator.gui(layout);
-        layout.startRow();
-        
-        ArgNameLabel("phaseOffset", layout, labelWidth);
-        element.phaseOffset.gui(layout);
-        layout.startRow();
-        
-        ArgNameLabel("amp", layout, labelWidth);
-        element.ampSlider.gui(layout);
-        layout.startRow();
       });
 
     });

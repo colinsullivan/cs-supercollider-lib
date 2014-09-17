@@ -6,6 +6,7 @@ Instr("cs.sfx.PlayBuf", {
     startTime,
     attackTime,
     releaseTime,
+    amp = 1.0,
     convertToStereo = 0;
 
   var out,
@@ -16,7 +17,8 @@ Instr("cs.sfx.PlayBuf", {
     buf,
     playbackRate * BufRateScale.kr(buf),
     gate,
-    startTime * buf.sampleRate * buf.numChannels
+    startTime * buf.sampleRate * buf.numChannels,
+    1
   );
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
   out = out * Env.new(
@@ -28,17 +30,18 @@ Instr("cs.sfx.PlayBuf", {
     out = [out, out];    
   });
 
-  out;
+  amp * out;
 
 }, [
   \buffer,
   \gate,
   // playbackRate
-  ObjectSpec(1.0),
+  ControlSpec(-4.0, 4.0),
   // startTime
   ObjectSpec(0.0),
   // attackTime
   ObjectSpec(1.0),
   // releaseTime
-  ObjectSpec(1.0)
+  ObjectSpec(1.0),
+  \amp
 ]);
