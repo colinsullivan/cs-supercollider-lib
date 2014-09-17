@@ -11,49 +11,57 @@ Synkopants : PerformanceEnvironmentComponent {
       SamplerSynkopantsElement.new((
         parent: this,
         bufKey: \kick,
-        name: "kick"
+        name: "kick",
+        layoutRow: 1
       )),
 
       SamplerSynkopantsElement.new((
         parent: this,
         bufKey: \snare01,
-        name: "snare 1"
+        name: "snare 1",
+        layoutRow: 1
       )),
       
       SamplerSynkopantsElement.new((
         parent: this,
         bufKey: \pitched01,
-        name: "pitched 1"
+        name: "pitched 1",
+        layoutRow: 2
       )),
       
       SamplerSynkopantsElement.new((
         parent: this,
         bufKey: \pitched02,
-        name: "pitched 2"
+        name: "pitched 2",
+        layoutRow: 2
       )),
       
       SamplerSynkopantsElement.new((
         parent: this,
         bufKey: \pitched03,
-        name: "pitched 3"
+        name: "pitched 3",
+        layoutRow: 2
       )),
 
       OrganicPercussionSynkopantsElement.new((
         parent: this,
         name: "one",
-        freq: 220
+        freq: 220,
+        layoutRow: 3
       )),
 
       OrganicPercussionSynkopantsElement.new((
         parent: this,
         name: "two",
-        freq: 440
+        freq: 440,
+        layoutRow: 3
       )),
 
       OrganicPercussionSynkopantsElement.new((
         parent: this,
         name: "three",
-        freq: 880
+        freq: 880,
+        layoutRow: 3
       ))
     
     ];
@@ -162,8 +170,9 @@ Synkopants : PerformanceEnvironmentComponent {
     arg params;
     
     var layout = params['layout'],
-      labelWidth = 80,
-      me = this;
+      labelWidth = 120,
+      me = this,
+      currentLayoutRow = 0;
 
     super.init_gui(params);
 
@@ -175,8 +184,18 @@ Synkopants : PerformanceEnvironmentComponent {
       layout.startRow();
     });
 
+    currentLayoutRow = currentLayoutRow + 1;
+    layout.startRow();
+
     this.elements.do({
       arg element;
+
+      var elementLayoutRow = element.layoutRow;
+
+      if (elementLayoutRow != currentLayoutRow, {
+        layout.startRow();
+        currentLayoutRow = currentLayoutRow + 1;
+      });
 
       layout.flow({
         arg layout;

@@ -17,7 +17,11 @@ SynkopantsElement : Object {
     /**
      *  a human-readable textual representation of this element.
      **/
-    <>name;
+    <>name,
+    /**
+     *  Mostly useful for the parent.  Which row is this element in the gui?
+     **/
+    <layoutRow;
 
   *new {
     arg params;
@@ -28,6 +32,8 @@ SynkopantsElement : Object {
     arg params;
 
     this.parent = params['parent'];
+
+    layoutRow = params['layoutRow'];
 
     this.name = params['name'];
     
@@ -174,11 +180,11 @@ SynkopantsElement : Object {
     layout = params['layout'];
     labelWidth = params['labelWidth'];
   
-    CXLabel(layout, this.name, 400);
+    CXLabel(layout, this.name, labelWidth);
     layout.startRow();
 
     ArgNameLabel("numNotes", layout, labelWidth);
-    this.numNotes.gui(layout);
+    this.numNotes.smallGui(layout);
     layout.startRow();
     
     this.phaseEnvView = EnvelopeView(
