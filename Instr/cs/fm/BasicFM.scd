@@ -55,8 +55,8 @@ Instr("cs.fm.BasicFM", {
   \freq.asSpec(),
   \amp.asSpec(),
   \nil,
-  ControlSpec(0.1, 10),
-  ControlSpec(0.1, 10),
+  ScalarSpec(0.1, 10),
+  ScalarSpec(0.1, 10),
   EnvSpec(Env.adsr(
     attackTime: 0.05,
     decayTime: 0.1,

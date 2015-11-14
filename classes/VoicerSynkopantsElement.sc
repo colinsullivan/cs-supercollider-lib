@@ -1,6 +1,19 @@
 OrganicPercussionSynkopantsElement : SynkopantsElement {
+
   var <>numVoices,
+
     <>noteDurationCtl,
+
+    /**
+     *  Whether or not to do the frequency sweep
+     **/
+    <>doFreqSweepCtl,
+
+    /**
+     *  Target of the frequency sweep
+     **/
+    <>freqSweepTargetCtl,
+
     <>freq;
 
   init {
@@ -11,7 +24,13 @@ OrganicPercussionSynkopantsElement : SynkopantsElement {
 
     this.freq = params['freq'];
 
+    // TODO: use the specs directly from the instrument
     this.noteDurationCtl = KrNumberEditor.new(0.5, \unipolar);
+    this.doFreqSweepCtl = KrNumberEditor.new(0, \unipolar);
+    this.freqSweepTargetCtl = KrNumberEditor.new(
+      1.0,
+      ControlSpec(0.01, 10, \exp)
+    );
   }
 
   init_patch {
@@ -21,6 +40,8 @@ OrganicPercussionSynkopantsElement : SynkopantsElement {
       amp: this.ampSlider,
       autoDurationOn: 0,
       noteDuration: this.noteDurationCtl,
+      doFreqSweep: this.doFreqSweepCtl,
+      freqSweepTargetMultiplier: this.freqSweepTargetCtl,
       gate: 1
     ));
   
@@ -39,6 +60,14 @@ OrganicPercussionSynkopantsElement : SynkopantsElement {
     
     ArgNameLabel("noteDuration", layout, labelWidth);
     this.noteDurationCtl.gui(layout);
+    layout.startRow();
+    
+    ArgNameLabel("doSweep", layout, labelWidth);
+    this.doFreqSweepCtl.gui(layout);
+    layout.startRow();
+    
+    ArgNameLabel("sweepTarget", layout, labelWidth);
+    this.freqSweepTargetCtl.gui(layout);
     layout.startRow();
   }
 }

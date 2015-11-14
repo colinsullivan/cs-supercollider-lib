@@ -46,21 +46,21 @@ Synkopants : PerformanceEnvironmentComponent {
       OrganicPercussionSynkopantsElement.new((
         parent: this,
         name: "one",
-        freq: 220,
+        freq: "A4".notemidi().midicps(),
         layoutRow: 3
       )),
 
       OrganicPercussionSynkopantsElement.new((
         parent: this,
         name: "two",
-        freq: 440,
+        freq: "A5".notemidi().midicps(),
         layoutRow: 3
       )),
 
       OrganicPercussionSynkopantsElement.new((
         parent: this,
         name: "three",
-        freq: 880,
+        freq: "A6".notemidi().midicps(),
         layoutRow: 3
       ))
     
@@ -175,6 +175,19 @@ Synkopants : PerformanceEnvironmentComponent {
       currentLayoutRow = 0;
 
     super.init_gui(params);
+
+    //layout.view.keyUpAction = {
+      //arg view, char, modifiers, unicode, keycode, key;
+
+      //if (keycode == 122, {
+        //this.elements[0].numNotes.gui.focus(true);
+      //});
+
+      //"keycode:".postln;
+      //keycode.postln;
+
+
+    //};
 
     layout.flow({
       arg layout;

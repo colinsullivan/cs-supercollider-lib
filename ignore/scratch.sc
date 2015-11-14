@@ -990,3 +990,4 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 
 ControlSpec(0.0, \unipolar).map(0.5)
 
+"A4".notemidi().midicps()

@@ -33,20 +33,20 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           outputBus: 12
         )
       ),
-      /*impulsiveVoicer: (
+      impulsiveVoicer: (
         class: ImpulsiveVoicer,
         initParams: (
           inChannel: 7,
           outputBus: 14
         )
-      ),*/
-      /*vileKickEnvironment: (
+      ),
+      vileKickEnvironment: (
         class: VileKickEnvironment,
         initParams: (
           inChannel: 6,
           outputBus: 16
         )
-      ),*/
+      ),
       runningWaterEnvironment: (
         class: RunningWaterEnvironment,
         initParams: (
@@ -59,13 +59,13 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           outputBus: 20
         )
       ),
-      /*wideBassEnvironment: (
+      wideBassEnvironment: (
         class: WideBassVoicerEnvironment,
         initParams: (
           inChannel: 5,
           outputBus: 22
         )
-      ),*/
+      ),
       /*smoothbassEnvironment: (
         class: SmoothBassVoicerEnvironment,
         initParams: (
@@ -73,12 +73,12 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           outputBus: 24
         )
       ),*/
-      /*randomHarpEnvironment: (
+      randomHarpEnvironment: (
         class: RandomHarpSamplerEnvironment,
         initParams: (
           outputBus: 26
         )
-      ),*/
+      ),
       randomizedLazersEnvironment: (
         class: RandomizedLazersEnvironment,
         initParams: (

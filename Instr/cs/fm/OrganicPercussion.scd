@@ -89,6 +89,8 @@ Instr("cs.fm.OrganicPercussion", {
   FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) - 1);
 
   out = amp * carrier;
+
+  out = [out, out];
 }, [
   \freq,
   \amp,
