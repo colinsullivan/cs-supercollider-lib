@@ -13,8 +13,8 @@ Instr("cs.fm.Pad.SoftKick", {
     modEnv,
     mod,
     out,
-    /*trigGate = Trig1.ar(gate, 0.01);*/
-    trigGate = gate;
+    trigGate = Trig1.ar(gate, 0.01);
+    //trigGate = gate;
 
   carrierEnvShape = Env.adsr(
     attackTime: 0.1,

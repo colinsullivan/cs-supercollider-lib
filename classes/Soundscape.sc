@@ -8,8 +8,12 @@ Soundscape : Object {
 
     arg params;
 
-    this.elements = ();
-    
+    if (params.elements == nil, {
+      this.elements = params.elements;    
+    }, {
+      this.elements = ();
+    });
+
     this.bufManager = params[\bufManager];
 
     if (params[\outbus] == nil, {

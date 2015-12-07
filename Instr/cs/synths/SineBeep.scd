@@ -8,7 +8,7 @@ Instr("cs.synths.SineBeep", {
 
   out = SinOsc.ar(freq);
 
-  out = EnvGen.ar(envShape) * [out, out];
+  out = EnvGen.ar(envShape, doneAction: 2) * [out, out];
 }, [
   \freq,
   \amp

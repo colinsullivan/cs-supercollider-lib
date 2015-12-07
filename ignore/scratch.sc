@@ -1,7 +1,7 @@
 ({
   s.quit();
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  s.options.outDevice= "JackRouter";
+  //s.options.outDevice= "JackRouter";
   //s.options.numOutputBusChannels = 48;
   /*s.options.sampleRate = 48000;*/
   s.boot();
@@ -52,6 +52,54 @@
 
 }.play();
 )
+
+// broken alien machine
+(
+~test = {
+  var out,
+    trig,
+    modIndex,
+    modIndexLow = 1,
+    modIndexHigh = 10,
+    slowModFreq = SinOscFB.kr(0.5).range(0.1, 0.5),
+    durMod,
+    feedbackModulator;
+
+  feedbackModulator = MouseY.kr(0.0, 1.0);
+
+  //trig = GaussTrig.ar(SinOscFB.kr(0.05, 5).range(14, 50), 2.0);
+  trig = GaussTrig.ar(10, 2.0);
+
+  //modIndex = SinOscFB.kr(SinOscFB.kr(0.05, 1.0).range(0.5, 0.8), 1.0).range(0.1, 50);
+  //modIndex = SinOscFB.kr(FBSineC.ar(20, 1.0, feedbackModulator), feedbackModulator).exprange(modIndexLow, modIndexHigh);
+  //modIndex = SinOscFB.kr(slowModFreq, feedbackModulator).exprange(modIndexLow, modIndexHigh);
+  modIndex = 1.0;
+
+  //durMod = SinOscFB.kr(0.05, feedbackModulator).range(0.1, 1.0);
+  durMod = SinOscFB.kr(slowModFreq, 2.0).range(0.2, 0.9);
+
+  out = 0.4 * GrainFM.ar(
+    1,
+    //trigger: Dust2.kr(10),
+    //trigger: Impulse.kr(10),
+    trigger: trig,
+    dur: durMod,
+    carfreq: 110,
+    modfreq: 400,
+    index: modIndex,
+    //index: 10,
+    pan: 0,
+    envbufnum: -1,
+    maxGrains: 512
+  );
+
+  out = RLPF.ar(out, SinOscFB.kr(slowModFreq, 3).range(500, 5000), 0.2) * 0.2;
+
+  out = [DelayC.ar(out, 0.5, 0.02), out];
+
+}.play();
+)
+
 
 (~test.free();)
 
