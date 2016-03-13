@@ -1,0 +1,10 @@
+(
+  name:    "cs-supercollider-lib",
+  path:    "cs-supercollider-lib",
+  summary:    "Colin's SuperCollider instruments and experiments",
+  author:    "Colin Sullivan",
+  version:    0.1,
+//  helpdoc:    "",
+  url:      "https://github.com/colinsullivan/cs-supercollider-lib",
+  dependencies:  #["crucial-library", "dewdrop_lib", "JITMIDIKtl"]
+)
