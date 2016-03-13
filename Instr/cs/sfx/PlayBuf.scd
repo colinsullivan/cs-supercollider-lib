@@ -17,8 +17,7 @@ Instr("cs.sfx.PlayBuf", {
     buf,
     playbackRate * BufRateScale.kr(buf),
     gate,
-    startTime * buf.sampleRate * buf.numChannels,
-    1
+    startTime * buf.sampleRate * buf.numChannels
   );
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
   out = out * Env.new(
