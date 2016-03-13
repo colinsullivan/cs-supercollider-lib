@@ -28,7 +28,11 @@ BufferManager : Object {
   init {
     arg params;
 
+    //"BufferManager.init()".postln();
+
     this.rootDir = params[\rootDir];
+    //"this.rootDir:".postln;
+    //this.rootDir.postln;
     this.doneLoadingCallback = params[\doneLoadingCallback];
     
     this.bufs = ();
@@ -51,7 +55,7 @@ BufferManager : Object {
       arg bufData;
 
       var bufFileName = bufData[0],
-        bufKey = bufData[1];
+        bufKey = bufData[1].asSymbol();
 
       this.bufs[bufKey] = 0;
 
@@ -62,7 +66,7 @@ BufferManager : Object {
       arg bufData;
 
       var bufFileName = bufData[0],
-        bufKey = bufData[1];
+        bufKey = bufData[1].asSymbol();
       
       Buffer.read(
         Server.default,
@@ -81,7 +85,7 @@ BufferManager : Object {
 
     this.bufs[bufKey] = buf;
 
-    /*("loaded buf: " ++ bufKey).postln();*/
+    ("loaded buf: " ++ bufKey).postln();
 
     // if all bufs are not zero
     if (this.bufs.any({ arg item; item == 0; }) == false, {
@@ -98,7 +102,7 @@ BufferManager : Object {
         });
       });
 
-      /*msg.postln();*/
+      msg.postln();
     });
   }
 
