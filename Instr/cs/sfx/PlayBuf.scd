@@ -5,25 +5,41 @@ Instr("cs.sfx.PlayBuf", {
     playbackRate,
     startTime,
     attackTime,
+    sustainTime,
     releaseTime,
     amp = 1.0,
-    convertToStereo = 0;
+    convertToStereo = 0,
+    isSustained = 0;
 
   var out,
+    startFrame = ((startTime / buf.duration) * BufFrames.kr(buf)).floor(),
+    loopNode = nil,
+    releaseNode = nil;
+
+  if (sustainTime == nil, {
     sustainTime = buf.duration - attackTime - releaseTime;
+  });
+
+  if (isSustained != 0, {
+    loopNode = 1;
+    releaseNode = 2;
+  });
 
   out = PlayBuf.ar(
     buf.numChannels,
     buf,
     playbackRate * BufRateScale.kr(buf),
     gate,
-    startTime * buf.sampleRate * buf.numChannels
+    startFrame
   );
+
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
   out = out * Env.new(
     [ 0.0,        1.0,            1.0,            0.0 ],
-    [   attackTime,   sustainTime,    releaseTime     ]
-  ).ar(doneAction: 2);
+    [   attackTime,   sustainTime,    releaseTime     ],
+    loopNode: loopNode,
+    releaseNode: releaseNode
+  ).ar(doneAction: 2, gate: gate);
 
   if (convertToStereo == 1, {
     out = [out, out];    
