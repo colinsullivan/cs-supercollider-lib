@@ -20,7 +20,8 @@ Instr("cs.fm.BasicFM", {
       releaseTime: 0.1,
       peakLevel: amp,
       curve: [4, -4, -2]
-    );
+    ),
+    modOsc = "cs.osc.sin";
 
   var carrier,
     modulator,
@@ -33,7 +34,9 @@ Instr("cs.fm.BasicFM", {
     gate: gate
   );
   
-  modulator = modEnv * SinOsc.ar(freq * modulatorFreqRatio);
+  modulator = modEnv * Instr.ar("cs.osc.sin", (
+    freq: freq * modulatorFreqRatio 
+  ));
   
   // carrier sustains until noteoff
   carrierEnvShape.releaseNode = 2;
@@ -72,5 +75,6 @@ Instr("cs.fm.BasicFM", {
     releaseTime: 0.1,
     peakLevel: 1.0,
     curve: [4, -4, -2]
-  ))
+  )),
+  \string
 ]);
