@@ -6,13 +6,23 @@ Instr("cs.synths.DubBass", {
     freqlag,
     gate = 1,
     amp = 0.7,
-    tempo = 2.5,
-    rateMultiplier = 16;
+    wobbleTempo = 2.5,
+    rateMultiplier = 16,
+    noteDur = 0;
   
-  var out, wobble, rate,
-    // It's not dubstep if it's not at an integer multiple of 140bpm.
-    /*tempo = (140/60)/4,*/
-    wobbleTempo = tempo * rateMultiplier;
+  var out, wobble, rate;
+
+  // extra sustain block for using in patterns
+  if (noteDur != 0, {
+    gate = Trig.kr(gate, noteDur);
+  });
+
+  gate.poll();
+  //delta.poll();
+  //Poll(Impulse.kr(10), sustain, "dubbass sustain: ");
+  //Poll(Impulse.kr(10), dur, "dubbass dur: ");
+  //Poll(Impulse.kr(10), gate, "dubbass gate: ");
+  //Poll(Impulse.kr(10), delta, "dubbass delta: ");
 
   //portamento
   freq = Lag.kr(freq, freqlag);
@@ -20,8 +30,8 @@ Instr("cs.synths.DubBass", {
   // Pitch changes are slewed, faster up than down
   /*freq = Slew.kr(freq, 300, 20);*/
   
-  // Choose "wobble" tempo
-  wobble = SinOsc.kr(freq: wobbleTempo, phase: 3 * pi / 2);
+  // Choose "wobble" wobbleTempo
+  wobble = SinOsc.kr(freq: wobbleTempo * rateMultiplier, phase: 3 * pi / 2);
   
   // Tone to be filtered. Notice modulation of width param.
   out = VarSaw.ar(freq, width: wobble.range(0.2,0.8))
@@ -57,6 +67,6 @@ Instr("cs.synths.DubBass", {
   [0, 2],
   \gate,
   \amp,
-  \tempo,
+  [0.001, 100, \lin],
   [(1/64), 16.0, \lin]
 ]);

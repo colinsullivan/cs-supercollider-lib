@@ -1,11 +1,7 @@
 Instr("cs.percussion.Impulsive", {
   arg freq = 440,
     amp = 0.9,
-    gate = 0;
-
-  var out,
-    imp,
-    env,
+    gate = 0,
     harms = [
       (
         ratio: 4.875,
@@ -33,6 +29,10 @@ Instr("cs.percussion.Impulsive", {
       )
     ];
 
+  var out,
+    imp,
+    env;
+
   // a single impulse
   out = Impulse.ar(0);
 
@@ -56,5 +56,6 @@ Instr("cs.percussion.Impulsive", {
 }, [
   \freq,
   \amp,
-  \gate
+  \gate,
+  \array
 ]);

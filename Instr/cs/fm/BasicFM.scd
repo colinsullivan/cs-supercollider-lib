@@ -21,7 +21,8 @@ Instr("cs.fm.BasicFM", {
       peakLevel: amp,
       curve: [4, -4, -2]
     ),
-    modOsc = "cs.osc.sin";
+    modOsc = "cs.osc.sin",
+    freeSelf = 1;
 
   var carrier,
     modulator,
@@ -50,8 +51,10 @@ Instr("cs.fm.BasicFM", {
     (freq * carrierFreqRatio) + (modulator * freq)
   );
 
-  // free synth when both carrier and modulator envelopes are done
-  FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) - 1);
+  if (freeSelf == 1, {
+    // free synth when both carrier and modulator envelopes are done
+    FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) - 1);
+  });
 
   out = amp * carrier;
 }, [
