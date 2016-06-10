@@ -47,7 +47,6 @@ Instr("cs.fm.Lazers", {
 
   var carrierEnvShape,
     carrierEnv,
-    carrier,
     modEnvShape,
     modEnv,
     mod2EnvShape,
@@ -60,38 +59,55 @@ Instr("cs.fm.Lazers", {
 
   velocity = Latch.kr(gate, gate);
 
-  carrierEnvShape = Env.adsr(
+  /*carrierEnvShape = Env.adsr(
     attackTime: 0.1,
     decayTime: 0.1,
     sustainLevel: 0.9,
     releaseTime: 0.2,
     curve: -4
+  );*/
+  carrierEnvShape = Env.perc(
+    attackTime: 0.05,
+    releaseTime: velocity.exprange(0.025, 0.1),
+    curve: -4,
+    level: velocity.exprange(0.1, 1.0)
   );
 
-  modEnvShape = Env.adsr(
+  /*modEnvShape = Env.adsr(
     attackTime: 0.05,
     decayTime: 0.5,
     sustainLevel: 0.7,
     releaseTime: 1.5,
     curve: velocity.exprange(-4, -10)
+  );*/
+  modEnvShape = Env.perc(
+    attackTime: 0.05,
+    releaseTime: velocity.range(0.025, 0.2),
+    curve: velocity.exprange(-4, -10)
   );
+
 
   modEnv = EnvGen.kr(
     envelope: modEnvShape,
-    gate: trigGate
+    gate: gate
   );
   
-  mod2EnvShape = Env.adsr(
+  /*mod2EnvShape = Env.adsr(
     attackTime: 0.05,
     decayTime: 0.5,
     sustainLevel: 0.7,
     releaseTime: 1.5,
+    curve: velocity.exprange(-4, -10)
+  );*/
+  mod2EnvShape = Env.perc(
+    attackTime: 0.05,
+    releaseTime: velocity.range(0.01, 0.2),
     curve: velocity.exprange(-4, -10)
   );
 
   mod2Env = EnvGen.kr(
     envelope: mod2EnvShape,
-    gate: trigGate
+    gate: gate
   );
 
 
@@ -108,13 +124,10 @@ Instr("cs.fm.Lazers", {
 
   carrierEnv = EnvGen.kr(
     envelope: carrierEnvShape,
-    gate: trigGate,
-    doneAction: 2
+    gate: gate
   );
 
-  carrier = carrierEnv * SinOsc.ar(freq + (mod2 * freq * 100));
-
-  out = carrier * velocity.exprange(0.1, 1.0);
+  out = carrierEnv * SinOsc.ar(freq + (mod2 * freq * 100));
 
   // take out some of that piercing.
   out = BPeakEQ.ar(out,
@@ -126,6 +139,10 @@ Instr("cs.fm.Lazers", {
   out = amp * out;
 
   //out = LPF.ar(out, velocity.exprange(5000, 12000));
+
+  // since envelopes are generated randomly, we don't know which one will be 
+  // finished first, so we free the synth when they are all finished
+  FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) + Done.kr(mod2Env) - 2);
 
   [out, out];
 
