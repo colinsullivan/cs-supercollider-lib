@@ -20,6 +20,7 @@ Instr("cs.sfx.PlayBuf", {
     sustainTime = buf.duration - attackTime - releaseTime;
   });
 
+  // if we're sustaining, set loop and release nodes
   if (isSustained != 0, {
     loopNode = 1;
     releaseNode = 2;
@@ -28,9 +29,10 @@ Instr("cs.sfx.PlayBuf", {
   out = PlayBuf.ar(
     buf.numChannels,
     buf,
-    playbackRate * BufRateScale.kr(buf),
-    gate,
-    startFrame
+    rate: playbackRate * BufRateScale.kr(buf),
+    trigger: gate,
+    startPos: startFrame,
+    doneAction: 2
   );
 
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
@@ -39,7 +41,7 @@ Instr("cs.sfx.PlayBuf", {
     [   attackTime,   sustainTime,    releaseTime     ],
     loopNode: loopNode,
     releaseNode: releaseNode
-  ).ar(doneAction: 2, gate: gate);
+  ).ar(gate: gate, doneAction: 2);
 
   if (convertToStereo == 1, {
     out = [out, out];    
