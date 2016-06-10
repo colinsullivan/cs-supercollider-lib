@@ -68,7 +68,7 @@ Instr("cs.fm.Lazers", {
   );*/
   carrierEnvShape = Env.perc(
     attackTime: 0.05,
-    releaseTime: velocity.exprange(0.025, 0.1),
+    releaseTime: Rand(0.025, 0.1),
     curve: -4,
     level: velocity.exprange(0.1, 1.0)
   );
@@ -101,7 +101,7 @@ Instr("cs.fm.Lazers", {
   );*/
   mod2EnvShape = Env.perc(
     attackTime: 0.05,
-    releaseTime: velocity.range(0.01, 0.2),
+    releaseTime: Rand(0.01, 0.2),
     curve: velocity.exprange(-4, -10)
   );
 
