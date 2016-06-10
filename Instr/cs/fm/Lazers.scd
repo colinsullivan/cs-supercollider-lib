@@ -108,7 +108,8 @@ Instr("cs.fm.Lazers", {
 
   carrierEnv = EnvGen.kr(
     envelope: carrierEnvShape,
-    gate: trigGate
+    gate: trigGate,
+    doneAction: 2
   );
 
   carrier = carrierEnv * SinOsc.ar(freq + (mod2 * freq * 100));
@@ -125,9 +126,6 @@ Instr("cs.fm.Lazers", {
   out = amp * out;
 
   //out = LPF.ar(out, velocity.exprange(5000, 12000));
-
-  FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(modEnv) + Done.kr(mod2Env) - 2);
-
 
   [out, out];
 
