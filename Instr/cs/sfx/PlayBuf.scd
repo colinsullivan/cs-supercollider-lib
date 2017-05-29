@@ -2,8 +2,8 @@ Instr("cs.sfx.PlayBuf", {
   
   arg buf,
     gate = 1,
-    playbackRate,
-    startTime,
+    playbackRate = 1.0,
+    startTime = 0,
     attackTime,
     sustainTime,
     releaseTime,
@@ -34,6 +34,9 @@ Instr("cs.sfx.PlayBuf", {
     startPos: startFrame,
     doneAction: 2
   );
+
+  "out:".postln;
+  out.postln;
 
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
   out = out * Env.new(

@@ -17,6 +17,12 @@ BufferManager : Object {
     <>doneLoadingCallback,
     <>rootDir;
 
+  *new {
+    arg params;
+
+    ^super.new.init(params);
+  }
+
   /**
    *  Initialize
    *
