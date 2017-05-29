@@ -4,9 +4,9 @@ Instr("cs.sfx.PlayBuf", {
     gate = 1,
     playbackRate = 1.0,
     startTime = 0,
-    attackTime,
+    attackTime = 0.01,
     sustainTime,
-    releaseTime,
+    releaseTime = 0.01,
     amp = 1.0,
     convertToStereo = 0,
     isSustained = 0;
@@ -31,12 +31,8 @@ Instr("cs.sfx.PlayBuf", {
     buf,
     rate: playbackRate * BufRateScale.kr(buf),
     trigger: gate,
-    startPos: startFrame,
-    doneAction: 2
+    startPos: startFrame
   );
-
-  "out:".postln;
-  out.postln;
 
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
   out = out * Env.new(
