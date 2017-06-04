@@ -31,16 +31,17 @@ Instr("cs.sfx.PlayBuf", {
     buf,
     rate: playbackRate * BufRateScale.kr(buf),
     trigger: gate,
-    startPos: startFrame
+    startPos: startFrame,
+    doneAction: 2
   );
 
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
-  out = out * Env.new(
-    [ 0.0,        1.0,            1.0,            0.0 ],
-    [   attackTime,   sustainTime,    releaseTime     ],
-    loopNode: loopNode,
-    releaseNode: releaseNode
-  ).ar(gate: gate, doneAction: 2);
+  //out = out * Env.new(
+    //[ 0.0,        1.0,            1.0,            0.0 ],
+    //[   attackTime,   sustainTime,    releaseTime     ],
+    //loopNode: loopNode,
+    //releaseNode: releaseNode
+  //).ar(gate: gate, doneAction: 2);
 
   if (convertToStereo == 1, {
     out = [out, out];    
