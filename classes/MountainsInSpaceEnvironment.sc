@@ -47,18 +47,18 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           //outputBus: 16
         //)
       //),
-      //runningWaterEnvironment: (
-        //class: RunningWaterEnvironment,
-        //initParams: (
-          //outputBus: 18
-        //)
-      //),
-      //granularChaosEnvironment: (
-        //class: GranularChaosEnvironment,
-        //initParams: (
-          //outputBus: 20
-        //)
-      //),
+      runningWaterEnvironment: (
+        class: RunningWaterEnvironment,
+        initParams: (
+          outputBus: 18
+        )
+      ),
+      granularChaosEnvironment: (
+        class: GranularChaosEnvironment,
+        initParams: (
+          outputBus: 20
+        )
+      ),
       //wideBassEnvironment: (
         //class: WideBassVoicerEnvironment,
         //initParams: (
@@ -73,12 +73,12 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           outputBus: 24
         )
       ),*/
-      //randomHarpEnvironment: (
-        //class: RandomHarpSamplerEnvironment,
-        //initParams: (
-          //outputBus: 26
-        //)
-      //),
+      randomHarpEnvironment: (
+        class: RandomHarpSamplerEnvironment,
+        initParams: (
+          outputBus: 26
+        )
+      ),
       //randomizedLazersEnvironment: (
         //class: RandomizedLazersEnvironment,
         //initParams: (
@@ -110,12 +110,12 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           //outputBus: 32
         //)
       //),
-      synkopants: (
-        class: Synkopants,
-        initParams: (
-          outputBus: 34
-        )
-      ),
+      //synkopants: (
+        //class: Synkopants,
+        //initParams: (
+          //outputBus: 34
+        //)
+      //),
     );
 
   }

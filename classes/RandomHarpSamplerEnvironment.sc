@@ -191,8 +191,8 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
   init_uc33_mappings {
     super.init_uc33_mappings();
 
-    this.map_uc33_to_property(\knu7, [\probability, \waitTime]);
-    this.map_uc33_to_property(\knm7, \reverseProbability);
+    this.map_uc33_to_property(\knu3, [\probability, \waitTime]);
+    this.map_uc33_to_property(\knm3, \reverseProbability);
   }
 
   init_ableton_mappings {

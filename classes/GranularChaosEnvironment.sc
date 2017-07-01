@@ -50,13 +50,13 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
      **/
     if (this.uc33Controller != nil, {
       /* slider to amplitude */
-      this.map_uc33_to_patch('sl8', \amp);
+      this.map_uc33_to_patch('sl4', \amp);
 
       /* knob 25 to position */
-      this.map_uc33_to_patch('knu8', \pointer);
+      this.map_uc33_to_patch('knu4', \pointer);
 
       /* knob 17 to pitch */
-      this.map_uc33_to_patch('knm8', \pitch);
+      this.map_uc33_to_patch('knm4', \pitch);
     
     });
   }

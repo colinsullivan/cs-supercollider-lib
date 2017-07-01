@@ -44,9 +44,9 @@
 
   s.doWhenBooted({
 
-    //MIDIClient.init();
-    //MIDIPort.init();
-    //MIDIIn.connectAll();
+    MIDIClient.init();
+    MIDIPort.init();
+    MIDIIn.connectAll();
     
     "----------------------------------------".postln;
     "* Starting Performance Environment...".postln;
