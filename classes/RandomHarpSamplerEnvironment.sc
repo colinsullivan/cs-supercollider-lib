@@ -204,6 +204,11 @@ RandomHarpSamplerEnvironment : PerformanceEnvironmentComponent {
 
   }
 
+  init_launchcontrol_mappings {
+    this.map_controller_to_property(this.launchControlController, \knu6, [\probability, \waitTime]);
+    this.map_controller_to_property(this.launchControlController, \knm6, \reverseProbability);
+  }
+
 
 
 }

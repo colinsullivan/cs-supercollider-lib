@@ -57,7 +57,21 @@ GranularChaosEnvironment : PatchEnvironmentComponent {
 
       /* knob 17 to pitch */
       this.map_uc33_to_patch('knm4', \pitch);
-    
+    });
+
+    if (this.launchControlController != nil, {
+      this.map_controller_to_patch(
+        this.launchControlController,
+        'knu4', \pointer
+      );
+      this.map_controller_to_patch(
+        this.launchControlController,
+        'knm4', \pitch
+      );
+      this.map_controller_to_patch(
+        this.launchControlController,
+        'sl4', \amp
+      );
     });
   }
 

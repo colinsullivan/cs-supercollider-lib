@@ -30,6 +30,24 @@ PatchEnvironmentComponent : PerformanceEnvironmentComponent {
   }
 
   /**
+   *  Map a property of the patch to a controller knob or slider.
+   *
+   *  @param  {MIDIKtl}  controller - The JITMIDIKtl controller instance.
+   *  @param  String  A string containing a key used to identify the
+   *  knob or slider on the controller.  Ex: 'sl1'.
+   *  @param  Symbol|Array  Used as a key or keys to identify the property of
+   *  the patch to control with the aforementioned controller knob.  Ex: \amp.
+   **/
+  map_controller_to_patch {
+    // mapTo has a different default than in parent class
+    arg controller, controllerComponent, propertyKeys, mapTo = this.patch;
+
+    this.map_controller_to_property(controller, controllerComponent, propertyKeys, mapTo);
+
+  }
+
+
+  /**
    *  Map a property of the patch to a UC-33 controller knob or slider.
    *
    *  @param  String  A string containing a key used to identify the

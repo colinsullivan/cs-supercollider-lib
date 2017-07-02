@@ -7,6 +7,7 @@ PerformanceEnvironmentComponent : Object {
     <>uc33Controller,
     <>softStepController,
     <>abletonController,
+    <>launchControlController,
     <>interface,
     <>window,
     <>init_done_callback,
@@ -139,6 +140,7 @@ PerformanceEnvironmentComponent : Object {
   init_external_controller_mappings {
     var uc33Port,
       softStepPort,
+      launchControlPort,
       abletonPort;
     
     uc33Port = MIDIIn.findPort("UC-33 USB MIDI Controller", "Port 1");
@@ -172,6 +174,14 @@ PerformanceEnvironmentComponent : Object {
     }, {
       this.abletonController = nil;
     });
+    
+    launchControlPort = MIDIIn.findPort("Launch Control XL", "Launch Control XL");
+    if (launchControlPort != nil, {
+      this.launchControlController = LaunchControlXLKtl.new(launchControlPort.uid);
+      this.init_launchcontrol_mappings();
+    }, {
+      this.launchControlController = nil;
+    });
   }
 
   /**
@@ -187,6 +197,10 @@ PerformanceEnvironmentComponent : Object {
 
   init_ableton_mappings {
   
+  }
+
+  init_launchcontrol_mappings {
+
   }
 
   /**
@@ -219,6 +233,37 @@ PerformanceEnvironmentComponent : Object {
   
   }
 
+  /**
+   *  Map a property of the component (member variable) to any controller
+   *  knob or slider.
+   *
+   *  @param  {MIDIKtl}  controller - The JITKtl controller instance
+   *  @param  Symbol  The key used to identify the knob or slider on the 
+   *  controller.  Ex. \sl1
+   *  @param  Symbol|Array  Used as a key to identify the property of the
+   *  component to control with the aforementioned controller knob.
+   *  Ex: \amp.  If provided an array, knob controls all of the elements.
+   *  @param  [Object]  The actual object to map to.  Defaults to `this` for
+   *  mapping controller to member variables.
+   **/
+  map_controller_to_property {
+    arg controller, controllerComponent, propertyKeys, mapTo = this;
+    var properties;
+
+    properties = this.pr_get_properties_from_keys(propertyKeys, mapTo);
+
+    controller.mapCCS(1, controllerComponent, {
+      arg ccval;
+
+      properties.do({
+        arg property;
+
+        property.set(property.spec.map(ccval / 127));
+      });
+
+    });
+  
+  }
   /**
    *  Map a property of the component (member variable) to a UC-33 controller
    *  knob or slider.

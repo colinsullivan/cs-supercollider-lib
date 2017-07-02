@@ -35,6 +35,7 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
       buffer: this.buf,
       gate: KrNumberEditor.new(1, \gate.asSpec()),
       useOscillator: KrNumberEditor.new(0, \gate.asSpec()),
+      amp: KrNumberEditor.new(0.0, \amp)
       //hellValueBus: this.hellValueBus
     ));
   }
@@ -165,6 +166,11 @@ RunningWaterEnvironment : PatchEnvironmentComponent {
       this.map_uc33_to_patch(\knl3, [\hellMax]);
       //this.map_uc33_to_patch(\knm4, \hellMin);
       /*this.map_uc33_to_patch(\knu4, \hellFreq);*/
+    });
+
+    if (this.launchControlController != nil, {
+      this.map_controller_to_patch(this.launchControlController, \knu5, \amp);
+      this.map_controller_to_patch(this.launchControlController, \knm5, [\hellMax]);
     });
 
   }
