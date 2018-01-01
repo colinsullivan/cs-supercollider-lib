@@ -1,7 +1,7 @@
 Instr("cs.Synkopater.SynkopaterDelay", {
   arg bus,
     numChan,
-    delaySecs = 0,
+    delaySecs = 1.0,
     feedbackCoefficient = 0.6,
     amp = 1.0;
 
