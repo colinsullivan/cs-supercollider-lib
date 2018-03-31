@@ -3,7 +3,9 @@ Instr("cs.fm.Lazers", {
     amp = 1.0,
     gate = 1,
     modIndex = 2.5,
-    mod2Index = 0.2;
+    mod2Index = 0.2,
+    carrierReleaseTime = Rand(0.025, 0.1),
+    mod2ReleaseTime = Rand(0.01, 0.2);
 
   // cool downward twang
   /*modIndex = 2.5;
@@ -68,7 +70,7 @@ Instr("cs.fm.Lazers", {
   );*/
   carrierEnvShape = Env.perc(
     attackTime: 0.05,
-    releaseTime: Rand(0.025, 0.1),
+    releaseTime: carrierReleaseTime,
     curve: -4,
     level: velocity.exprange(0.1, 1.0)
   );
@@ -101,7 +103,7 @@ Instr("cs.fm.Lazers", {
   );*/
   mod2EnvShape = Env.perc(
     attackTime: 0.05,
-    releaseTime: Rand(0.01, 0.2),
+    releaseTime: mod2ReleaseTime,
     curve: velocity.exprange(-4, -10)
   );
 
