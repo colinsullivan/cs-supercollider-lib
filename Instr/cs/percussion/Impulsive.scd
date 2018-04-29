@@ -1,3 +1,13 @@
+/**
+ *  @file       Impulsive.scd
+ *
+ *
+ *  @author     Colin Sullivan <colin [at] colin-sullivan.net>
+ *
+ *  @copyright  2018 Colin Sullivan
+ *  @license    Licensed under the GPLv3 license.
+ **/
+
 Instr("cs.percussion.Impulsive", {
   arg freq = 440,
     amp = 0.9,
@@ -35,6 +45,9 @@ Instr("cs.percussion.Impulsive", {
 
   // a single impulse
   out = Impulse.ar(0);
+
+  "harms:".postln;
+  harms.postln;
 
   // filtered with resonances at harmonics
   harms.do({
