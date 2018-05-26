@@ -11,7 +11,11 @@
 Instr("cs.percussion.Impulsive", {
   arg freq = 440,
     amp = 0.9,
-    gate = 0,
+    gate = 0;
+
+  var out,
+    imp,
+    env,
     harms = [
       (
         ratio: 4.875,
@@ -28,26 +32,19 @@ Instr("cs.percussion.Impulsive", {
       /*(
         ratio: 1.875,
         rq: 0.08
-      ),
+      ),*/
       (
         ratio: 1.5,
         rq: 0.06
-      ),*/
+      ),
       (
         ratio: 1,
         rq: 0.09
       )
     ];
 
-  var out,
-    imp,
-    env;
-
   // a single impulse
   out = Impulse.ar(0);
-
-  "harms:".postln;
-  harms.postln;
 
   // filtered with resonances at harmonics
   harms.do({
@@ -69,6 +66,5 @@ Instr("cs.percussion.Impulsive", {
 }, [
   \freq,
   \amp,
-  \gate,
-  \array
+  \gate
 ]);
