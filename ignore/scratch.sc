@@ -1,7 +1,7 @@
 ({
   s.quit();
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  //s.options.outDevice= "JackRouter";
+  s.options.outDevice= "JackRouter";
   //s.options.numOutputBusChannels = 48;
   /*s.options.sampleRate = 48000;*/
   s.boot();
@@ -10,6 +10,7 @@
   //FreqScope.new(400, 200);
 
   s.doWhenBooted({
+    MIDIClient.init();
     Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
     Instr.loadAll();
   });
@@ -299,19 +300,19 @@ SynthDef(\test, { | out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |
     \rateMultiplier,  Pseq([  1/2,  6,    6,    6*2,  2,    8,      6,    6*2   ], 1),
   ).play;
   
-  (
-    bassPat.stop;
-    bass.free;
-  )
+  //(
+    //bassPat.stop;
+    //bass.free;
+  //)
 )
 
 (
-  Pmono(Instr("synths.DubBass").add.asDefName,
+  Pmono(Instr("cs.synths.DubBass").add.asDefName,
     \note,            Pseq([  0,    3,    7,    7,    0,    9,      3,    0     ], 1),
     \root,            4,
     \octave,          Pseq([  3,    3,    3,    3,    3,    2,      3,    2     ], 1),
     \rateMultiplier,  Pseq([  1/2,  6,    6,    6*2,  2,    8,      6,    6*2   ], 1),
-  ).play;
+  ).play();
 )
 
 
@@ -411,6 +412,43 @@ SynthDef(\test, { | out, freq = 440, amp = 0.1, nharms = 10, pan = 0, gate = 1 |
 
   Instr("cheerful").miditest();
 )
+
+(
+  ~voicer = MonoPortaVoicer.new(
+    1,
+    Instr("cs.synths.DubBass")
+  );
+  ~voicer.mapGlobal(\amp, value: 0.3);
+
+  ~sock = VoicerMIDISocket(
+      [
+        MIDIClient.sources.indexOf(
+          MIDIIn.findPort("MPKmini2", "MPKmini2")
+        ),
+        0
+      ],
+~voicer);
+
+)
+
+(
+  MIDIClient.externalSources
+)
+
+(
+  ~voicer.trigger1(440);
+)
+
+(
+  Instr("cs.fm.WideBass").miditest([
+    MIDIClient.sources.indexOf(
+      MIDIIn.findPort("MPKmini2", "MPKmini2")
+    ),
+    0
+  ]);
+)
+
+
 
 
 // modulate fundamental frequency, formant freq stays constant
