@@ -17,7 +17,7 @@ Instr("cs.synths.DubBass", {
     gate = Trig.kr(gate, noteDur);
   });
 
-  gate.poll();
+  //gate.poll();
   //delta.poll();
   //Poll(Impulse.kr(10), sustain, "dubbass sustain: ");
   //Poll(Impulse.kr(10), dur, "dubbass dur: ");
