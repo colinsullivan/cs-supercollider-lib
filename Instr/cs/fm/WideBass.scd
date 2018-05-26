@@ -1,14 +1,15 @@
 Instr("cs.fm.WideBass", {
   arg freq = 440,
+    gate = 1,
     freqlag = 0,
-    pb = 1,
+    pb = 1.0,
     amp = 0.9,
-    gate = 0,
     // attack resonance
     attackModFreq = 100,
     toneModulatorGainMultiplier = 0.0,
     toneModulatorLFOAmount = 0.0,
-    toneModulatorLFORate = 0.0;
+    toneModulatorLFORate = 0.0,
+    sustain = 0;
 
   var carrier,
     attackModulator,
@@ -32,7 +33,12 @@ Instr("cs.fm.WideBass", {
 
   // pitch bend
   freq = pb * freq;
-  
+
+
+  if (sustain != 0, {
+    gate = Trig.kr(gate, Tempo.beats2secs(sustain)); 
+  });
+
   velocity = Latch.kr(gate, gate);
 
   // amount of FM synthesis depends on velocity (percussive)
@@ -71,7 +77,8 @@ Instr("cs.fm.WideBass", {
   
   carrierEnv = EnvGen.kr(
     envelope: carrierEnvShape,
-    gate: gate
+    gate: gate,
+    doneAction: 2
   );
 
   carrierGain = velocity.exprange(0.25, 1.0);
@@ -95,21 +102,24 @@ Instr("cs.fm.WideBass", {
   /*out = RLPF.ar(out, 250, 0.5, 4.0.dbamp());*/
 
   // free synth when both carrier and modulator envelopes are done
-  FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(attackModEnv) - 1);
+  //Done.kr(carrierEnv).poll(label: "carrierEnv done");
+  //Done.kr(attackModEnv).poll(label: "attackModEnv done");
+  //FreeSelf.kr(Done.kr(carrierEnv) + Done.kr(attackModEnv) - 1);
 
   out = amp * out;
 }, [
   \freq,
-  [0, 2],
-  \nil,
-  \amp,
   \gate,
+  [0, 2],
+  [1.0 / 4.0, 4.0],
+  \amp,
   // attackModFreq
   \freq,
   // toneModulatorGainMultiplier
-  ControlSpec(0.1, 20.0),
+  [0.1, 20.0],
   // tone modulator LFO amount
   \freq,
   // tone modulator LFO rate
-  \beats
+  \beats,
+  \sustain
 ]);
