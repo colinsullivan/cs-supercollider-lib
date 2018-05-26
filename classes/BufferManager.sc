@@ -102,7 +102,7 @@ BufferManager : Object {
    *  into a Pbind.
    *
    *  @param  {Array}  midiList - Array of arrays, each with the following:
-   *                   [filenameString, keySymbol, treatAsLoopBoolean]
+   *                   [filenameString, keySymbol, makeDuration]
    *                   filenameString: filename in `rootDir`
    *                   keySymbol: a symbol to use as a lookup key for midi
    *                   makeDuration: An integer number of beats for the length,
