@@ -10,8 +10,7 @@
 
 Instr("cs.percussion.Impulsive", {
   arg freq = 440,
-    amp = 0.9,
-    gate = 0;
+    amp = 0.9;
 
   var out,
     imp,
@@ -65,6 +64,5 @@ Instr("cs.percussion.Impulsive", {
 
 }, [
   \freq,
-  \amp,
-  \gate
+  \amp
 ]);

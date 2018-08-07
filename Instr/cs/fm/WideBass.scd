@@ -9,7 +9,8 @@ Instr("cs.fm.WideBass", {
     toneModulatorGainMultiplier = 0.0,
     toneModulatorLFOAmount = 0.0,
     toneModulatorLFORate = 0.0,
-    sustain = 0;
+    useSustain = 0,
+    sustainTime = 0;
 
   var carrier,
     attackModulator,
@@ -35,8 +36,8 @@ Instr("cs.fm.WideBass", {
   freq = pb * freq;
 
 
-  if (sustain != 0, {
-    gate = Trig.kr(gate, Tempo.beats2secs(sustain)); 
+  if (useSustain != 0, {
+    gate = Trig.kr(gate, sustainTime); 
   });
 
   velocity = Latch.kr(gate, gate);
@@ -121,5 +122,6 @@ Instr("cs.fm.WideBass", {
   \freq,
   // tone modulator LFO rate
   \beats,
-  \sustain
+  \nil,
+  \nil
 ]);

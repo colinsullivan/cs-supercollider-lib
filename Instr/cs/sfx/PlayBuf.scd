@@ -36,29 +36,30 @@ Instr("cs.sfx.PlayBuf", {
   );
 
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
-  //out = out * Env.new(
-    //[ 0.0,        1.0,            1.0,            0.0 ],
-    //[   attackTime,   sustainTime,    releaseTime     ],
-    //loopNode: loopNode,
-    //releaseNode: releaseNode
-  //).ar(gate: gate, doneAction: 2);
+  out = out * Env.new(
+    [ 0.0,        1.0,            1.0,            0.0 ],
+    [   attackTime,   sustainTime,    releaseTime     ],
+    loopNode: loopNode,
+    releaseNode: releaseNode
+  ).ar(gate: gate, doneAction: 2);
 
   if (convertToStereo == 1, {
     out = [out, out];    
   });
 
-  amp * out;
+  out = amp * out;
 
 }, [
   \buffer,
   \gate,
   // playbackRate
-  ControlSpec(-4.0, 4.0),
+  ScalarSpec(-4.0, 4.0),
   // startTime
   ObjectSpec(0.0),
   // attackTime
-  ObjectSpec(1.0),
+  [0.0, 200.0],
+  \nil,
   // releaseTime
-  ObjectSpec(1.0),
+  [0.0, 20.0],
   \amp
 ]);
