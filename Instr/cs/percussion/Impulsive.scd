@@ -10,7 +10,8 @@
 
 Instr("cs.percussion.Impulsive", {
   arg freq = 440,
-    amp = 0.9;
+    amp = 0.9,
+    makeStereo = 0;
 
   var out,
     imp,
@@ -62,7 +63,14 @@ Instr("cs.percussion.Impulsive", {
 
   out = amp * (env * out);
 
+  if (makeStereo == 1, {
+    [out, out];
+  }, {
+    out;
+  });
+
 }, [
   \freq,
-  \amp
+  \amp,
+  [0, 1]
 ]);
