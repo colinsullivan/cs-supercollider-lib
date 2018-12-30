@@ -1077,3 +1077,73 @@ MIDIClient.sources.indexOf(MIDIIn.findPort("(out) To SuperCollider", "(out) To S
 ControlSpec(0.0, \unipolar).map(0.5)
 
 "A4".notemidi().midicps()
+
+(
+  Bjorklund.new(5, 16);
+)
+
+(
+  Bjorklund2.new(5, 16);
+)
+
+(
+  Pbjorklund2.new(5, 16, inf)
+)
+
+(
+  (true).or(false)
+)
+
+
+(
+  ~bufManager = BufferManager.new((
+    rootDir: "/Users/colin/Samples/Recorded Sounds/Sound Effects"
+  ));
+)
+
+(
+  ~bufManager.load_bufs([
+    ["shakers-various.wav", 'shakers']
+  ], {
+    ~shakersSeg = ~bufManager.get_buffer_section(
+      bufName: 'shakers',
+      startSeconds: 8.809,
+      endSeconds: 20.468,
+      channels: [0]
+    );
+    ~lowerResonantShakersSeg = ~bufManager.get_buffer_section(
+      'shakers',
+      188.451,
+      196.848,
+      [0]
+    );
+  });
+)
+(
+  ~x = Patch(
+    "cs.sfx.ShakerTexture.ShakerTextureSingle",
+    (
+      sndbuf: ~shakersSeg,
+      grainRate: 0.1,
+      trigRate: 1.0,
+      amp: 6.dbamp(),
+      gate: 1
+    )
+  );
+  ~x.play();
+)
+
+(
+  ~y = Patch(
+    "cs.sfx.ShakerTexture.ShakerTexture",
+    (
+      grainRate: 0.1,
+      trigRate: 1.0,
+      amp: 6.dbamp(),
+      gate: 1,
+      shakersSegBuf: ~shakersSeg,
+      lowerResonantShakersSegBuf: ~lowerResonantShakersSeg
+    )
+  );
+  ~y.play();
+)

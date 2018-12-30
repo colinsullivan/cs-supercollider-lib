@@ -17,6 +17,13 @@ Instr("cs.Synkopater.SynkopaterDelay", {
   
   // feedback loop input 
   LocalOut.ar(in + delayOut);
+  //delayOut = SwitchDelay.ar(
+    //in,
+    //drylevel: 0.0,
+    //wetlevel: 1.0,
+    //delaytime: delaySecs,
+    //delayfactor: feedbackCoefficient
+  //);
 
   // send to out
   out = amp * delayOut;
