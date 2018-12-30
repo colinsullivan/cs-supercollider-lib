@@ -172,4 +172,25 @@ BufferManager : Object {
     doneLoadingCallback.value();
 
   }
+  get_buffer_section {
+    arg bufName,
+      startSeconds,
+      endSeconds,
+      channels;
+
+    var startFrame, endFrame, buf;
+
+    buf = bufs[bufName];
+
+    startFrame = buf.numFrames * (startSeconds / buf.duration);
+    endFrame = buf.numFrames * (endSeconds / buf.duration);
+
+    ^Buffer.readChannel(
+      Server.default,
+      buf.path,
+      startFrame: startFrame,
+      numFrames: endFrame - startFrame,
+      channels: channels
+    );
+  }
 }
