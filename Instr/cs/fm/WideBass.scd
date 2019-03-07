@@ -122,6 +122,8 @@ Instr("cs.fm.WideBass", {
   \freq,
   // tone modulator LFO rate
   \beats,
-  \nil,
-  \nil
+  // useSustain
+  StaticIntegerSpec(0, 1),
+  // sustainTime
+  [0, 10]
 ]);

@@ -7,7 +7,6 @@
   s.boot();
   s.meter();
   //s.scope();
-  //FreqScope.new(400, 200);
 
   s.doWhenBooted({
     MIDIClient.init();
@@ -15,6 +14,14 @@
     Instr.loadAll();
   });
 }.value());
+
+(
+  FreqScope.new(720, 720, 0, server: s);
+)
+
+(
+  s.volume = -24.0;
+)
 
 ({FBSineC.ar(800, 1.0, 1.0);}.play();)
 
