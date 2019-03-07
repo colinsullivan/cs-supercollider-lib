@@ -32,7 +32,7 @@ Instr("cs.sfx.PlayBuf", {
     rate: playbackRate * BufRateScale.kr(buf),
     trigger: gate,
     startPos: startFrame,
-    doneAction: 2
+    doneAction: Done.none
   );
 
   //out = out * Linen.ar(gate, attackTime, 1.0, releaseTime, 2);
@@ -58,8 +58,13 @@ Instr("cs.sfx.PlayBuf", {
   ObjectSpec(0.0),
   // attackTime
   [0.0, 200.0],
-  \nil,
+  // sustainTime
+  [0.0, 1000.0],
   // releaseTime
-  [0.0, 20.0],
-  \amp
+  [0.0, 200.0],
+  \amp,
+  // convertToStereo
+  [0, 1],
+  // isSustained
+  [0, 1]
 ]);
