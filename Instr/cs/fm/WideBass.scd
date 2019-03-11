@@ -10,7 +10,10 @@ Instr("cs.fm.WideBass", {
     toneModulatorLFOAmount = 0.0,
     toneModulatorLFORate = 0.0,
     useSustain = 0,
-    sustainTime = 0;
+    sustainTime = 0,
+    useModulatorBus = 0,
+    toneModulatorGainMultiplierBus,
+    toneModulatorLFOAmountBus;
 
   var carrier,
     attackModulator,
@@ -45,7 +48,11 @@ Instr("cs.fm.WideBass", {
   // amount of FM synthesis depends on velocity (percussive)
   attackModulatorGain = velocity.exprange(0.25, 25) * freq;
 
+  if (useModulatorBus != 0, {
+    toneModulatorGainMultiplier = 0.1 + In.kr(toneModulatorGainMultiplierBus) * 19.9;
+  });
   toneModulatorGain = toneModulatorGainMultiplier * freq;
+
   
   attackModEnvShape = Env.new(
     [1.0,   0.0,    0.0 ],
@@ -70,16 +77,20 @@ Instr("cs.fm.WideBass", {
 
   attackModulator = attackModEnv * (attackModulatorGain * SinOsc.ar(attackModFreq));
 
+  if (useModulatorBus != 0, {
+    toneModulatorLFOAmount = 50 * toneModulatorLFOAmountBus;
+  });
+
   toneModulatorLFO = SinOsc.ar(toneModulatorLFORate, mul: toneModulatorLFOAmount);
 
   toneModulatorGain = toneModulatorGain + toneModulatorLFO;
 
   toneModulator = toneModulatorGain * (SinOsc.ar(freq * 2.0) + SinOsc.ar(freq * 4.0));
-  
+
   carrierEnv = EnvGen.kr(
     envelope: carrierEnvShape,
     gate: gate,
-    doneAction: 2
+    doneAction: Done.freeSelf
   );
 
   carrierGain = velocity.exprange(0.25, 1.0);
@@ -119,11 +130,17 @@ Instr("cs.fm.WideBass", {
   // toneModulatorGainMultiplier
   [0.1, 20.0],
   // tone modulator LFO amount
-  \freq,
+  [0, 50.0],
   // tone modulator LFO rate
   \beats,
   // useSustain
   StaticIntegerSpec(0, 1),
   // sustainTime
-  [0, 10]
+  [0, 10],
+  // useModulatorBus
+  StaticIntegerSpec(0, 1),
+  // toneModulatorGainMultiplierBus
+  \controlbus,
+  // toneModulatorLFOAmountBus
+  \controlbus
 ]);

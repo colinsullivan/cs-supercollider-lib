@@ -20,6 +20,7 @@ BufferManager : Object {
   
   var <>bufs,
     <>midiSequences,
+    <>midiCCEnvs,
     doneLoadingCallback,
     <>rootDir;
 
@@ -43,6 +44,7 @@ BufferManager : Object {
     doneLoadingCallback = {};
     this.bufs = ();
     this.midiSequences = ();
+    this.midiCCEnvs = ();
   }
 
   /**
@@ -101,29 +103,48 @@ BufferManager : Object {
    *  into a simple list of [midiNote, dur] arguments that can be passed
    *  into a Pbind.
    *
-   *  @param  {Array}  midiList - Array of arrays, each with the following:
-   *                   [filenameString, keySymbol, makeDuration]
+   *  @param  {Array}  midiParams - Array of objects, each with the following:
    *                   filenameString: filename in `rootDir`
    *                   keySymbol: a symbol to use as a lookup key for midi
    *                   makeDuration: An integer number of beats for the length,
    *                   if specified will add a rest at the end to make total
    *                   duration equal this.
+   *                   ccsToEnv: A list of CC numbers which will be converted
+   *                    to envs.
    **/
   load_midi {
-    arg midiList;
+    arg midiParams;
 
-    midiList.do({
-      arg midiData;
+    midiParams.do({
+      arg params;
 
-      var midiFileName = midiData[0],
-        midiKey = midiData[1].asSymbol(),
-        makeDuration = midiData[2],
-        midifile = SimpleMIDIFile.read(rootDir +/+ midiFileName),
-        durationSum = 0;
+      var midiFileName = params['midiFileName'],
+        midiKey = params['midiKey'].asSymbol(),
+        makeDuration = params['makeDuration'],
+        ccsToEnv = params['ccsToEnv'],
+        tempoBPM = params['tempoBPM'],
+        tempo,
+        midifile = SimpleMIDIFile.new(rootDir +/+ midiFileName),
+        durationSum = 0,
+        makeDurationSecs,
+        env;
+
+      if (tempoBPM != nil, {
+        tempo = params['tempoBPM'] / 60.0;
+        midifile.tempo = tempo;
+        if (makeDuration != nil, {
+          makeDurationSecs = makeDuration / tempo;
+        });
+      });
+      midifile.read();
 
       // assuming single-track MIDI files for now
       this.midiSequences[midiKey] = midifile.generatePatternSeqs()[0];
+      this.midiCCEnvs[midiKey] = ();
 
+
+      // Appends a rest the end of the notes list to make duration match
+      // the `makeDuration` argument.
       if (makeDuration != nil, {    
         // sum all durations
         midiSequences[midiKey].do({
@@ -134,9 +155,43 @@ BufferManager : Object {
         if (makeDuration > durationSum, {
           midiSequences[midiKey].add([\rest, makeDuration - durationSum]);
         });
-
       });
-      
+      //"this.midiSequences[midiKey]:".postln;
+      //this.midiSequences[midiKey].postln;
+      //"midifile.noteEvents:".postln;
+      //midifile.noteEvents.postln;
+
+      ccsToEnv.do({
+        arg cc;
+        var maxValue = 0,
+          minValue = 127;
+
+        if (midifile.controllerEvents(cc).size() > 0, {
+          midiCCEnvs[midiKey][cc] = midifile.envFromCC(
+            track: 0,
+            cc: cc
+          );
+
+          midiCCEnvs[midiKey][cc].levels.do({
+            arg level;
+            if (level > maxValue, {
+              maxValue = level;
+            });
+            if (level < minValue, {
+              minValue = level;
+            });
+          });
+
+          midiCCEnvs[midiKey][cc] = midiCCEnvs[midiKey][cc].range(
+            minValue / 127.0,
+            maxValue / 127.0
+          );
+
+          if (makeDuration != nil, {
+            midiCCEnvs[midiKey][cc].duration = makeDurationSecs;
+          });
+        });
+      });
     });
 
   }
