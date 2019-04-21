@@ -49,7 +49,7 @@ Instr("cs.fm.WideBass", {
   attackModulatorGain = velocity.exprange(0.25, 25) * freq;
 
   if (useModulatorBus != 0, {
-    toneModulatorGainMultiplier = 0.1 + In.kr(toneModulatorGainMultiplierBus) * 19.9;
+    toneModulatorGainMultiplier = 0.05 + In.kr(toneModulatorGainMultiplierBus) * 15.95;
   });
   toneModulatorGain = toneModulatorGainMultiplier * freq;
 
@@ -78,7 +78,7 @@ Instr("cs.fm.WideBass", {
   attackModulator = attackModEnv * (attackModulatorGain * SinOsc.ar(attackModFreq));
 
   if (useModulatorBus != 0, {
-    toneModulatorLFOAmount = 50 * toneModulatorLFOAmountBus;
+    toneModulatorLFOAmount = 50 * In.kr(toneModulatorLFOAmountBus);
   });
 
   toneModulatorLFO = SinOsc.ar(toneModulatorLFORate, mul: toneModulatorLFOAmount);
