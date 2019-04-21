@@ -1,12 +1,16 @@
 Instr("cs.utility.EnvToBus", {
-  arg env, bus, gate;
+  arg gate, bus, env;
   var envgen;
 
-  envgen = EnvGen.kr(env, gate, doneAction: Done.freeSelf);
+  envgen = EnvGen.kr(
+    env,
+    gate,
+    doneAction: Done.freeSelf
+  );
 
   ReplaceOut.kr(bus, envgen);
 }, [
-  \env,
+  \gate,
   \bus,
-  \gate
+  \env
 ]);

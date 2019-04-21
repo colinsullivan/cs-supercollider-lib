@@ -164,7 +164,8 @@ BufferManager : Object {
       ccsToEnv.do({
         arg cc;
         var maxValue = 0,
-          minValue = 127;
+          minValue = 127,
+          numNodes = 0;
 
         if (midifile.controllerEvents(cc).size() > 0, {
           midiCCEnvs[midiKey][cc] = midifile.envFromCC(
@@ -174,6 +175,7 @@ BufferManager : Object {
 
           midiCCEnvs[midiKey][cc].levels.do({
             arg level;
+            numNodes = numNodes + 1;
             if (level > maxValue, {
               maxValue = level;
             });
@@ -186,6 +188,8 @@ BufferManager : Object {
             minValue / 127.0,
             maxValue / 127.0
           );
+
+          midiCCEnvs[midiKey][cc].releaseNode = numNodes - 1;
 
           if (makeDuration != nil, {
             midiCCEnvs[midiKey][cc].duration = makeDurationSecs;
