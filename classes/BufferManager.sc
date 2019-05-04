@@ -60,11 +60,12 @@ BufferManager : Object {
     arg bufList,
       aCallback;
 
-    var me = this;
+    var me = this,
+      onDone = {};
 
     // if a callback was passed in, use that as the done loading callback
     if (aCallback != nil, {
-      doneLoadingCallback = aCallback;    
+      onDone = aCallback;
     });
 
     // first we need to know about all the buffers we are trying to load
@@ -91,7 +92,15 @@ BufferManager : Object {
         action: {
           arg buf;
 
-          me.buf_loaded(bufKey, buf);
+          this.bufs[bufKey] = buf;
+
+          ("loaded buf: " ++ bufKey).postln();
+
+          // if all bufs are not zero
+          if (bufList.any({ arg bufData; this.bufs[bufData[1].asSymbol()] == 0; }) == false, {
+            // finish loading
+            onDone.value();
+          });
         };
       );
     });
@@ -200,37 +209,6 @@ BufferManager : Object {
 
   }
 
-  buf_loaded {
-    arg bufKey, buf, msg;
-
-    this.bufs[bufKey] = buf;
-
-    ("loaded buf: " ++ bufKey).postln();
-
-    // if all bufs are not zero
-    if (this.bufs.any({ arg item; item == 0; }) == false, {
-      // finish loading
-      this.bufs_all_loaded();
-    }, {
-      msg = "bufs to load:";
-
-      this.bufs.keysValuesDo({
-        arg bufKey, bufValue;
-
-        if (bufValue == 0, {
-          msg = msg ++ bufKey ++ ", ";
-        });
-      });
-
-      msg.postln();
-    });
-  }
-
-  bufs_all_loaded {
-
-    doneLoadingCallback.value();
-
-  }
   get_buffer_section {
     arg bufName,
       startSeconds,
