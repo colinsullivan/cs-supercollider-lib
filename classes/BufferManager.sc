@@ -136,7 +136,8 @@ BufferManager : Object {
         midifile = SimpleMIDIFile.new(rootDir +/+ midiFileName),
         durationSum = 0,
         makeDurationSecs,
-        env;
+        env,
+        trackSeqs;
 
       if (tempoBPM != nil, {
         tempo = params['tempoBPM'] / 60.0;
@@ -146,9 +147,71 @@ BufferManager : Object {
         });
       });
       midifile.read();
+/**
 
+Pulled from `extSimpleMIDIFile-patterns.sc`.
+
+Returns an array of [note, dur] sequence info for each track, with proper accounting of rests. Ê
+
+Thus, if m is a SimpleMIDIFile, you could do the following:
+
+t = m.generatePatternSeqs; // t is now an arry of [note, dur] info for each track
+
+Pbind( [\midinote, \dur], Pseq(t[1], 1)).play;
+
+Note that the first track in a SimpleMIDIFile often contains no note events if imported from an external midi file (since it's used for metadata), so that the first track of interest is usually the one in index 1 of the getSeqs array.Ê I decided to leave the first blank track in so preserve the mapping from midi track # to getSeqs array #.
+
+**/
+		
+      midifile.timeMode_('ticks');
+      trackSeqs = Array.fill(midifile.tracks, {List.new(0)});
+      
+      midifile.noteEvents.do({|event| // sort the tracks in to separate Lists, which are stored in ~tracks
+        var trackNum = event[0];
+        trackSeqs[trackNum].add(event);
+      });
+      
+      trackSeqs = trackSeqs.collect({|track|
+        var trackEvents, seq;
+        seq = List.new(0);
+        
+        trackEvents = track.clump(2).collect({|pair|
+          (
+            'dur': pair[1][1] - pair[0][1],
+            'note': pair[0][4],
+            'startPos': pair[0][1],
+            'endPos': pair[1][1]
+          )
+        });
+
+        trackEvents.do({|event, i|
+          var diff;
+          if (i==0,Ê
+            {	
+              if (event.startPos != 0, {
+                seq.add([\rest, event.startPos]);
+              });
+              seq.add([event.note, event.dur]);
+            },
+            {
+              diff = event.startPos - trackEvents[i-1].endPos;
+              if (diff > 0,
+                {
+                  seq.add([\rest, diff]);
+                  seq.add([event.note, event.dur]);
+                },
+                {
+                  seq.add([event.note, event.dur]);
+                }
+              )
+            }
+          );
+        });
+        seq.collect({|pair| [pair[0], pair[1] / midifile.division]});
+      });
+      
       // assuming single-track MIDI files for now
-      this.midiSequences[midiKey] = midifile.generatePatternSeqs()[0];
+      this.midiSequences[midiKey] = trackSeqs[0];
       this.midiCCEnvs[midiKey] = ();
 
 
