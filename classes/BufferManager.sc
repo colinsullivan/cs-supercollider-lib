@@ -139,6 +139,8 @@ BufferManager : Object {
         env,
         trackSeqs;
 
+      //("Loading midifile " ++ midiFileName).postln();
+
       if (tempoBPM != nil, {
         tempo = params['tempoBPM'] / 60.0;
         midifile.tempo = tempo;
@@ -174,7 +176,7 @@ Note that the first track in a SimpleMIDIFile often contains no note events if i
       trackSeqs = trackSeqs.collect({|track|
         var trackEvents, seq;
         seq = List.new(0);
-        
+
         trackEvents = track.clump(2).collect({|pair|
           (
             'dur': pair[1][1] - pair[0][1],

@@ -64,7 +64,7 @@ Instr("cs.fm.WideBass", {
   carrierEnvShape = Env.new(
     //initial attack             peak          exp. decay
     [0.0,   0.75,     0.9,      1.0,      0.9,      0.0 ],
-    [   0.001,    0.2,     0.05,      0.05,   0.3      ],
+    [   0.005,    0.2,     0.05,      0.05,   0.2      ],
     [0.0,   2.5,      -2.5,     2.5,      -2.5,   -5.5  ],
     releaseNode: 3
   );

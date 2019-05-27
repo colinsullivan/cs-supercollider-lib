@@ -13,10 +13,7 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
       instrArgs = params['instrArgs'];
     });
 
-    "instrArgs:".postln;
-    instrArgs.postln;
-
-    if (params['numVoices'] == 1, {
+    if (params['monoPortaVoicer'] == true, {
       this.voicer = MonoPortaVoicer.new(
         1,
         params['instr'],
