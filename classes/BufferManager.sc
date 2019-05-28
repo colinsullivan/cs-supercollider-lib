@@ -106,6 +106,25 @@ BufferManager : Object {
     });
   }
 
+  cue_bufs {
+    arg bufList;
+
+    bufList.do({
+      arg bufData;
+
+      var bufFileName = bufData.bufferFileName,
+        bufKey = bufData.bufferKey,
+        numChannels = bufData.numChannels;
+      
+      this.bufs[bufKey] = Buffer.cueSoundFile(
+        Server.default,
+        this.rootDir +/+ bufFileName,
+        numChannels: numChannels
+      );
+      ("cued buf: " ++ bufKey).postln();
+    });
+  }
+
   /**
    *  Load a list of MIDI files.  Assumed they are single track MIDI files.
    *  They are parsed with the SimpleMIDIFile class (found in the wslib quark)
