@@ -112,13 +112,13 @@ BufferManager : Object {
     bufList.do({
       arg bufData;
 
-      var bufFileName = bufData.bufferFileName,
+      var bufFilePath = this.rootDir +/+ bufData.relativeFilePath,
         bufKey = bufData.bufferKey,
         numChannels = bufData.numChannels;
       
       this.bufs[bufKey] = Buffer.cueSoundFile(
         Server.default,
-        this.rootDir +/+ bufFileName,
+        bufFilePath,
         numChannels: numChannels
       );
       ("cued buf: " ++ bufKey).postln();
