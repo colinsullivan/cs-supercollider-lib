@@ -22,7 +22,7 @@ Instr("cs.sfx.StreamBuf", {
   if (sustainTime == nil, {
     sustainTime = buf.duration - attackTime - releaseTime;
   });
-  
+
   // if we're sustaining, set loop and release nodes
   if (isSustained != 0, {
     loopNode = 1;
@@ -36,7 +36,7 @@ Instr("cs.sfx.StreamBuf", {
     [   attackTime,   sustainTime,    releaseTime     ],
     loopNode: loopNode,
     releaseNode: releaseNode
-  ).ar(gate: gate, doneAction: 2);
+  ).ar(gate: gate, doneAction: Done.freeSelf);
 
   if (convertToStereo == 1, {
     out = [out, out];    

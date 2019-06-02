@@ -22,7 +22,8 @@ BufferManager : Object {
     <>midiSequences,
     <>midiCCEnvs,
     doneLoadingCallback,
-    <>rootDir;
+    <>rootDir,
+    filePaths;
 
   *new {
     arg params;
@@ -42,9 +43,10 @@ BufferManager : Object {
     arg params;
     this.rootDir = params[\rootDir];
     doneLoadingCallback = {};
-    this.bufs = ();
-    this.midiSequences = ();
-    this.midiCCEnvs = ();
+    this.bufs = Dictionary.new();
+    this.midiSequences = Dictionary.new();
+    this.midiCCEnvs = Dictionary.new();
+    filePaths = Dictionary.new();
   }
 
   /**
@@ -84,11 +86,14 @@ BufferManager : Object {
       arg bufData;
 
       var bufFileName = bufData[0],
-        bufKey = bufData[1].asSymbol();
+        bufKey = bufData[1].asSymbol(),
+        bufFilePath = this.rootDir +/+ bufFileName;
+
+      filePaths[bufKey] = bufFilePath;
       
       Buffer.read(
         Server.default,
-        this.rootDir +/+ bufFileName,
+        bufFilePath,
         action: {
           arg buf;
 
@@ -115,7 +120,8 @@ BufferManager : Object {
       var bufFilePath = this.rootDir +/+ bufData.relativeFilePath,
         bufKey = bufData.bufferKey,
         numChannels = bufData.numChannels;
-      
+     
+      filePaths[bufKey] = bufFilePath; 
       this.bufs[bufKey] = Buffer.cueSoundFile(
         Server.default,
         bufFilePath,
@@ -123,6 +129,12 @@ BufferManager : Object {
       );
       ("cued buf: " ++ bufKey).postln();
     });
+  }
+
+  recue_buf {
+    arg bufKey;
+
+    this.bufs[bufKey].cueSoundFile(filePaths[bufKey], 0);
   }
 
   /**
