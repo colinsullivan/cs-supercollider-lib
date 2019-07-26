@@ -3,7 +3,7 @@
   path:    "cs-supercollider-lib",
   summary:    "Colin's SuperCollider instruments and experiments",
   author:    "Colin Sullivan",
-  version:    0.24,
+  version:    0.25,
 //  helpdoc:    "",
   url:      "https://github.com/colinsullivan/cs-supercollider-lib",
   dependencies:  #["crucial-library", "ddwCommon", "ddwMixerChannel", "ddwVoicer", "JITMIDIKtl", "wslib"]
