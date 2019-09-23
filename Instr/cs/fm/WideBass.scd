@@ -49,7 +49,7 @@ Instr("cs.fm.WideBass", {
   attackModulatorGain = velocity.exprange(0.25, 25) * freq;
 
   if (useModulatorBus != 0, {
-    toneModulatorGainMultiplier = 0.05 + In.kr(toneModulatorGainMultiplierBus) * 15.95;
+    toneModulatorGainMultiplier = 0.1 + In.kr(toneModulatorGainMultiplierBus) * (18.0 - 0.1);
   });
   toneModulatorGain = toneModulatorGainMultiplier * freq;
 
@@ -64,7 +64,7 @@ Instr("cs.fm.WideBass", {
   carrierEnvShape = Env.new(
     //initial attack             peak          exp. decay
     [0.0,   0.75,     0.9,      1.0,      0.9,      0.0 ],
-    [   0.005,    0.2,     0.05,      0.05,   0.2      ],
+    [   0.005,    0.2,     0.05,      0.05,   0.1      ],
     [0.0,   2.5,      -2.5,     2.5,      -2.5,   -5.5  ],
     releaseNode: 3
   );
