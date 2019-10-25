@@ -18,12 +18,15 @@
  **/
 BufferManager : Object {
   
-  var <>bufs,
-    <>midiSequences,
-    <>midiCCEnvs,
+  var <bufs,
+    <midiSequences,
+    <midiSequencesWithVel,
+    <midiCCEnvs,
     doneLoadingCallback,
-    <>rootDir,
-    filePaths;
+    <rootDir,
+    filePaths,
+    <sampleProviders,
+    <sampleProvidersByName;
 
   *new {
     arg params;
@@ -41,12 +44,15 @@ BufferManager : Object {
    */
   init {
     arg params;
-    this.rootDir = params[\rootDir];
+    rootDir = params[\rootDir];
     doneLoadingCallback = {};
-    this.bufs = Dictionary.new();
-    this.midiSequences = Dictionary.new();
-    this.midiCCEnvs = Dictionary.new();
+    bufs = Dictionary.new();
+    midiSequences = Dictionary.new();
+    midiSequencesWithVel = Dictionary.new();
+    midiCCEnvs = Dictionary.new();
     filePaths = Dictionary.new();
+    sampleProviders = Array.new();
+    sampleProvidersByName = Dictionary.new();
   }
 
   /**
@@ -205,13 +211,15 @@ Note that the first track in a SimpleMIDIFile often contains no note events if i
       });
       
       trackSeqs = trackSeqs.collect({|track|
-        var trackEvents, seq;
+        var trackEvents, seq, seqWithVel;
         seq = List.new(0);
+        seqWithVel = List.new(0);
 
         trackEvents = track.clump(2).collect({|pair|
           (
             'dur': pair[1][1] - pair[0][1],
             'note': pair[0][4],
+            'vel': pair[0][5],
             'startPos': pair[0][1],
             'endPos': pair[1][1]
           )
@@ -223,28 +231,37 @@ Note that the first track in a SimpleMIDIFile often contains no note events if i
             {	
               if (event.startPos != 0, {
                 seq.add([\rest, event.startPos]);
+                seqWithVel.add([\rest, event.startPos, event.vel]);
               });
               seq.add([event.note, event.dur]);
+              seqWithVel.add([event.note, event.dur, event.vel]);
             },
             {
               diff = event.startPos - trackEvents[i-1].endPos;
               if (diff > 0,
                 {
                   seq.add([\rest, diff]);
+                  seqWithVel.add([\rest, diff, 0]);
                   seq.add([event.note, event.dur]);
+                  seqWithVel.add([event.note, event.dur, event.vel]);
                 },
                 {
                   seq.add([event.note, event.dur]);
+                  seqWithVel.add([event.note, event.dur, event.vel]);
                 }
               )
             }
           );
         });
-        seq.collect({|pair| [pair[0], pair[1] / midifile.division]});
+        (
+          'seq': seq.collect({|e| [e[0], e[1] / midifile.division]}),
+          'seqWithVel': seqWithVel.collect({|e| [e[0], e[1] / midifile.division, e[2]]})
+        );
       });
       
       // assuming single-track MIDI files for now
-      this.midiSequences[midiKey] = trackSeqs[0];
+      this.midiSequences[midiKey] = trackSeqs[0]['seq'];
+      this.midiSequencesWithVel[midiKey] = trackSeqs[0]['seqWithVel'];
       this.midiCCEnvs[midiKey] = ();
 
 
@@ -325,5 +342,56 @@ Note that the first track in a SimpleMIDIFile often contains no note events if i
       numFrames: endFrame - startFrame,
       channels: channels
     );
+  }
+
+  load_sample_providers_from_metadata {
+    arg providerInfos,
+      callback;
+
+    var onDone = {},
+      isProviderLoaded = Dictionary.new();
+
+    if (callback != nil, {
+      onDone = callback;
+    });
+
+    providerInfos.do({
+      arg providerInfo;
+      isProviderLoaded[providerInfo['name'].asSymbol()] = false;
+    });
+
+    // Iterates through each providerInfo, instantiating it and
+    // tracking when the samples are finished loading.
+    providerInfos.do({
+      arg providerInfo;
+
+      var name = providerInfo['name'].asSymbol(),
+        providerInstance,
+        providerClass = providerInfo['class'];
+
+        providerInstance = providerClass.new((
+          bufManager: this,
+          metadataFilePath: rootDir +/+ providerInfo['metadataFilePath'],
+          onDoneLoading: {
+            var isStillLoading;
+            isProviderLoaded[name] = true;
+
+            isStillLoading = providerInfos.any({
+              arg providerInfo;
+              isProviderLoaded[providerInfo['name'].asSymbol()] == false;
+            });
+
+            if (isStillLoading == false, {
+              onDone.value();
+            });
+          }
+        ));
+        sampleProviders.add(providerInstance);
+        sampleProvidersByName[name] = providerInstance;
+    });
+  }
+  getSampleProvider {
+    arg name;
+    ^sampleProvidersByName[name];
   }
 }
