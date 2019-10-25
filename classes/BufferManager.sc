@@ -276,6 +276,7 @@ Note that the first track in a SimpleMIDIFile often contains no note events if i
         // add missing rest to sequence list
         if (makeDuration > durationSum, {
           midiSequences[midiKey].add([\rest, makeDuration - durationSum]);
+          midiSequencesWithVel[midiKey].add([\rest, makeDuration - durationSum, 0]);
         });
       });
       //"this.midiSequences[midiKey]:".postln;
