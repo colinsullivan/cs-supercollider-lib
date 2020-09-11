@@ -31,8 +31,8 @@ PerformanceEnvironmentComponent : Object {
     componentState,
     // save state of controllerMappings and rerun mapping method when changed
     controllerMappings,
-    <>store,
-    <>clockController;
+    <store,
+    <clock;
 
   *new {
     arg params;
@@ -57,7 +57,7 @@ PerformanceEnvironmentComponent : Object {
   }
 
   getComponentState {
-    var state = this.store.getState();
+    var state = store.getState();
 
     ^state.components[componentId];
   }
@@ -69,12 +69,12 @@ PerformanceEnvironmentComponent : Object {
 
     componentId = params['componentId'];
 
-    this.store = params['store'];
-    this.clockController = params['clockController'];
+    store = params['store'];
+    clock = params['clock'];
 
     if ((componentId != nil), {
       componentState = this.getComponentState();
-      this.store.subscribe({
+      store.subscribe({
         this.handle_state_change();
       });
     });
