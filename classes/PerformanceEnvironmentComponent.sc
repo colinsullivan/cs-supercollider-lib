@@ -123,6 +123,9 @@ PerformanceEnvironmentComponent : Object {
 
       {
         me.interface.gui();
+        // TODO: Consider an autoplay parameter if ever starting and stopping
+        // patches.
+        me.interface.play();
         me.init_done_callback.value();
       }.defer(1);
     });
@@ -242,7 +245,8 @@ PerformanceEnvironmentComponent : Object {
     //);
 
     //MKtl('CSLaunchControlXL').trace(true);
-    //MKtl('CSLaunchControlXL').hasDevice
+    //"hasDevice: ".postln();
+    //MKtl('CSLaunchControlXL').hasDevice.postln();
     //MKtl('CSLaunchControlXL').openDevice
 
 
