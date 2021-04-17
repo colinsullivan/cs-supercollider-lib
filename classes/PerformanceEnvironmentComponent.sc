@@ -121,13 +121,14 @@ PerformanceEnvironmentComponent : Object {
         me.init_external_controller_mappings();
       };
 
-      {
+
+      AppClock.sched(0.0, {
         me.interface.gui();
-        // TODO: Consider an autoplay parameter if ever starting and stopping
-        // patches.
+        //// TODO: Consider an autoplay parameter if ever starting and stopping
+        //// patches.
         me.interface.play();
         me.init_done_callback.value();
-      }.defer(1);
+      });
     });
   }
 
@@ -175,7 +176,10 @@ PerformanceEnvironmentComponent : Object {
    
     this.window = params['window'];
 
-    //this.window.bounds = this.window.bounds.moveToPoint(this.origin);
+    if (origin != nil, {
+      this.window.bounds = this.window.bounds.moveTo(this.origin[0], this.origin[1]);
+      window.bounds.postln();
+    });
     this.window.name = this.gui_window_title();
   }
  
