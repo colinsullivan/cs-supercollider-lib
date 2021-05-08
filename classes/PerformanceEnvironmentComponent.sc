@@ -18,6 +18,8 @@ PerformanceEnvironmentComponent : Object {
     <>softStepController,
     <>abletonController,
     <>launchControlController,
+    <>sixteennController,
+    <>pc12Controller,
     <>interface,
     <>window,
     <>init_done_callback,
@@ -235,12 +237,23 @@ PerformanceEnvironmentComponent : Object {
     //}, {
       //this.abletonController = nil;
     //});
+
     
     //MIDIIn.findPort("Launch Control XL", "Launch Control XL");
     this.launchControlController = MKtl(
       'CSLaunchControlXL',
       "novation-launchcontrol-xl",
       multiIndex: 0
+    );
+
+    this.sixteennController = MKtl(
+      'CS16n',
+      "16n"
+    );
+
+    this.pc12Controller = MKtl(
+      'CSPC12',
+      "faderfox-pc12"
     );
     //MKtl(
       //'CSLaunchControlXL',

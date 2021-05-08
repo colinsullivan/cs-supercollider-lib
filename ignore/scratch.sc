@@ -1,7 +1,8 @@
 ({
   s.quit();
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
-  s.options.outDevice= "JackRouter";
+  //s.options.outDevice= "JackRouter";
+  //s.options.outDevice= "JackRouter";
   //s.options.numOutputBusChannels = 48;
   /*s.options.sampleRate = 48000;*/
   s.boot();
@@ -14,6 +15,46 @@
     Instr.loadAll();
   });
 }.value());
+
+(
+
+    MIDIClient.init();
+)
+
+(
+  //MKtl.find;
+  //MKtl.all;
+  //MKtlDesc.allDescs;
+    //MKtl.postPossible('midi')
+    MKtl(
+      'CSPC12',
+      "faderfox-pc12"
+    );
+)
+(
+  MKtl('CSPC12').gui()
+)
+(
+  MKtl('CS16n').trace(true)
+)
+(
+
+      MKtl('CS16n').elAt('sl_1').addAction({
+        arg element;
+        "element.value:".postln;
+        element.value.postln;
+      });
+)
+
+(
+  //MKtl('CSPC12').elementGroup.keys
+  //MKtl('CSPC12').elAt('B10', 'kn', 'C', '10')
+  MKtl('CSPC12').dictAt('B10_kn_C_10').addAction({
+    arg element;
+    "element.value:".postln;
+    element.value.postln;
+  });
+)
 
 (
   FreqScope.new(720, 720, 0, server: s);
