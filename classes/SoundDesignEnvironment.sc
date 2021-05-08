@@ -38,10 +38,10 @@ SoundDesignEnvironment {
       numVoices: 1,
       instr: Instr("cs.percussion.OWAKick"),
       lowkeyName: "C0",
-      hikeyName: "C2",
+      hikeyName: "C4",
       clock: clockController.clock,
       store: store,
-      transpose: -24
+      transpose: -12
     ));
 
     ^this;  
