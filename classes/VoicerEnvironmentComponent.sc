@@ -31,15 +31,31 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
 
     this.sock = VoicerMIDISocket.new(
       [
-        MIDIClient.sources.indexOf(
-          MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider")
-        ),
+        //MIDIClient.sources.indexOf(
+          //MIDIIn.findPort("(out) SuperCollider", "(out) SuperCollider")
+        //),
+        //this.inChannel
+        \all,
         this.inChannel
       ],
       this.voicer
     );
 
-    {this.init_done_callback.value();}.defer(1);
+    this.sock.enable();
+
+    if (params.includesKey('lowkeyName'), {
+      this.sock.lowkey = params['lowkeyName'].notemidi();
+    });
+
+    if (params.includesKey('hikeyName'), {
+      this.sock.hikey = params['hikeyName'].notemidi();
+    });
+
+    if (params.includesKey('transpose'), {
+      this.sock.transpose = params['transpose'];
+    });
+
+    this.init_done_callback.value();
   }
 
   init_gui {
