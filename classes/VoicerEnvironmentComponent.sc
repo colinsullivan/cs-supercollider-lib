@@ -5,9 +5,18 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     arg params;
     var gui, instrArgs = [];
     
+    if (params.includesKey('instr') == false, {
+        "Error: instr parameter is required".throw();
+    });
+
+    if ((params.includesKey('numVoices') == false).and(params.includesKey('monoPortaVoicer') == false), {
+      "Error: numVoices or monoPortaVoicer=true is required".throw();
+    });
+
     super.init(params);
 
     this.inChannel = params['inChannel'];
+
 
     if (params.includesKey('instrArgs'), {
       instrArgs = params['instrArgs'];
@@ -21,6 +30,7 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
         target: this.outputChannel
       );
     }, {
+
       this.voicer = Voicer.new(
         params['numVoices'],
         params['instr'],
