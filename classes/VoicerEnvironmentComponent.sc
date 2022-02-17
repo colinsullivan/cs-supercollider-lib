@@ -3,7 +3,7 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
 
   init {
     arg params;
-    var gui, instrArgs = [];
+    var gui, instrArgs = [], voiceBus, voiceTarget;
     
     if (params.includesKey('instr') == false, {
         "Error: instr parameter is required".throw();
@@ -17,6 +17,13 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
 
     this.inChannel = params['inChannel'];
 
+    voiceBus = nil;
+    voiceTarget = this.outputChannel;
+    if (params.includesKey('voiceBus') == true, {
+      voiceBus = params['voiceBus'];
+      voiceTarget = nil;
+    });
+
 
     if (params.includesKey('instrArgs'), {
       instrArgs = params['instrArgs'];
@@ -27,7 +34,8 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
         1,
         params['instr'],
         instrArgs,
-        target: this.outputChannel
+        voiceBus,
+        target: voiceTarget
       );
     }, {
 
@@ -35,7 +43,8 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
         params['numVoices'],
         params['instr'],
         instrArgs,
-        target: this.outputChannel
+        voiceBus,
+        target: voiceTarget
       );
     });
 
