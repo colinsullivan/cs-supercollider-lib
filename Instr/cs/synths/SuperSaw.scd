@@ -51,3 +51,23 @@ Instr("cs.synths.SuperSaw.SuperSawOsc", {
   \gate,
   \amp
 ]);
+
+Instr("cs.synths.SuperSaw.SuperSaw", {
+
+  arg freq, gate, amp, cutoffFreq;
+  var out;
+
+  out = Instr.ar("cs.synths.SuperSaw.SuperSawOsc", (
+    freq: freq,
+    gate: gate,
+    amp: amp
+  ));
+
+  out = LPF.ar(out, cutoffFreq);
+
+}, [
+  \freq,
+  \gate,
+  \amp,
+  \freq,
+]);

@@ -7,6 +7,7 @@
   /*s.options.sampleRate = 48000;*/
   s.boot();
   s.meter();
+  s.plotTree(0.25);
   //s.scope();
 
   s.doWhenBooted({
@@ -1195,3 +1196,27 @@ ControlSpec(0.0, \unipolar).map(0.5)
   );
   ~y.play();
 )
+
+// via https://www.nada.kth.se/utbildning/grukth/exjobb/rapportlistor/2010/rapporter10/szabo_adam_10131.pdf
+
+(
+  ~saw = Patch("cs.synths.SuperSaw.SuperSawOsc");
+  ~saw.play();
+)
+
+(
+  ~voicerEnvironment = SuperSawVoicerEnvironment.new((
+    inChannel: 4,
+    numVoices: 4,
+    instrArgs: (
+      amp: 0.1
+    )
+  ));
+)
+
+(
+  ~voicerEnvironment.voicer.free();
+)
+
+~b = Bus.audio();
+~b.index.groupBusInfo
