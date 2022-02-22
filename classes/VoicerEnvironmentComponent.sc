@@ -18,12 +18,14 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     this.inChannel = params['inChannel'];
 
     voiceBus = nil;
-    voiceTarget = this.outputChannel;
     if (params.includesKey('voiceBus') == true, {
       voiceBus = params['voiceBus'];
-      voiceTarget = nil;
     });
 
+    voiceTarget = this.outputChannel;
+    if (params.includesKey('voiceTarget') == true, {
+      voiceTarget = params['voiceTarget'];
+    });
 
     if (params.includesKey('instrArgs'), {
       instrArgs = params['instrArgs'];
@@ -85,23 +87,5 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     super.init_gui(params);
 
     this.voicer.gui(params['layout']);
-
-    //params['layout'].flow({
-      //arg layout;
-
-      //this.voicer.gui(layout);
-    
-    //});
-      
-    //voicerGui.resizeToFitContents();
-    //voicerGui.background = Color.red;
-    
-    // resize manually for now.
-    //voicerGui.layout.bounds = voicerGui.layout.bounds.resizeTo(
-      //voicerGui.layout.bounds.width,
-      //128.0
-    //);
-
-  
   }
 }

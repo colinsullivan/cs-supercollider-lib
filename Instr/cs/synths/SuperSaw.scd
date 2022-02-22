@@ -1,5 +1,4 @@
-Instr("cs.synths.SuperSaw.SuperSawOsc", {
-
+Instr("cs.synths.SuperSaw.Osc", {
   arg freq = 440, gate = 1, amp=0.5, mix=0.75, detune = 0.75;
   var detuneCurve, centerGain, sideGain, center, freqs, side, out, env, envShape;
 	detuneCurve = { |x|
@@ -44,30 +43,57 @@ Instr("cs.synths.SuperSaw.SuperSawOsc", {
 
   env = EnvGen.kr(envShape, gate, levelScale: amp, doneAction: 2);
 
-  out = env * (out ! 2);
-	//sig = HPF.ar(sig ! 2, freq);
+  out = env * out;
 }, [
   \freq,
   \gate,
-  \amp
+  \amp,
+  \unipolar,
+  \unipolar
 ]);
 
-Instr("cs.synths.SuperSaw.SuperSaw", {
+Instr("cs.synths.SuperSaw.Voice", {
 
-  arg freq, gate, amp, cutoffFreq;
-  var out;
+  arg freq, gate, amp, mix, detune;
+  var outL, outR;
 
-  out = Instr.ar("cs.synths.SuperSaw.SuperSawOsc", (
+  outL = Instr.ar("cs.synths.SuperSaw.Osc", (
     freq: freq,
     gate: gate,
-    amp: amp
+    amp: amp,
+    mix: mix,
+    detune: detune,
   ));
 
-  out = LPF.ar(out, cutoffFreq);
+  outR = Instr.ar("cs.synths.SuperSaw.Osc", (
+    freq: freq,
+    gate: gate,
+    amp: amp,
+    mix: mix,
+    detune: detune,
+  ));
+
+  [outL, outR];
 
 }, [
   \freq,
   \gate,
   \amp,
+  \unipolar,
+  \unipolar,
+]);
+
+Instr("cs.synths.SuperSaw.Filter", {
+
+  arg bus, cutoffFreq;
+  var out;
+
+  out = In.ar(bus, 2);
+  out = LPF.ar(out, cutoffFreq);
+
+  out;
+
+}, [
+  \bus,
   \freq,
 ]);

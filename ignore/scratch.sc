@@ -6,14 +6,14 @@
   //s.options.numOutputBusChannels = 48;
   /*s.options.sampleRate = 48000;*/
   s.boot();
-  s.meter();
-  s.plotTree(0.25);
-  //s.scope();
 
   s.doWhenBooted({
     MIDIClient.init();
     Instr.dir = "/Users/colin/Projects/cs-supercollider-lib/Instr/";
     Instr.loadAll();
+    s.meter();
+    s.plotTree(0.25);
+    //s.scope();
   });
 }.value());
 
@@ -58,7 +58,7 @@
 )
 
 (
-  FreqScope.new(720, 720, 0, server: s);
+  FreqScope.new(720, 720, 4, server: s);
 )
 
 (
@@ -1207,10 +1207,7 @@ ControlSpec(0.0, \unipolar).map(0.5)
 (
   ~voicerEnvironment = SuperSawVoicerEnvironment.new((
     inChannel: 4,
-    numVoices: 4,
-    instrArgs: (
-      amp: 0.1
-    )
+    numVoices: 4
   ));
 )
 
