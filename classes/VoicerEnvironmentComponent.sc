@@ -3,11 +3,29 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
 
   init {
     arg params;
-    var gui, instrArgs = [];
+    var gui, instrArgs = [], voiceBus, voiceTarget;
     
+    if (params.includesKey('instr') == false, {
+        "Error: instr parameter is required".throw();
+    });
+
+    if ((params.includesKey('numVoices') == false).and(params.includesKey('monoPortaVoicer') == false), {
+      "Error: numVoices or monoPortaVoicer=true is required".throw();
+    });
+
     super.init(params);
 
     this.inChannel = params['inChannel'];
+
+    voiceBus = nil;
+    if (params.includesKey('voiceBus') == true, {
+      voiceBus = params['voiceBus'];
+    });
+
+    voiceTarget = this.outputChannel;
+    if (params.includesKey('voiceTarget') == true, {
+      voiceTarget = params['voiceTarget'];
+    });
 
     if (params.includesKey('instrArgs'), {
       instrArgs = params['instrArgs'];
@@ -18,14 +36,17 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
         1,
         params['instr'],
         instrArgs,
-        target: this.outputChannel
+        voiceBus,
+        target: voiceTarget
       );
     }, {
+
       this.voicer = Voicer.new(
         params['numVoices'],
         params['instr'],
         instrArgs,
-        target: this.outputChannel
+        voiceBus,
+        target: voiceTarget
       );
     });
 
@@ -66,23 +87,5 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     super.init_gui(params);
 
     this.voicer.gui(params['layout']);
-
-    //params['layout'].flow({
-      //arg layout;
-
-      //this.voicer.gui(layout);
-    
-    //});
-      
-    //voicerGui.resizeToFitContents();
-    //voicerGui.background = Color.red;
-    
-    // resize manually for now.
-    //voicerGui.layout.bounds = voicerGui.layout.bounds.resizeTo(
-      //voicerGui.layout.bounds.width,
-      //128.0
-    //);
-
-  
   }
 }
