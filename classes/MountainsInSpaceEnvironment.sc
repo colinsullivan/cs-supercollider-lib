@@ -59,13 +59,13 @@ MountainsInSpaceEnvironment : PerformanceEnvironment {
           outputBus: 20
         )
       ),
-      //wideBassEnvironment: (
-        //class: WideBassVoicerEnvironment,
-        //initParams: (
-          //inChannel: 5,
-          //outputBus: 22
-        //)
-      //),
+      wideBassEnvironment: (
+        class: WideBassVoicerEnvironment,
+        initParams: (
+          inChannel: 1,
+          outputBus: 22
+        )
+      ),
       /*smoothbassEnvironment: (
         class: SmoothBassVoicerEnvironment,
         initParams: (
