@@ -13,7 +13,9 @@
  *  environment that has a GUI window.
  **/
 PerformanceEnvironmentComponent : Object {
-  var <>origin,
+  var 
+    <params,
+    <>origin,
     <>uc33Controller,
     <>softStepController,
     <>abletonController,
@@ -37,9 +39,9 @@ PerformanceEnvironmentComponent : Object {
     <clock;
 
   *new {
-    arg params;
+    arg inParams;
 
-    ^super.new.init(params);
+    ^super.new.init(inParams);
   }
 
   create_output_channel {
@@ -65,9 +67,11 @@ PerformanceEnvironmentComponent : Object {
   }
 
   init {
-    arg params;
+    arg inParams;
     var me = this,
       state;
+
+    params = inParams;
 
     componentId = params['componentId'];
 
@@ -105,24 +109,9 @@ PerformanceEnvironmentComponent : Object {
     this.load_samples({
 
       // when samples are finished, load interface
-      me.interface = Interface({
-        me.load_environment(params);
-      }).onPlay_({
-        me.on_play();
-      }).onStop_({
-        me.on_stop();
+      interface = me.create_interface({
+        this.init_external_controller_mappings();
       });
-
-      me.interface.gui = {
-        arg layout, metaPatch;
-        me.init_gui((
-          window: layout.parent.parent,
-          layout: layout,
-          metaPatch: metaPatch
-        ));
-        me.init_external_controller_mappings();
-      };
-
 
       AppClock.sched(0.0, {
         me.interface.gui();
@@ -143,8 +132,27 @@ PerformanceEnvironmentComponent : Object {
     });
   }
 
-  done_loading_samples {
-  
+  create_interface {
+    arg onDone;
+    var interface = Interface({
+      this.load_environment(params);
+    }).onPlay_({
+      this.on_play();
+    }).onStop_({
+      this.on_stop();
+    });
+
+    interface.gui = {
+      arg layout, metaPatch;
+      this.init_gui((
+        window: layout.parent.parent,
+        layout: layout,
+        metaPatch: metaPatch
+      ));
+      onDone.value();
+    };
+
+    ^interface;
   }
   
   /**
