@@ -6,5 +6,5 @@
   version:    0.28,
 //  helpdoc:    "",
   url:      "https://github.com/colinsullivan/cs-supercollider-lib",
-  dependencies:  #["crucial-library", "ddwCommon", "ddwMixerChannel", "ddwVoicer", "ddwMIDI", "wslib", "Modality-toolkit"]
+  dependencies:  #["crucial-library", "ddwCommon", "ddwVoicer", "ddwMIDI", "wslib", "Modality-toolkit"]
 )

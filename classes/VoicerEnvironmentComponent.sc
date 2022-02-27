@@ -1,9 +1,8 @@
 VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
-  var <>voicer, <>sock, <>inChannel, <>outputChannel;
+  var <>voicer, <>sock, <>inChannel;
 
   init {
     arg params;
-    var gui, instrArgs = [], voiceBus, voiceTarget;
     
     if (params.includesKey('instr') == false, {
         "Error: instr parameter is required".throw();
@@ -14,15 +13,22 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     });
 
     super.init(params);
+  }
+
+  init_patches {
+    arg params;
+    var gui, instrArgs = [], voiceBus, voiceTarget;
 
     this.inChannel = params['inChannel'];
 
     voiceBus = nil;
     if (params.includesKey('voiceBus') == true, {
       voiceBus = params['voiceBus'];
+    }, {
+      voiceBus = Bus.new('audio', params['outputBus']);
     });
 
-    voiceTarget = this.outputChannel;
+    voiceTarget = nil;
     if (params.includesKey('voiceTarget') == true, {
       voiceTarget = params['voiceTarget'];
     });
@@ -75,17 +81,11 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     if (params.includesKey('transpose'), {
       this.sock.transpose = params['transpose'];
     });
-
-    this.init_done_callback.value();
   }
 
   init_gui {
-
     arg params;
-    var layout, voicerGui;
-    
     super.init_gui(params);
-
     this.voicer.gui(params['layout']);
   }
 }
