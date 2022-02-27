@@ -25,8 +25,6 @@ PerformanceEnvironmentComponent : Object {
     <>interface,
     <window,
     initDoneCallback,
-    // MixerChannel instance
-    <outputChannel,
     // number
     <>outputBus,
     <playing,
@@ -42,15 +40,6 @@ PerformanceEnvironmentComponent : Object {
     arg inParams;
 
     ^super.new.init(inParams);
-  }
-
-  create_output_channel {
-    ^MixerChannel.new(
-      this.gui_window_title(),
-      Server.default,
-      2, 2,
-      outbus: this.outputBus
-    );
   }
 
   getComponentStatePath {
@@ -100,8 +89,6 @@ PerformanceEnvironmentComponent : Object {
     });
 
     
-    outputChannel = this.create_output_channel();
-
     this.origin = params['origin'];
     initDoneCallback = params['initDoneCallback'];
  
