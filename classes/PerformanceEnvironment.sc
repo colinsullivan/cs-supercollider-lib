@@ -35,7 +35,7 @@ PerformanceEnvironment : Object {
       initParams = moduleProperties['initParams'];
 
       initParams['origin'] = 0@0;
-      initParams['init_done_callback'] = {
+      initParams['initDoneCallback'] = {
         me.modules[moduleName] = module;
 
         if (me.modules.size == modulesToLoad.size, {

@@ -3,7 +3,6 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
 
   init {
     arg params;
-    var gui, instrArgs = [], voiceBus, voiceTarget;
     
     if (params.includesKey('instr') == false, {
         "Error: instr parameter is required".throw();
@@ -14,6 +13,11 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     });
 
     super.init(params);
+  }
+
+  init_patches {
+    arg params;
+    var gui, instrArgs = [], voiceBus, voiceTarget;
 
     this.inChannel = params['inChannel'];
 
@@ -75,8 +79,6 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     if (params.includesKey('transpose'), {
       this.sock.transpose = params['transpose'];
     });
-
-    this.init_done_callback.value();
   }
 
   init_gui {

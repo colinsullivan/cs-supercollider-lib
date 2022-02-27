@@ -21,13 +21,13 @@ PerformanceEnvironmentComponent : Object {
     <>sixteennController,
     <>pc12Controller,
     <>interface,
-    <>window,
-    <>init_done_callback,
+    <window,
+    initDoneCallback,
     // MixerChannel instance
-    <>outputChannel,
+    <outputChannel,
     // number
     <>outputBus,
-    <>playing,
+    <playing,
     // id of component for looking up in state store
     <>componentId,
     componentState,
@@ -81,7 +81,7 @@ PerformanceEnvironmentComponent : Object {
       });
     });
 
-    this.playing = false;
+    playing = false;
 
     if (componentState != nil, {
       if (componentState.outputBus != nil, {
@@ -96,10 +96,10 @@ PerformanceEnvironmentComponent : Object {
     });
 
     
-    this.outputChannel = this.create_output_channel();
+    outputChannel = this.create_output_channel();
 
     this.origin = params['origin'];
-    this.init_done_callback = params['init_done_callback'];
+    initDoneCallback = params['initDoneCallback'];
  
     // initialize loading of samples
     this.load_samples({
@@ -129,7 +129,7 @@ PerformanceEnvironmentComponent : Object {
         //// TODO: Consider an autoplay parameter if ever starting and stopping
         //// patches.
         me.interface.play();
-        me.init_done_callback.value();
+        initDoneCallback.value();
       });
     });
   }
@@ -158,17 +158,12 @@ PerformanceEnvironmentComponent : Object {
     callback.value();
   }
 
-  init_tracks {
-  
-  }
-
   init_patches {
   
   }
 
   load_environment {
     arg params;
-    this.init_tracks(params);
     this.init_patches(params);
   }
 
@@ -176,27 +171,27 @@ PerformanceEnvironmentComponent : Object {
   init_gui {
     arg params;
    
-    this.window = params['window'];
+    window = params['window'];
 
     if (origin != nil, {
-      this.window.bounds = this.window.bounds.moveTo(this.origin[0], this.origin[1]);
+      window.bounds = window.bounds.moveTo(this.origin[0], this.origin[1]);
       window.bounds.postln();
     });
-    this.window.name = this.gui_window_title();
+    window.name = this.gui_window_title();
   }
  
   /**
    *  Called when the play button is pressed on the interface.
    **/
   on_play {
-    this.playing = true;
+    playing = true;
   }
 
   /**
    *  Called when the stop button is pressed on the interface.
    **/
   on_stop {
-    this.playing = false;
+    playing = false;
   }
 
   // TODO: Move instantiation of controllers out of here
