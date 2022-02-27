@@ -110,9 +110,10 @@ PerformanceEnvironmentComponent : Object {
         this.load_environment();
         this.init_external_controller_mappings();
       });
-      this.load_gui();
-      this.play();
-      initDoneCallback.value();
+      this.load_gui({
+        this.play();
+        initDoneCallback.value();
+      });
     });
   }
 
@@ -121,6 +122,7 @@ PerformanceEnvironmentComponent : Object {
   }
 
   load_gui {
+    arg onDone;
     interface.gui = {
       arg layout, metaPatch;
       this.init_gui((
@@ -131,6 +133,7 @@ PerformanceEnvironmentComponent : Object {
     };
     AppClock.sched(0.0, {
       interface.gui();
+      onDone.value();
     });
   }
 

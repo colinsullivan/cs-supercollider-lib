@@ -1,5 +1,5 @@
 VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
-  var <>voicer, <>sock, <>inChannel, <>outputChannel;
+  var <>voicer, <>sock, <>inChannel;
 
   init {
     arg params;
@@ -26,7 +26,7 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
       voiceBus = params['voiceBus'];
     });
 
-    voiceTarget = this.outputChannel;
+    voiceTarget = voiceBus;
     if (params.includesKey('voiceTarget') == true, {
       voiceTarget = params['voiceTarget'];
     });
