@@ -105,22 +105,31 @@ PerformanceEnvironmentComponent : Object {
     this.origin = params['origin'];
     initDoneCallback = params['initDoneCallback'];
  
-    // initialize loading of samples
     this.load_samples({
-
-      // when samples are finished, load interface
-      interface = me.create_interface({
+      interface = this.create_interface({
+        this.load_environment();
         this.init_external_controller_mappings();
       });
-
-      AppClock.sched(0.0, {
-        me.interface.gui();
-        //// TODO: Consider an autoplay parameter if ever starting and stopping
-        //// patches.
-        me.interface.play();
-        initDoneCallback.value();
-      });
+      this.load_gui();
+      this.play();
+      initDoneCallback.value();
     });
+  }
+
+  play {
+    interface.play();
+  }
+
+  load_gui {
+    interface.gui = {
+      arg layout, metaPatch;
+      this.init_gui((
+        window: layout.parent.parent,
+        layout: layout,
+        metaPatch: metaPatch
+      ));
+    };
+    interface.gui();
   }
 
   handle_state_change {
@@ -135,22 +144,12 @@ PerformanceEnvironmentComponent : Object {
   create_interface {
     arg onDone;
     var interface = Interface({
-      this.load_environment(params);
+      onDone.value();
     }).onPlay_({
       this.on_play();
     }).onStop_({
       this.on_stop();
     });
-
-    interface.gui = {
-      arg layout, metaPatch;
-      this.init_gui((
-        window: layout.parent.parent,
-        layout: layout,
-        metaPatch: metaPatch
-      ));
-      onDone.value();
-    };
 
     ^interface;
   }
@@ -171,13 +170,14 @@ PerformanceEnvironmentComponent : Object {
   }
 
   load_environment {
-    arg params;
     this.init_patches(params);
   }
 
 
   init_gui {
     arg params;
+
+    "init_gui".postln();
    
     window = params['window'];
 

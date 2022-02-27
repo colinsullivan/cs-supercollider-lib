@@ -82,12 +82,8 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
   }
 
   init_gui {
-
     arg params;
-    var layout, voicerGui;
-    
     super.init_gui(params);
-
     this.voicer.gui(params['layout']);
   }
 }
