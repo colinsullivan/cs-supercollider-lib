@@ -26,7 +26,7 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
       voiceBus = params['voiceBus'];
     });
 
-    voiceTarget = voiceBus;
+    voiceTarget = params['outputBus'];
     if (params.includesKey('voiceTarget') == true, {
       voiceTarget = params['voiceTarget'];
     });
