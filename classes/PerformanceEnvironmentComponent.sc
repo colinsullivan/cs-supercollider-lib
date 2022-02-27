@@ -129,7 +129,9 @@ PerformanceEnvironmentComponent : Object {
         metaPatch: metaPatch
       ));
     };
-    interface.gui();
+    AppClock.sched(0.0, {
+      interface.gui();
+    });
   }
 
   handle_state_change {
@@ -177,13 +179,10 @@ PerformanceEnvironmentComponent : Object {
   init_gui {
     arg params;
 
-    "init_gui".postln();
-   
     window = params['window'];
 
     if (origin != nil, {
       window.bounds = window.bounds.moveTo(this.origin[0], this.origin[1]);
-      window.bounds.postln();
     });
     window.name = this.gui_window_title();
   }
