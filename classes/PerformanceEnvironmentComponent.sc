@@ -13,7 +13,9 @@
  *  environment that has a GUI window.
  **/
 PerformanceEnvironmentComponent : Object {
-  var <>origin,
+  var 
+    <params,
+    <>origin,
     <>uc33Controller,
     <>softStepController,
     <>abletonController,
@@ -21,13 +23,11 @@ PerformanceEnvironmentComponent : Object {
     <>sixteennController,
     <>pc12Controller,
     <>interface,
-    <>window,
-    <>init_done_callback,
-    // MixerChannel instance
-    <>outputChannel,
+    <window,
+    initDoneCallback,
     // number
     <>outputBus,
-    <>playing,
+    <playing,
     // id of component for looking up in state store
     <>componentId,
     componentState,
@@ -37,18 +37,9 @@ PerformanceEnvironmentComponent : Object {
     <clock;
 
   *new {
-    arg params;
+    arg inParams;
 
-    ^super.new.init(params);
-  }
-
-  create_output_channel {
-    ^MixerChannel.new(
-      this.gui_window_title(),
-      Server.default,
-      2, 2,
-      outbus: this.outputBus
-    );
+    ^super.new.init(inParams);
   }
 
   getComponentStatePath {
@@ -65,9 +56,11 @@ PerformanceEnvironmentComponent : Object {
   }
 
   init {
-    arg params;
+    arg inParams;
     var me = this,
       state;
+
+    params = inParams;
 
     componentId = params['componentId'];
 
@@ -81,7 +74,7 @@ PerformanceEnvironmentComponent : Object {
       });
     });
 
-    this.playing = false;
+    playing = false;
 
     if (componentState != nil, {
       if (componentState.outputBus != nil, {
@@ -96,41 +89,38 @@ PerformanceEnvironmentComponent : Object {
     });
 
     
-    this.outputChannel = this.create_output_channel();
-
     this.origin = params['origin'];
-    this.init_done_callback = params['init_done_callback'];
+    initDoneCallback = params['initDoneCallback'];
  
-    // initialize loading of samples
     this.load_samples({
-
-      // when samples are finished, load interface
-      me.interface = Interface({
-        me.load_environment(params);
-      }).onPlay_({
-        me.on_play();
-      }).onStop_({
-        me.on_stop();
+      interface = this.create_interface({
+        this.load_environment();
+        this.init_external_controller_mappings();
       });
-
-      me.interface.gui = {
-        arg layout, metaPatch;
-        me.init_gui((
-          window: layout.parent.parent,
-          layout: layout,
-          metaPatch: metaPatch
-        ));
-        me.init_external_controller_mappings();
-      };
-
-
-      AppClock.sched(0.0, {
-        me.interface.gui();
-        //// TODO: Consider an autoplay parameter if ever starting and stopping
-        //// patches.
-        me.interface.play();
-        me.init_done_callback.value();
+      this.load_gui({
+        this.play();
+        initDoneCallback.value();
       });
+    });
+  }
+
+  play {
+    interface.play();
+  }
+
+  load_gui {
+    arg onDone;
+    interface.gui = {
+      arg layout, metaPatch;
+      this.init_gui((
+        window: layout.parent.parent,
+        layout: layout,
+        metaPatch: metaPatch
+      ));
+    };
+    AppClock.sched(0.0, {
+      interface.gui();
+      onDone.value();
     });
   }
 
@@ -143,8 +133,17 @@ PerformanceEnvironmentComponent : Object {
     });
   }
 
-  done_loading_samples {
-  
+  create_interface {
+    arg onDone;
+    var interface = Interface({
+      onDone.value();
+    }).onPlay_({
+      this.on_play();
+    }).onStop_({
+      this.on_stop();
+    });
+
+    ^interface;
   }
   
   /**
@@ -158,45 +157,38 @@ PerformanceEnvironmentComponent : Object {
     callback.value();
   }
 
-  init_tracks {
-  
-  }
-
   init_patches {
   
   }
 
   load_environment {
-    arg params;
-    this.init_tracks(params);
     this.init_patches(params);
   }
 
 
   init_gui {
     arg params;
-   
-    this.window = params['window'];
+
+    window = params['window'];
 
     if (origin != nil, {
-      this.window.bounds = this.window.bounds.moveTo(this.origin[0], this.origin[1]);
-      window.bounds.postln();
+      window.bounds = window.bounds.moveTo(this.origin[0], this.origin[1]);
     });
-    this.window.name = this.gui_window_title();
+    window.name = this.gui_window_title();
   }
  
   /**
    *  Called when the play button is pressed on the interface.
    **/
   on_play {
-    this.playing = true;
+    playing = true;
   }
 
   /**
    *  Called when the stop button is pressed on the interface.
    **/
   on_stop {
-    this.playing = false;
+    playing = false;
   }
 
   // TODO: Move instantiation of controllers out of here

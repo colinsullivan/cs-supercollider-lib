@@ -3,7 +3,8 @@
   /*s.options.inDevice = "PreSonus FIREPOD (2112)";*/
   //s.options.outDevice= "JackRouter";
   //s.options.outDevice= "JackRouter";
-  //s.options.numOutputBusChannels = 48;
+  s.options.numOutputBusChannels = 16;
+  s.options.numInputBusChannels = 16;
   /*s.options.sampleRate = 48000;*/
   s.boot();
 
@@ -1207,7 +1208,8 @@ ControlSpec(0.0, \unipolar).map(0.5)
 (
   ~voicerEnvironment = SuperSawVoicerEnvironment.new((
     inChannel: 4,
-    numVoices: 4
+    numVoices: 4,
+    outputBus: 2,
   ));
 )
 
