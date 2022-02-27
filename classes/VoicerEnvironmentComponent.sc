@@ -24,9 +24,11 @@ VoicerEnvironmentComponent : PerformanceEnvironmentComponent {
     voiceBus = nil;
     if (params.includesKey('voiceBus') == true, {
       voiceBus = params['voiceBus'];
+    }, {
+      voiceBus = Bus.new('audio', params['outputBus']);
     });
 
-    voiceTarget = params['outputBus'];
+    voiceTarget = nil;
     if (params.includesKey('voiceTarget') == true, {
       voiceTarget = params['voiceTarget'];
     });
