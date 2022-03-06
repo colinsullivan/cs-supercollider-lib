@@ -1,4 +1,66 @@
 Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
+
+  // Assumes stereo input
+  arg inputChannelNums,
+    numChan,
+    delaySecs = 1.0,
+    feedbackCoefficient = 0.6,
+    amp = 1.0,
+    // Quadrophonic delay buffer
+    bufnum;
+
+  var
+    in,
+    out,
+    delayInput,
+    delaySamps,
+    phase,
+    feedbackChannels,
+    delayedSignals,
+    frames,
+    rotate = 1;
+
+  // Actual inputs
+  in = SoundIn.ar(inputChannelNums);
+
+  // Uses empty rear channels as inputs to the delay
+  delayInput = in ++ Silent.ar(2);
+
+  // Delay setup
+  delaySamps = max(0, delaySecs * SampleRate.ir - ControlDur.ir).round;
+  frames = BufFrames.kr(bufnum);
+  phase = Phasor.ar(0, 1, 0, frames);
+
+  // Feedback loop
+  feedbackChannels = LocalIn.ar(delayInput.size) * feedbackCoefficient;
+  delayedSignals = BufRd.ar(
+    delayInput.size,
+    bufnum,
+    (phase - delaySamps).wrap(0, frames),
+    0,
+    4
+  );
+  LocalOut.ar(delayedSignals);
+
+  // Ping pong channels and writes to delay buffer
+  BufWr.ar(
+    (delayInput + feedbackChannels).rotate(rotate) <! delayedSignals.asArray.first,
+    bufnum,
+    phase,
+    1
+  );
+
+  out = amp * delayedSignals;
+}, [
+  ObjectSpec([1]),
+  ObjectSpec(1),
+  ControlSpec(0.0, 8.0),
+  \unipolar,
+  \amp,
+  \bufnum
+]);
+
+/*Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
   arg inputChannelNums,
     numChan,
     delaySecs = 1.0,
@@ -42,7 +104,7 @@ Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
   \unipolar,
   \amp
 ]);
-
+*/
 
 Instr("cs.Synkopater.SynkopaterDelayWithInput", {
   arg inputChannelNums,
