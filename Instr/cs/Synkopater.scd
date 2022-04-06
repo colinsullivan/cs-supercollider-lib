@@ -7,7 +7,9 @@ Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
     feedbackCoefficient = 0.6,
     amp = 1.0,
     // Quadrophonic delay buffer
-    bufnum;
+    bufnum,
+    // amount of ping pong delay
+    pingPongAmount = 0;
 
   var
     in,
@@ -18,7 +20,9 @@ Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
     feedbackChannels,
     delayedSignals,
     frames,
-    rotate = 1;
+    rotate = 1,
+    rotatedSignals,
+    nonRotatedSignals;
 
   // Actual inputs
   in = SoundIn.ar(inputChannelNums);
@@ -42,9 +46,11 @@ Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
   );
   LocalOut.ar(delayedSignals);
 
-  // Ping pong channels and writes to delay buffer
+  rotatedSignals = pingPongAmount * ((delayInput + feedbackChannels).rotate(rotate) <! delayedSignals.asArray.first);
+  nonRotatedSignals = (1.0 - pingPongAmount) * (delayInput + feedbackChannels);
+
   BufWr.ar(
-    (delayInput + feedbackChannels).rotate(rotate) <! delayedSignals.asArray.first,
+    rotatedSignals + nonRotatedSignals,
     bufnum,
     phase,
     1
@@ -57,7 +63,8 @@ Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
   ControlSpec(0.0, 8.0),
   \unipolar,
   \amp,
-  \bufnum
+  \bufnum,
+  \unipolar,
 ]);
 
 /*Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
