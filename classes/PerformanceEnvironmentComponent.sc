@@ -22,6 +22,7 @@ PerformanceEnvironmentComponent : Object {
     <>launchControlController,
     <>sixteennController,
     <>pc12Controller,
+    <>pc4Controller,
     <>interface,
     <window,
     initDoneCallback,
@@ -246,6 +247,10 @@ PerformanceEnvironmentComponent : Object {
     this.pc12Controller = MKtl(
       'CSPC12',
       "faderfox-pc12"
+    );
+    this.pc4Controller = MKtl(
+      'CSPC4',
+      "faderfox-pc4"
     );
     //MKtl(
       //'CSLaunchControlXL',
