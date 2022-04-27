@@ -6,6 +6,7 @@ Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
     delaySecs = 1.0,
     feedbackCoefficient = 0.6,
     amp = 1.0,
+    mainAmp = 1.0,
     // Quadrophonic delay buffer
     bufnum,
     // amount of ping pong delay
@@ -56,12 +57,13 @@ Instr("cs.Synkopater.SynkopaterDelayQuadWithInput", {
     1
   );
 
-  out = amp * delayedSignals;
+  out = mainAmp * amp * delayedSignals;
 }, [
   ObjectSpec([1]),
   ObjectSpec(1),
   ControlSpec(0.0, 8.0),
   \unipolar,
+  \amp,
   \amp,
   \bufnum,
   \unipolar,
